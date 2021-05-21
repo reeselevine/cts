@@ -88,10 +88,12 @@ g.test('basic,async').fn(async t => {
 //       - { x: -10, y: 18, _result: 8 }
 
 g.test('basic,cases')
-  .cases([
-    { x: 2, y: 4, _result: 6 }, //
-    { x: -10, y: 18, _result: 8 },
-  ])
+  .params2(u =>
+    u.combine([
+      { x: 2, y: 4, _result: 6 }, //
+      { x: -10, y: 18, _result: 8 },
+    ])
+  )
   .fn(t => {
     t.expect(t.params.x + t.params.y === t.params._result);
   });
@@ -110,13 +112,16 @@ g.test('basic,cases')
 //       - { x: 2, b: 2 }
 
 g.test('basic,subcases')
-  .cases([{ x: 1 }, { x: 2 }])
-  .subcases(p => [{ a: p.x + 1 }, { b: 2 }])
+  .params2(u =>
+    u
+      .combine([{ x: 1 }, { x: 2 }])
+      .beginSubcases()
+      .expand(p => [{ a: p.x + 1 }, { b: 2 }])
+  )
   .fn(t => {
-    t.expect(
-      ((t.params.a === 2 || t.params.a === 3) && t.params.b === undefined) ||
-        (t.params.a === undefined && t.params.b === 2)
-    );
+    const isSubcase1 = (t.params.a === 2 || t.params.a === 3) && t.params.b === undefined;
+    const isSubcase2 = t.params.a === undefined && t.params.b === 2;
+    t.expect(isSubcase1 || isSubcase2);
   });
 
 // Runs the following cases:
