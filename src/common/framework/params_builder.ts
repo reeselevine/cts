@@ -9,7 +9,9 @@ import {
 import { ResolveType, UnionToIntersection } from './util/types.js';
 
 /** Conditionally chooses between two types depending on whether T is a union. */
-type CheckForUnion<T, TErr, TOk> = [T] extends [UnionToIntersection<T>] ? TOk : TErr;
+type CheckForUnion<T, TIfNotUnion, TIfUnion> = [T] extends [UnionToIntersection<T>]
+  ? TIfUnion
+  : TIfNotUnion;
 
 /** Conditionally chooses a type (or void) depending on whether T is a string. */
 type CheckForStringLiteralType<T, TOk> = string extends T ? void : CheckForUnion<T, void, TOk>;
