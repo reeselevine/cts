@@ -297,7 +297,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}>
 
   *[Symbol.iterator](): CaseSubcaseIterator<CaseP, SubcaseP> {
     for (const base of this.base()) {
-      yield [base, this.generator(base)];
+      yield [base, makeReusableIterable(() => this.generator(base))];
     }
   }
 
