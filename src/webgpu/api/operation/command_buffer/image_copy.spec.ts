@@ -34,7 +34,7 @@ TODO: Fix this test for the various skipped formats:
 - compressed formats
 `;
 
-import { params, poptions } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { assert, unreachable } from '../../../../common/framework/util/util.js';
 import {
@@ -1065,22 +1065,24 @@ g.test('undefined_params')
   Ensures bytesPerRow/rowsPerImage=undefined are valid and behave as expected.
   Ensures origin.x/y/z undefined default to 0.`
   )
-  .cases(kMethodsToTest)
-  .subcases(() =>
-    params().combine([
-      // copying one row: bytesPerRow and rowsPerImage can be undefined
-      { copySize: [3, 1, 1], origin: [UND, UND, UND], bytesPerRow: UND, rowsPerImage: UND },
-      // copying one slice: rowsPerImage can be undefined
-      { copySize: [3, 3, 1], origin: [UND, UND, UND], bytesPerRow: 256, rowsPerImage: UND },
-      // copying two slices
-      { copySize: [3, 3, 2], origin: [UND, UND, UND], bytesPerRow: 256, rowsPerImage: 3 },
-      // origin.x = undefined
-      { copySize: [1, 1, 1], origin: [UND, 1, 1], bytesPerRow: UND, rowsPerImage: UND },
-      // origin.y = undefined
-      { copySize: [1, 1, 1], origin: [1, UND, 1], bytesPerRow: UND, rowsPerImage: UND },
-      // origin.z = undefined
-      { copySize: [1, 1, 1], origin: [1, 1, UND], bytesPerRow: UND, rowsPerImage: UND },
-    ])
+  .params2(u =>
+    u
+      .combine(kMethodsToTest)
+      .beginSubcases()
+      .combine([
+        // copying one row: bytesPerRow and rowsPerImage can be undefined
+        { copySize: [3, 1, 1], origin: [UND, UND, UND], bytesPerRow: UND, rowsPerImage: UND },
+        // copying one slice: rowsPerImage can be undefined
+        { copySize: [3, 3, 1], origin: [UND, UND, UND], bytesPerRow: 256, rowsPerImage: UND },
+        // copying two slices
+        { copySize: [3, 3, 2], origin: [UND, UND, UND], bytesPerRow: 256, rowsPerImage: 3 },
+        // origin.x = undefined
+        { copySize: [1, 1, 1], origin: [UND, 1, 1], bytesPerRow: UND, rowsPerImage: UND },
+        // origin.y = undefined
+        { copySize: [1, 1, 1], origin: [1, UND, 1], bytesPerRow: UND, rowsPerImage: UND },
+        // origin.z = undefined
+        { copySize: [1, 1, 1], origin: [1, 1, UND], bytesPerRow: UND, rowsPerImage: UND },
+      ])
   )
   .fn(async t => {
     const { bytesPerRow, rowsPerImage, copySize, origin, initMethod, checkMethod } = t.params;
