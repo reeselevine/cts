@@ -5,6 +5,7 @@ import {
   CaseParamsBuilder,
   CaseSubcaseIterable,
   kUnitCaseParamsBuilder,
+  ParamsBuilderBase,
 } from './params_builder.js';
 import { TestParams, extractPublicParams, Merged, mergeParams } from './params_utils.js';
 import { compareQueries, Ordering } from './query/compare.js';
@@ -126,9 +127,9 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F,
    * The `unit` value passed to the `cases` callback is provided for convienience,
    * and can be ignored when useful.
    */
-  params2<P extends TestParams, SubP extends TestParams>(
-    cases: (unit: CaseParamsBuilder<{}>) => CaseSubcaseIterable<P, SubP>
-  ): TestBuilderWithSubcases<F, Merged<P, SubP>>;
+  params2<CaseP extends {}, SubcaseP extends {}>(
+    cases: (unit: CaseParamsBuilder<{}>) => ParamsBuilderBase<CaseP, SubcaseP>
+  ): TestBuilderWithSubcases<F, Merged<CaseP, SubcaseP>>;
 }
 
 interface TestBuilderWithCases<F extends Fixture, P extends {}>

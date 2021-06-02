@@ -164,8 +164,23 @@ function makeReusableIterable<P>(generatorFn: () => Generator<P>): Iterable<P> {
  * - `[case params, Iterable<subcase params>]` if there are subcases.
  * - `[case params, undefined]` if not.
  */
-export type CaseSubcaseIterable<Base, A> = Iterable<readonly [Base, Iterable<A> | undefined]>;
-type CaseSubcaseIterator<Base, A> = Iterator<readonly [Base, Iterable<A> | undefined]>;
+export type CaseSubcaseIterable<CaseP, SubcaseP> = Iterable<
+  readonly [CaseP, Iterable<SubcaseP> | undefined]
+>;
+type CaseSubcaseIterator<CaseP, SubcaseP> = Iterator<
+  readonly [CaseP, Iterable<SubcaseP> | undefined]
+>;
+
+export abstract class ParamsBuilderBase<CaseP extends {}, SubcaseP extends {}>
+  implements CaseSubcaseIterable<CaseP, SubcaseP> {
+  protected readonly cases: () => Generator<CaseP>;
+
+  constructor(cases: () => Generator<CaseP>) {
+    this.cases = cases;
+  }
+
+  abstract [Symbol.iterator](): CaseSubcaseIterator<CaseP, SubcaseP>;
+}
 
 /**
  * Builder for combinatorial test _case_ parameters.
@@ -175,15 +190,9 @@ type CaseSubcaseIterator<Base, A> = Iterator<readonly [Base, Iterable<A> | undef
  *
  * This means, for example, that the `punit` passed into `.params2()` can be reused.
  */
-export class CaseParamsBuilder<CaseP extends {}> implements CaseSubcaseIterable<CaseP, {}> {
-  protected readonly generator: () => Generator<CaseP>;
-
-  constructor(generator: () => Generator<CaseP>) {
-    this.generator = generator;
-  }
-
+export class CaseParamsBuilder<CaseP extends {}> extends ParamsBuilderBase<CaseP, {}> {
   *[Symbol.iterator](): CaseSubcaseIterator<CaseP, {}> {
-    for (const a of this.generator()) {
+    for (const a of this.cases()) {
       yield [a, undefined];
     }
   }
@@ -201,7 +210,7 @@ export class CaseParamsBuilder<CaseP extends {}> implements CaseSubcaseIterable<
   expand<NewP extends {}>(
     expander: (_: Merged<{}, CaseP>) => Iterable<NewP>
   ): CaseParamsBuilder<Merged<CaseP, NewP>> {
-    const newGenerator = expanderGenerator(this.generator, expander);
+    const newGenerator = expanderGenerator(this.cases, expander);
     return new CaseParamsBuilder(() => newGenerator({}));
   }
 
@@ -243,7 +252,7 @@ export class CaseParamsBuilder<CaseP extends {}> implements CaseSubcaseIterable<
    * Filters `this` to only cases for which `pred` returns true.
    */
   filter(pred: (_: Merged<{}, CaseP>) => boolean): CaseParamsBuilder<CaseP> {
-    const newGenerator = filterGenerator(this.generator, pred);
+    const newGenerator = filterGenerator(this.cases, pred);
     return new CaseParamsBuilder(() => newGenerator({}));
   }
 
@@ -261,7 +270,7 @@ export class CaseParamsBuilder<CaseP extends {}> implements CaseSubcaseIterable<
    */
   beginSubcases(): SubcaseParamsBuilder<CaseP, {}> {
     return new SubcaseParamsBuilder(
-      () => this.generator(),
+      () => this.cases(),
       function* () {
         yield {};
       }
@@ -285,19 +294,20 @@ export const kUnitCaseParamsBuilder = new CaseParamsBuilder(function* () {
  * SubcaseParamsBuilder is immutable. Each method call returns a new, immutable object,
  * modifying the list of subcases according to the method called.
  */
-export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}>
-  implements CaseSubcaseIterable<CaseP, SubcaseP> {
-  private readonly base: () => Generator<CaseP>;
-  protected readonly generator: (_: CaseP) => Generator<SubcaseP>;
+export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends ParamsBuilderBase<
+  CaseP,
+  SubcaseP
+> {
+  protected readonly subcases: (_: CaseP) => Generator<SubcaseP>;
 
-  constructor(base: () => Generator<CaseP>, generator: (_: CaseP) => Generator<SubcaseP>) {
-    this.base = base;
-    this.generator = generator;
+  constructor(cases: () => Generator<CaseP>, generator: (_: CaseP) => Generator<SubcaseP>) {
+    super(cases);
+    this.subcases = generator;
   }
 
   *[Symbol.iterator](): CaseSubcaseIterator<CaseP, SubcaseP> {
-    for (const base of this.base()) {
-      yield [base, makeReusableIterable(() => this.generator(base))];
+    for (const caseP of this.cases()) {
+      yield [caseP, makeReusableIterable(() => this.subcases(caseP))];
     }
   }
 
@@ -314,7 +324,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}>
   expand<NewP extends {}>(
     expander: (_: Merged<CaseP, SubcaseP>) => Iterable<NewP>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, NewP>> {
-    return new SubcaseParamsBuilder(this.base, expanderGenerator(this.generator, expander));
+    return new SubcaseParamsBuilder(this.cases, expanderGenerator(this.subcases, expander));
   }
 
   /**
@@ -357,7 +367,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}>
    * Filters `this` to only subcases for which `pred` returns true.
    */
   filter(pred: (_: Merged<CaseP, SubcaseP>) => boolean): SubcaseParamsBuilder<CaseP, SubcaseP> {
-    return new SubcaseParamsBuilder(this.base, filterGenerator(this.generator, pred));
+    return new SubcaseParamsBuilder(this.cases, filterGenerator(this.subcases, pred));
   }
 
   /**

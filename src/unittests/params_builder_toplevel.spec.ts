@@ -2,7 +2,7 @@ export const description = `
 Unit tests for parameterization.
 `;
 
-import { params } from '../common/framework/params_builder.js';
+import { kUnitCaseParamsBuilder } from '../common/framework/params_builder.js';
 import { TestParams } from '../common/framework/params_utils.js';
 import { makeTestGroup, makeTestGroupForUnitTesting } from '../common/framework/test_group.js';
 
@@ -11,21 +11,40 @@ import { UnitTest } from './unit_test.js';
 
 export const g = makeTestGroup(TestGroupTest);
 
-g.test('none')
-  .params([])
+g.test('combine_none,arg_unit')
+  .params2(u => u.combine([]))
   .fn(t => {
     t.fail("this test shouldn't run");
   });
 
-g.test('combine_none')
-  .params(params().combine([]))
+g.test('combine_none,explicit_unit')
+  .params2(() => kUnitCaseParamsBuilder.combine([]))
   .fn(t => {
     t.fail("this test shouldn't run");
+  });
+
+g.test('combine_one,case')
+  .params2(u =>
+    u //
+      .combine([{ x: 1 }])
+  )
+  .fn(t => {
+    t.expect(t.params.x === 1);
+  });
+
+g.test('combine_one,subcase')
+  .params2(u =>
+    u //
+      .beginSubcases()
+      .combine([{ x: 1 }])
+  )
+  .fn(t => {
+    t.expect(t.params.x === 1);
   });
 
 g.test('filter')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine([
         { a: true, x: 1 }, //
         { a: false, y: 2 },
@@ -37,8 +56,8 @@ g.test('filter')
   });
 
 g.test('unless')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine([
         { a: true, x: 1 }, //
         { a: false, y: 2 },
@@ -49,36 +68,22 @@ g.test('unless')
     t.expect(!t.params.a);
   });
 
-g.test('exclude')
-  .params(
-    params()
-      .combine([
-        { a: true, x: 1 },
-        { a: false, y: 2 },
-      ])
-      .exclude([
-        { a: true }, //
-        { a: false, y: 2 },
-      ])
-  )
-  .fn(t => {
-    t.expect(t.params.a);
-  });
-
 g.test('generator').fn(t0 => {
   const g = makeTestGroupForUnitTesting(UnitTest);
 
   const ran: TestParams[] = [];
 
   g.test('generator')
-    .params(
-      (function* (): IterableIterator<TestParams> {
-        for (let x = 0; x < 3; ++x) {
-          for (let y = 0; y < 2; ++y) {
-            yield { x, y };
+    .params2(u =>
+      u.combine(
+        (function* () {
+          for (let x = 0; x < 3; ++x) {
+            for (let y = 0; y < 2; ++y) {
+              yield { x, y };
+            }
           }
-        }
-      })()
+        })()
+      )
     )
     .fn(t => {
       ran.push(t.params);

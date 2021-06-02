@@ -22,6 +22,7 @@ Generally, see:
 
 - TODO: Index existing helpers.
 - [Parameterization helpers](../src/common/framework/params_builder.ts) for `.cases()`/`.subcases()`.
+    - FIXME
     - `poptions('key', [1, 2, 3])` creates an iterator over `{ key: 1 }, { key: 2 }, { key: 3 }`.
     - `pbool('key')` creates an iterator over `{ key: true }, { key: false }`.
     - `ParamsBuilder` is an object that iterates over params, e.g:
