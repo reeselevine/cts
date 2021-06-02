@@ -99,7 +99,7 @@ g.test('basic,cases')
   });
 // (note the blank comment above to enforce newlines on autoformat)
 
-// Each case can be further parameterized using .subcases().
+// Each case can be further parameterized using .beginSubcases().
 // Each such instance of the test is a "subcase", which cannot be run independently of other
 // subcases. It is analogous to wrapping the entire fn body in a for-loop.
 //

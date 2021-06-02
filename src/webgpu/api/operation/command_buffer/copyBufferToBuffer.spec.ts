@@ -1,6 +1,6 @@
 export const description = 'copyBufferToBuffer operation tests';
 
-import { poptions, params } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { GPUTest } from '../../../gpu_test.js';
 
@@ -17,11 +17,12 @@ g.test('single')
   - covers the end of the dstBuffer
   - covers neither the beginning nor the end of the dstBuffer`
   )
-  .subcases(() =>
-    params()
-      .combine(poptions('srcOffset', [0, 4, 8, 16]))
-      .combine(poptions('dstOffset', [0, 4, 8, 16]))
-      .combine(poptions('copySize', [0, 4, 8, 16]))
+  .params2(u =>
+    u
+      .beginSubcases()
+      .combineOptions('srcOffset', [0, 4, 8, 16])
+      .combineOptions('dstOffset', [0, 4, 8, 16])
+      .combineOptions('copySize', [0, 4, 8, 16])
       .expand(p =>
         poptions('srcBufferSize', [p.srcOffset + p.copySize, p.srcOffset + p.copySize + 8])
       )
