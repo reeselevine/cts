@@ -62,7 +62,6 @@ function typeAssert<T extends 'pass'>() {}
   }
 }
 
-/** @deprecated */
 export function poptions<Name extends string, V>(
   name: Name,
   values: Iterable<V>
