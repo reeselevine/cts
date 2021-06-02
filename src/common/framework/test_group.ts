@@ -122,14 +122,27 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F,
   cases<NewP extends TestParams>(specs: Iterable<NewP>): TestBuilderWithCases<F, NewP>;
 
   /**
-   * Parameterize the test, generating multiple cases, each with subcases.
+   * Parameterize the test, generating multiple cases, each possibly having subcases.
    *
-   * The `unit` value passed to the `cases` callback is provided for convienience,
-   * and can be ignored when useful.
+   * The `unit` value passed to the `cases` callback is an immutable constant
+   * `CaseParamsBuilder<{}>` representing the "unit" builder `[ {} ]`,
+   * provided for convienience. The non-callback overload can be used if `unit` is not needed.
    */
   params2<CaseP extends {}, SubcaseP extends {}>(
     cases: (unit: CaseParamsBuilder<{}>) => ParamsBuilderBase<CaseP, SubcaseP>
   ): TestBuilderWithSubcases<F, Merged<CaseP, SubcaseP>>;
+  /**
+   * Parameterize the test, generating multiple cases, each possibly having subcases.
+   *
+   * Use the callback overload of this method if a "unit" builder is needed.
+   */
+  params2<CaseP extends {}, SubcaseP extends {}>(
+    cases: ParamsBuilderBase<CaseP, SubcaseP>
+  ): TestBuilderWithSubcases<F, Merged<CaseP, SubcaseP>>;
+  /**
+   * Parameterize the test, generating multiple cases, without subcases.
+   */
+  params2<CaseP extends {}>(cases: Iterable<CaseP>): TestBuilderWithSubcases<F, CaseP>;
 }
 
 interface TestBuilderWithCases<F extends Fixture, P extends {}>
@@ -234,9 +247,20 @@ class TestBuilder {
     return this;
   }
 
-  params2(cases: (unit: CaseParamsBuilder<{}>) => CaseSubcaseIterable<{}, {}>): TestBuilder {
+  params2(
+    cases:
+      | ((unit: CaseParamsBuilder<{}>) => ParamsBuilderBase<{}, {}>)
+      | ParamsBuilderBase<{}, {}>
+      | Iterable<{}>
+  ): TestBuilder {
     assert(this.testCases === undefined, 'test case is already parameterized');
-    this.testCases = cases(kUnitCaseParamsBuilder);
+    if (cases instanceof Function) {
+      this.testCases = cases(kUnitCaseParamsBuilder);
+    } else if (cases instanceof ParamsBuilderBase) {
+      this.testCases = cases;
+    } else {
+      this.testCases = kUnitCaseParamsBuilder.combine(cases);
+    }
     return this;
   }
 

@@ -17,8 +17,20 @@ g.test('combine_none,arg_unit')
     t.fail("this test shouldn't run");
   });
 
-g.test('combine_none,explicit_unit')
+g.test('combine_none,arg_ignored')
   .params2(() => kUnitCaseParamsBuilder.combine([]))
+  .fn(t => {
+    t.fail("this test shouldn't run");
+  });
+
+g.test('combine_none,plain_builder')
+  .params2(kUnitCaseParamsBuilder.combine([]))
+  .fn(t => {
+    t.fail("this test shouldn't run");
+  });
+
+g.test('combine_none,plain_array')
+  .params2([])
   .fn(t => {
     t.fail("this test shouldn't run");
   });

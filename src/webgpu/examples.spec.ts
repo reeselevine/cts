@@ -9,7 +9,7 @@ import { makeTestGroup } from '../common/framework/test_group.js';
 import { GPUTest } from './gpu_test.js';
 
 // To run these tests in the standalone runner, run `npm start` then open:
-// - http://localhost:XXXX/standalone/?runnow=1&q=webgpu:examples:
+// - http://localhost:XXXX/standalone/?runnow=1&q=webgpu:examples:*
 // To run in WPT, copy/symlink the out-wpt/ directory as the webgpu/ directory in WPT, then open:
 // - (wpt server url)/webgpu/cts.html?q=webgpu:examples:
 //
@@ -73,66 +73,116 @@ g.test('basic,async').fn(async t => {
   );
 });
 
-// A test can be parameterized with a simple array of objects using .cases().
-// Each such instance of the test is a "case".
-//
-// Parameters can be public (x, y) which means they're part of the case name.
-// They can also be private by starting with an underscore (_result), which passes
-// them into the test but does not make them part of the case name:
-//
-// In this example, the following cases are generated (identified by their "query string"):
-//   - webgpu:examples:basic,cases:x=2;y=4     runs once, with t.params set to:
-//       - { x:   2, y:  4, _result: 6 }
-//   - webgpu:examples:basic,cases:x=-10;y=18  runs once, with t.params set to:
-//       - { x: -10, y: 18, _result: 8 }
+g.test('basic,plain_cases')
+  .desc(
+    `
+A test can be parameterized with a simple array of objects using .params2([ ... ]).
+Each such instance of the test is a "case".
 
-g.test('basic,cases')
-  .params2(u =>
-    u.combine([
-      { x: 2, y: 4, _result: 6 }, //
-      { x: -10, y: 18, _result: 8 },
-    ])
+In this example, the following cases are generated (identified by their "query string"),
+each with just one subcase:
+  - webgpu:examples:basic,cases:x=2;y=2      runs 1 subcase, with t.params set to:
+      - { x:   2, y:   2 }
+  - webgpu:examples:basic,cases:x=-10;y=-10  runs 1 subcase, with t.params set to:
+      - { x: -10, y: -10 }
+  `
   )
+  .params2([
+    { x: 2, y: 2 }, //
+    { x: -10, y: -10 },
+  ])
+  .fn(t => {
+    t.expect(t.params.x === t.params.y);
+  });
+
+g.test('basic,plain_cases_private')
+  .desc(
+    `
+Parameters can be public ("x", "y") which means they're part of the case name.
+They can also be private by starting with an underscore ("_result"), which passes
+them into the test but does not make them part of the case name:
+
+In this example, the following cases are generated, each with just one subcase:
+  - webgpu:examples:basic,cases:x=2;y=4     runs 1 subcase, with t.params set to:
+      - { x:   2, y:  4, _result: 6 }
+  - webgpu:examples:basic,cases:x=-10;y=18  runs 1 subcase, with t.params set to:
+      - { x: -10, y: 18, _result: 8 }
+  `
+  )
+  .params2([
+    { x: 2, y: 4, _result: 6 }, //
+    { x: -10, y: 18, _result: 8 },
+  ])
   .fn(t => {
     t.expect(t.params.x + t.params.y === t.params._result);
   });
 // (note the blank comment above to enforce newlines on autoformat)
 
-// Each case can be further parameterized using .beginSubcases().
-// Each such instance of the test is a "subcase", which cannot be run independently of other
-// subcases. It is analogous to wrapping the entire fn body in a for-loop.
-//
-// In this example, the following cases are generated (identified by their "query string"):
-//   - webgpu:examples:basic,cases:x=1  runs twice, with t.params set to each of:
-//       - { x: 1, a: 2 }
-//       - { x: 1, b: 2 }
-//   - webgpu:examples:basic,cases:x=2  runs twice, with t.params set to each of:
-//       - { x: 2, a: 3 }
-//       - { x: 2, b: 2 }
+g.test('basic,builder_cases')
+  .desc(
+    `
+A "CaseParamsBuilder" or "SubcaseParamsBuilder" can be passed to .params2() instead.
+The params builder provides facilities for generating tests combinatorially (by cartesian
+product).
 
-g.test('basic,subcases')
-  .params2(u =>
-    u
-      .combine([{ x: 1 }, { x: 2 }])
-      .beginSubcases()
-      .expand(p => [{ a: p.x + 1 }, { b: 2 }])
+In this example, the following cases are generated, each with just one subcase:
+  - webgpu:examples:basic,cases:x=1,y=1  runs 1 subcase, with t.params set to:
+      - { x: 1, y: 1 }
+  - webgpu:examples:basic,cases:x=1,y=2  runs 1 subcase, with t.params set to:
+      - { x: 1, y: 2 }
+  - webgpu:examples:basic,cases:x=2,y=1  runs 1 subcase, with t.params set to:
+      - { x: 2, y: 1 }
+  - webgpu:examples:basic,cases:x=2,y=2  runs 1 subcase, with t.params set to:
+      - { x: 2, y: 2 }
+  `
   )
-  .fn(t => {
-    const isSubcase1 = (t.params.a === 2 || t.params.a === 3) && t.params.b === undefined;
-    const isSubcase2 = t.params.a === undefined && t.params.b === 2;
-    t.expect(isSubcase1 || isSubcase2);
-  });
-
-// Runs the following cases:
-// { x: 2, y: 2 }
-// { x: 2, z: 3 }
-// { x: 3, y: 2 }
-// { x: 3, z: 3 }
-g.test('basic,params_builder')
   .params2(u =>
     u //
-      .combineOptions('x', [2, 3])
-      .combine([{ y: 2 }, { z: 3 }])
+      .combine([{ x: 1 }, { x: 2 }])
+      .combine([{ y: 1 }, { y: 2 }])
+  )
+  .fn(() => {});
+
+g.test('basic,builder_cases_subcases')
+  .desc(
+    `
+Each case sub-parameterized using .beginSubcases().
+Each such instance of the test is a "subcase", which cannot be run independently of other
+subcases. It is somewhat like wrapping the entire fn body in a for-loop.
+
+In this example, the following cases are generated:
+  - webgpu:examples:basic,cases:x=1      runs 2 subcases, with t.params set to:
+      - { x: 1, y: 1 }
+      - { x: 1, y: 2 }
+  - webgpu:examples:basic,cases:x=2      runs 2 subcases, with t.params set to:
+      - { x: 2, y: 1 }
+      - { x: 2, y: 2 }
+  `
+  )
+  .params2(u =>
+    u //
+      .combine([{ x: 1 }, { x: 2 }])
+      .beginSubcases()
+      .combine([{ y: 1 }, { y: 2 }])
+  )
+  .fn(() => {});
+
+g.test('basic,builder_subcases')
+  .desc(
+    `
+In this example, the following single case is generated:
+  - webgpu:examples:basic,cases:         runs 4 subcases, with t.params set to:
+      - { x: 1, y: 1 }
+      - { x: 1, y: 2 }
+      - { x: 2, y: 1 }
+      - { x: 2, y: 2 }
+  `
+  )
+  .params2(u =>
+    u //
+      .beginSubcases()
+      .combine([{ x: 1 }, { x: 2 }])
+      .combine([{ y: 1 }, { y: 2 }])
   )
   .fn(() => {});
 

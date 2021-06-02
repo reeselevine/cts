@@ -32,7 +32,11 @@ g.test('mapAsync')
   - unmap() throws an OperationError if mapping failed, and otherwise should detach the ArrayBuffer.
 `
   )
-  .params2(() => oomAndSizeParams.beginSubcases().combineBoolean('write'))
+  .params2(
+    oomAndSizeParams //
+      .beginSubcases()
+      .combineBoolean('write')
+  )
   .fn(async t => {
     const { oom, write, size } = t.params;
 
@@ -83,7 +87,11 @@ an out-of-memory error if allocation fails.
   - unmap() should not throw.
   `
   )
-  .params2(() => oomAndSizeParams.beginSubcases().combineOptions('usage', kBufferUsages))
+  .params2(
+    oomAndSizeParams //
+      .beginSubcases()
+      .combineOptions('usage', kBufferUsages)
+  )
   .fn(async t => {
     const { oom, usage, size } = t.params;
 
@@ -115,7 +123,11 @@ an out-of-memory error if allocation fails.
   - unmap() should detach the ArrayBuffer.
   `
   )
-  .params2(() => oomAndSizeParams.beginSubcases().combineOptions('usage', kBufferUsages))
+  .params2(
+    oomAndSizeParams //
+      .beginSubcases()
+      .combineOptions('usage', kBufferUsages)
+  )
   .fn(async t => {
     const { usage, size } = t.params;
 

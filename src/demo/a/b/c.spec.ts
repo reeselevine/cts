@@ -18,11 +18,11 @@ g.test('f')
 g.test('f,g').fn(() => {});
 
 g.test('f,g,h')
-  .cases([{}, { x: 0 }, { x: 0, y: 0 }])
+  .params2([{}, { x: 0 }, { x: 0, y: 0 }])
   .fn(() => {});
 
 g.test('case_depth_2_in_single_child_test')
-  .cases([{ x: 0, y: 0 }])
+  .params2([{ x: 0, y: 0 }])
   .fn(() => {});
 
 g.test('deep_case_tree')
