@@ -463,9 +463,10 @@ g.test('vertex_shader_type_matches_attribute_format')
      - Test for all formats.
      - Test for all combinations of u/i/f32 with and without vectors.`
   )
-  .cases(poptions('format', kVertexFormats))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('format', kVertexFormats))
+      .beginSubcases()
       .combine(poptions('shaderBaseType', ['u32', 'i32', 'f32']))
       .expand(p => {
         return poptions('shaderType', [
@@ -574,9 +575,10 @@ g.test('vertex_attribute_contained_in_stride')
     - Test for various vertex buffer indices
     - Test for various amounts of attributes in that vertex buffer`
   )
-  .cases(poptions('format', kVertexFormats))
-  .subcases(({ format }) =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('format', kVertexFormats))
+      .beginSubcases()
       .combine(
         poptions('arrayStride', [
           0,
@@ -587,7 +589,7 @@ g.test('vertex_attribute_contained_in_stride')
       )
       .expand(p => {
         // Compute a bunch of test offsets to test.
-        const { bytesPerComponent, componentCount } = kVertexFormatInfo[format];
+        const { bytesPerComponent, componentCount } = kVertexFormatInfo[p.format];
         const formatSize = bytesPerComponent * componentCount;
         const offsetsToTest = [0, bytesPerComponent];
 

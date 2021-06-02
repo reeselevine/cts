@@ -17,8 +17,12 @@ g.test('return_type')
 
     TODO: Test OffscreenCanvas made from transferControlToOffscreen.`
   )
-  .cases(pbool('offscreen'))
-  .subcases(() => poptions('attributes', [undefined, {}]))
+  .params2(u =>
+    u
+      .combine(pbool('offscreen'))
+      .beginSubcases()
+      .combine(poptions('attributes', [undefined, {}]))
+  )
   .fn(async t => {
     let canvas: HTMLCanvasElement | OffscreenCanvas;
     if (t.params.offscreen) {

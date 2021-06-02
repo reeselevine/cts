@@ -300,9 +300,10 @@ g.test('texture_format_equality')
   });
 
 g.test('depth_stencil_copy_restrictions')
-  .cases(poptions('format', kDepthStencilFormats))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('format', kDepthStencilFormats))
+      .beginSubcases()
       .combine(
         poptions('copyBoxOffsets', [
           { x: 0, y: 0, width: 0, height: 0 },
@@ -517,9 +518,10 @@ Test the validations on the member 'aspect' of GPUImageCopyTexture in CopyTextur
 - for all the stencil-only formats: the texture copy aspects must be either 'all' or 'stencil-only'.
 `
   )
-  .cases(poptions('format', ['rgba8unorm', ...kDepthStencilFormats] as const))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('format', ['rgba8unorm', ...kDepthStencilFormats] as const))
+      .beginSubcases()
       .combine(poptions('sourceAspect', ['all', 'depth-only', 'stencil-only'] as const))
       .combine(poptions('destinationAspect', ['all', 'depth-only', 'stencil-only'] as const))
   )
@@ -568,9 +570,10 @@ Test the validations on the member 'aspect' of GPUImageCopyTexture in CopyTextur
   });
 
 g.test('copy_ranges_with_compressed_texture_formats')
-  .cases(poptions('format', kCompressedTextureFormats))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('format', kCompressedTextureFormats))
+      .beginSubcases()
       .combine(
         poptions('copyBoxOffsets', [
           { x: 0, y: 0, z: 0, width: 0, height: 0, depthOrArrayLayers: -2 },

@@ -4,7 +4,7 @@ export const description = `
   TODO: Ensure sure tests cover all createBindGroup validation rules.
 `;
 
-import { poptions, params } from '../../../common/framework/params_builder.js';
+import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { unreachable } from '../../../common/framework/util/util.js';
 import {

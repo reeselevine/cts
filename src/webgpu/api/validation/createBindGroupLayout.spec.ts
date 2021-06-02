@@ -58,8 +58,12 @@ g.test('visibility')
     - Test each possible combination of shader stage visibilities.
     - Test each type of bind group resource.`
   )
-  .cases(poptions('visibility', kShaderStageCombinations))
-  .subcases(() => poptions('entry', allBindingEntries(false)))
+  .params2(u =>
+    u
+      .combineOptions('visibility', kShaderStageCombinations)
+      .beginSubcases()
+      .combineOptions('entry', allBindingEntries(false))
+  )
   .fn(async t => {
     const { visibility, entry } = t.params;
     const info = bindingTypeInfo(entry);
@@ -102,9 +106,10 @@ g.test('max_dynamic_buffers')
     - Test creation of a bind group layout using the maximum number of dynamic buffers + 1 fails.
     - TODO(#230): Update to enforce per-stage and per-pipeline-layout limits on BGLs as well.`
   )
-  .cases(poptions('type', kBufferBindingTypes))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('type', kBufferBindingTypes))
+      .beginSubcases()
       .combine(poptions('extraDynamicBuffers', [0, 1]))
       .combine(poptions('staticBuffers', [0, 1]))
   )
@@ -190,8 +195,12 @@ g.test('max_resources_per_stage,in_bind_group_layout')
     - Test that creation of a bind group layout using the maximum number of bindings + 1 fails.
     - TODO(#230): Update to enforce per-stage and per-pipeline-layout limits on BGLs as well.`
   )
-  .cases(poptions('maxedEntry', allBindingEntries(false)))
-  .subcases(cp => subcasesForMaxResourcesPerStageTests(cp))
+  .params2(u =>
+    u
+      .combine(poptions('maxedEntry', allBindingEntries(false)))
+      .beginSubcases()
+      .expand(subcasesForMaxResourcesPerStageTests)
+  )
   .fn(async t => {
     const { maxedEntry, extraEntry, maxedVisibility, extraVisibility } = t.params;
     const maxedTypeInfo = bindingTypeInfo(maxedEntry);
@@ -238,8 +247,12 @@ g.test('max_resources_per_stage,in_pipeline_layout')
     - Test that creation of a pipeline using the maximum number of bindings + 1 fails.
   `
   )
-  .cases(poptions('maxedEntry', allBindingEntries(false)))
-  .subcases(cp => subcasesForMaxResourcesPerStageTests(cp))
+  .params2(u =>
+    u
+      .combine(poptions('maxedEntry', allBindingEntries(false)))
+      .beginSubcases()
+      .expand(subcasesForMaxResourcesPerStageTests)
+  )
   .fn(async t => {
     const { maxedEntry, extraEntry, maxedVisibility, extraVisibility } = t.params;
     const maxedTypeInfo = bindingTypeInfo(maxedEntry);

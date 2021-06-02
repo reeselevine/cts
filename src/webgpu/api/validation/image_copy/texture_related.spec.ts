@@ -1,6 +1,6 @@
 export const description = '';
 
-import { params, poptions } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { assert } from '../../../../common/framework/util/util.js';
 import { kSizedTextureFormats, kSizedTextureFormatInfo } from '../../../capability_info.js';
@@ -57,13 +57,17 @@ g.test('valid')
 
 g.test('usage')
   .desc(`The texture must have the appropriate COPY_SRC/COPY_DST usage.`)
-  .cases(poptions('method', kImageCopyTypes))
-  .subcases(() =>
-    poptions('usage', [
-      GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.SAMPLED,
-      GPUConst.TextureUsage.COPY_DST | GPUConst.TextureUsage.SAMPLED,
-      GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.COPY_DST,
-    ])
+  .params2(u =>
+    u
+      .combine(poptions('method', kImageCopyTypes))
+      .beginSubcases()
+      .combine(
+        poptions('usage', [
+          GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.SAMPLED,
+          GPUConst.TextureUsage.COPY_DST | GPUConst.TextureUsage.SAMPLED,
+          GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.COPY_DST,
+        ])
+      )
   )
   .fn(async t => {
     const { usage, method } = t.params;
@@ -89,8 +93,12 @@ g.test('usage')
 
 g.test('sample_count')
   .desc(`Multisampled textures cannot be copied.`)
-  .cases(poptions('method', kImageCopyTypes))
-  .subcases(() => poptions('sampleCount', [1, 4]))
+  .params2(u =>
+    u
+      .combine(poptions('method', kImageCopyTypes))
+      .beginSubcases()
+      .combine(poptions('sampleCount', [1, 4]))
+  )
   .fn(async t => {
     const { sampleCount, method } = t.params;
 
@@ -113,9 +121,10 @@ g.test('sample_count')
 
 g.test('mip_level')
   .desc(`The mipLevel of the copy must be in range of the texture.`)
-  .cases(poptions('method', kImageCopyTypes))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('method', kImageCopyTypes))
+      .beginSubcases()
       .combine(poptions('mipLevelCount', [3, 5]))
       .combine(poptions('mipLevel', [3, 4]))
   )
@@ -182,9 +191,10 @@ g.test('origin_alignment')
 
 g.test('1d')
   .desc(`1d texture copies must have height=depth=1.`)
-  .cases(poptions('method', kImageCopyTypes))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('method', kImageCopyTypes))
+      .beginSubcases()
       .combine(poptions('width', [0, 1]))
       .combine([
         { height: 1, depthOrArrayLayers: 1 },
@@ -263,9 +273,10 @@ g.test('size_alignment')
 
 g.test('copy_rectangle')
   .desc(`The max corner of the copy rectangle (origin+copySize) must be inside the texture.`)
-  .cases(poptions('method', kImageCopyTypes))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('method', kImageCopyTypes))
+      .beginSubcases()
       .combine(poptions('originValue', [7, 8]))
       .combine(poptions('copySizeValue', [7, 8]))
       .combine(poptions('textureSizeValue', [14, 15]))

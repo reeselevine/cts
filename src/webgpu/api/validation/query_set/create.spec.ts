@@ -17,8 +17,12 @@ Tests that create query set with the count for all query types:
 - x= {occlusion, pipeline-statistics, timestamp} query
   `
   )
-  .cases(poptions('type', kQueryTypes))
-  .subcases(() => poptions('count', [0, kMaxQueryCount, kMaxQueryCount + 1]))
+  .params2(u =>
+    u
+      .combine(poptions('type', kQueryTypes))
+      .beginSubcases()
+      .combine(poptions('count', [0, kMaxQueryCount, kMaxQueryCount + 1]))
+  )
   .fn(async t => {
     const { type, count } = t.params;
 
@@ -41,9 +45,13 @@ Tests that create query set with the GPUPipelineStatisticName for all query type
 - x= {occlusion, pipeline-statistics, timestamp} query
   `
   )
-  .cases(poptions('type', kQueryTypes))
-  .subcases(() =>
-    poptions('pipelineStatistics', [undefined, [] as const, ['clipper-invocations'] as const])
+  .params2(u =>
+    u
+      .combine(poptions('type', kQueryTypes))
+      .beginSubcases()
+      .combine(
+        poptions('pipelineStatistics', [undefined, [] as const, ['clipper-invocations'] as const])
+      )
   )
   .fn(async t => {
     const { type, pipelineStatistics } = t.params;

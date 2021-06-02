@@ -2,7 +2,7 @@ export const description = `
 Test related to depth buffer, depth op, compare func, etc.
 `;
 
-import { pbool, poptions } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { kDepthStencilFormats } from '../../../capability_info.js';
 import { GPUTest } from '../../../gpu_test.js';

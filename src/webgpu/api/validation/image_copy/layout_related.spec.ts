@@ -1,6 +1,6 @@
 export const description = '';
 
-import { params, poptions } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import {
   kUncompressedTextureFormatInfo,
@@ -25,9 +25,10 @@ import {
 export const g = makeTestGroup(ImageCopyTest);
 
 g.test('bound_on_rows_per_image')
-  .cases(poptions('method', kImageCopyTypes))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('method', kImageCopyTypes))
+      .beginSubcases()
       .combine(poptions('rowsPerImage', [undefined, 0, 1, 2, 1024]))
       .combine(poptions('copyHeightInBlocks', [0, 1, 2]))
       .combine(poptions('copyDepth', [1, 3]))
@@ -62,11 +63,15 @@ g.test('bound_on_rows_per_image')
 
 g.test('copy_end_overflows_u64')
   .desc(`Test what happens when offset+requiredBytesInCopy overflows GPUSize64.`)
-  .cases(poptions('method', kImageCopyTypes))
-  .subcases(() => [
-    { bytesPerRow: 2 ** 31, rowsPerImage: 2 ** 31, depthOrArrayLayers: 1, _success: true }, // success case
-    { bytesPerRow: 2 ** 31, rowsPerImage: 2 ** 31, depthOrArrayLayers: 16, _success: false }, // bytesPerRow * rowsPerImage * (depthOrArrayLayers - 1) overflows.
-  ])
+  .params2(u =>
+    u
+      .combine(poptions('method', kImageCopyTypes))
+      .beginSubcases()
+      .combine([
+        { bytesPerRow: 2 ** 31, rowsPerImage: 2 ** 31, depthOrArrayLayers: 1, _success: true }, // success case
+        { bytesPerRow: 2 ** 31, rowsPerImage: 2 ** 31, depthOrArrayLayers: 16, _success: false }, // bytesPerRow * rowsPerImage * (depthOrArrayLayers - 1) overflows.
+      ])
+  )
   .fn(async t => {
     const { method, bytesPerRow, rowsPerImage, depthOrArrayLayers, _success } = t.params;
 
@@ -286,9 +291,10 @@ g.test('bound_on_bytes_per_row')
   });
 
 g.test('bound_on_offset')
-  .cases(poptions('method', kImageCopyTypes))
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .combine(poptions('method', kImageCopyTypes))
+      .beginSubcases()
       .combine(poptions('offsetInBlocks', [0, 1, 2]))
       .combine(poptions('dataSizeInBlocks', [0, 1, 2]))
   )

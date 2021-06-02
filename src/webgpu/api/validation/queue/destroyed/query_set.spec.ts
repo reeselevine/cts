@@ -38,8 +38,12 @@ Tests that use a destroyed query set in writeTimestamp on {non-pass, compute, re
 - x= {destroyed, not destroyed (control case)}
   `
   )
-  .cases(poptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const))
-  .subcases(() => poptions('querySetState', ['valid', 'destroyed'] as const))
+  .params2(u =>
+    u
+      .combine(poptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const))
+      .beginSubcases()
+      .combine(poptions('querySetState', ['valid', 'destroyed'] as const))
+  )
   .fn(async t => {
     await t.selectDeviceOrSkipTestCase('timestamp-query');
 

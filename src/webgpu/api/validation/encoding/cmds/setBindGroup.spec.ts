@@ -139,7 +139,7 @@ g.test('state_and_binding_index')
 
 g.test('dynamic_offsets_passed_but_not_expected')
   .desc('Tests that setBindGroup correctly errors on unexpected dynamicOffsets.')
-  .cases(poptions('encoderType', kProgrammableEncoderTypes))
+  .params2(u => u.combineOptions('encoderType', kProgrammableEncoderTypes))
   .fn(async t => {
     const { encoderType } = t.params;
     const bindGroup = t.createBindGroup('valid', 'buffer', encoderType, []);
