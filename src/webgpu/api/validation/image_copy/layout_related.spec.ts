@@ -96,14 +96,12 @@ g.test('required_bytes_in_copy')
   - requiredBytesInCopy - 1 should fail.
   `
   )
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('method', kImageCopyTypes))
       .combine(poptions('format', kSizedTextureFormats))
       .filter(formatCopyableWithMethod)
-  )
-  .subcases(() =>
-    params()
+      .beginSubcases()
       .combine([
         { bytesPerRowPadding: 0, rowsPerImagePaddingInBlocks: 0 }, // no padding
         { bytesPerRowPadding: 0, rowsPerImagePaddingInBlocks: 6 }, // rowsPerImage padding
@@ -173,13 +171,14 @@ g.test('required_bytes_in_copy')
 
 g.test('rows_per_image_alignment')
   .desc(`rowsPerImage is measured in multiples of block height, so has no alignment constraints.`)
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('method', kImageCopyTypes))
       .combine(poptions('format', kSizedTextureFormats))
       .filter(formatCopyableWithMethod)
+      .beginSubcases()
+      .expand(texelBlockAlignmentTestExpanderForRowsPerImage)
   )
-  .subcases(texelBlockAlignmentTestExpanderForRowsPerImage)
   .fn(async t => {
     const { rowsPerImage, format, method } = t.params;
     const info = kSizedTextureFormatInfo[format];
@@ -197,13 +196,14 @@ g.test('rows_per_image_alignment')
   });
 
 g.test('texel_block_alignment_on_offset')
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('method', kImageCopyTypes))
       .combine(poptions('format', kSizedTextureFormats))
       .filter(formatCopyableWithMethod)
+      .beginSubcases()
+      .expand(texelBlockAlignmentTestExpanderForOffset)
   )
-  .subcases(texelBlockAlignmentTestExpanderForOffset)
   .fn(async t => {
     const { format, offset, method } = t.params;
     const info = kSizedTextureFormatInfo[format];
@@ -220,14 +220,12 @@ g.test('texel_block_alignment_on_offset')
   });
 
 g.test('bound_on_bytes_per_row')
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('method', kImageCopyTypes))
       .combine(poptions('format', kSizedTextureFormats))
       .filter(formatCopyableWithMethod)
-  )
-  .subcases(() =>
-    params()
+      .beginSubcases()
       .combine([
         { blocksPerRow: 2, additionalPaddingPerRow: 0, copyWidthInBlocks: 2 }, // success
         { blocksPerRow: 2, additionalPaddingPerRow: 5, copyWidthInBlocks: 3 }, // success if bytesPerBlock <= 5

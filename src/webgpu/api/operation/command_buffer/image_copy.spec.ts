@@ -647,14 +647,12 @@ bytes in copy works for every format.
     bytesPerRow == bytesInACompleteCopyImage
   `
   )
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(kMethodsToTest)
       .combine(poptions('format', kWorkingTextureFormats))
       .filter(formatCanBeTested)
-  )
-  .subcases(() =>
-    params()
+      .beginSubcases()
       .combine([
         { bytesPerRowPadding: 0, rowsPerImagePadding: 0 }, // no padding
         { bytesPerRowPadding: 0, rowsPerImagePadding: 6 }, // rowsPerImage padding
@@ -745,15 +743,13 @@ works for every format with 2d and 2d-array textures.
     offset > bytesInACompleteCopyImage
 `
   )
-  .cases(
-    params()
-      .combine(kMethodsToTest)
-      .combine(poptions('format', kWorkingTextureFormats))
-      .filter(formatCanBeTested)
-  )
-  .subcases(
-    () =>
-      params()
+  .params2(
+    u =>
+      u
+        .combine(kMethodsToTest)
+        .combine(poptions('format', kWorkingTextureFormats))
+        .filter(formatCanBeTested)
+        .beginSubcases()
         .combine([
           { offsetInBlocks: 0, dataPaddingInBytes: 0 }, // no offset and no padding
           { offsetInBlocks: 1, dataPaddingInBytes: 0 }, // offset = 1
@@ -816,14 +812,12 @@ g.test('origins_and_extents')
     `Test that copying slices of a texture works with various origin and copyExtent values
 for all formats. We pass origin and copyExtent as [number, number, number].`
   )
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(kMethodsToTest)
       .combine(poptions('format', kWorkingTextureFormats))
       .filter(formatCanBeTested)
-  )
-  .subcases(() =>
-    params()
+      .beginSubcases()
       .combine(poptions('originValueInBlocks', [0, 7, 8]))
       .combine(poptions('copySizeValueInBlocks', [0, 7, 8]))
       .combine(poptions('textureSizePaddingValueInBlocks', [0, 7, 8]))
@@ -965,14 +959,12 @@ g.test('mip_levels')
   - bufferSize - offset < bytesPerImage * copyExtent.depthOrArrayLayers, and copyExtent needs to be clamped for all block formats.
   `
   )
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(kMethodsToTest)
       .combine(poptions('format', kWorkingTextureFormats))
       .filter(formatCanBeTested)
-  )
-  .subcases(p =>
-    params()
+      .beginSubcases()
       .combine([
         // origin + copySize = texturePhysicalSizeAtMipLevel for all coordinates, 2d texture */
         {
@@ -1017,9 +1009,7 @@ g.test('mip_levels')
           mipLevel: 6,
         },
       ])
-      .expand(({ mipLevel, _mipSizeInBlocks }) =>
-        generateTestTextureSizes({ mipLevel, _mipSizeInBlocks, format: p.format })
-      )
+      .expand(generateTestTextureSizes)
   )
   .fn(async t => {
     const {

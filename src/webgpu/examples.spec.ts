@@ -4,7 +4,6 @@ Examples of writing CTS tests with various features.
 Start here when looking for examples of basic framework usage.
 `;
 
-import { params, pbool, poptions } from '../common/framework/params_builder.js';
 import { makeTestGroup } from '../common/framework/test_group.js';
 
 import { GPUTest } from './gpu_test.js';
@@ -130,9 +129,9 @@ g.test('basic,subcases')
 // { x: 3, y: 2 }
 // { x: 3, z: 3 }
 g.test('basic,params_builder')
-  .cases(
-    params()
-      .combine(poptions('x', [2, 3]))
+  .params2(u =>
+    u //
+      .combineOptions('x', [2, 3])
       .combine([{ y: 2 }, { z: 3 }])
   )
   .fn(() => {});
@@ -164,7 +163,10 @@ g.test('gpu,with_texture_compression,bc')
     `Example of a test using a device descriptor.
 Tests that a BC format passes validation iff the feature is enabled.`
   )
-  .cases(pbool('textureCompressionBC'))
+  .params2(u =>
+    u //
+      .combineBoolean('textureCompressionBC')
+  )
   .fn(async t => {
     const { textureCompressionBC } = t.params;
 
@@ -192,7 +194,10 @@ g.test('gpu,with_texture_compression,etc')
 
 TODO: Test that an ETC format passes validation iff the feature is enabled.`
   )
-  .cases(pbool('textureCompressionETC'))
+  .params2(u =>
+    u //
+      .combineBoolean('textureCompressionETC')
+  )
   .fn(async t => {
     const { textureCompressionETC } = t.params;
 

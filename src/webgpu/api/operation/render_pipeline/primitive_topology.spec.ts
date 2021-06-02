@@ -55,7 +55,7 @@ Test locations are framebuffer coordinates:
                                                                 and {v3, v4, v5}.
 `;
 
-import { params, pbool, poptions } from '../../../../common/framework/params_builder.js';
+import { pbool, poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { GPUTest } from '../../../gpu_test.js';
 
@@ -445,8 +445,8 @@ g.test('basic')
     - primitiveRestart= { true, false } - always false for non-strip topologies
   `
   )
-  .cases(
-    params() //
+  .params2(u =>
+    u //
       .combine(poptions('topology', topologies))
       .combine(pbool('indirect'))
       .combine(pbool('primitiveRestart'))
@@ -472,8 +472,8 @@ g.test('unaligned_vertex_count')
                    One smaller for line-list. One or two smaller for triangle-list.
     `
   )
-  .cases(
-    params() //
+  .params2(u =>
+    u //
       .combine(poptions('topology', ['line-list', 'triangle-list'] as const))
       .combine(pbool('indirect'))
       .expand(function* (p) {

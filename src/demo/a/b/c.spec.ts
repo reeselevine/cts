@@ -1,6 +1,6 @@
 export const description = 'Description for c.spec.ts';
 
-import { params, poptions } from '../../../common/framework/params_builder.js';
+import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { unreachable } from '../../../common/framework/util/util.js';
 import { UnitTest } from '../../../unittests/unit_test.js';
@@ -26,8 +26,8 @@ g.test('case_depth_2_in_single_child_test')
   .fn(() => {});
 
 g.test('deep_case_tree')
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('x', [1, 2]))
       .combine(poptions('y', [1, 2]))
       .combine(poptions('z', [1, 2]))

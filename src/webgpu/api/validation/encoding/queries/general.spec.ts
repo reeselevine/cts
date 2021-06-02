@@ -7,7 +7,7 @@ TODO:
     - x ={render pass, compute pass} encoder
 `;
 
-import { params, poptions } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { kQueryTypes } from '../../../../capability_info.js';
 import { ValidationTest } from '../../validation_test.js';
@@ -91,12 +91,13 @@ Tests that write timestamp to all types of query set on all possible encoders:
 - x= {non-pass, compute, render} encoder
   `
   )
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const))
       .combine(poptions('type', kQueryTypes))
+      .beginSubcases()
+      .expand(({ type }) => poptions('queryIndex', type === 'timestamp' ? [0, 2] : [0]))
   )
-  .subcases(({ type }) => poptions('queryIndex', type === 'timestamp' ? [0, 2] : [0]))
   .fn(async t => {
     const { encoderType, type, queryIndex } = t.params;
 

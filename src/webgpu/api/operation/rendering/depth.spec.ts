@@ -2,7 +2,7 @@ export const description = `
 Test related to depth buffer, depth op, compare func, etc.
 `;
 
-import { pbool, params, poptions } from '../../../../common/framework/params_builder.js';
+import { pbool, poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { kDepthStencilFormats } from '../../../capability_info.js';
 import { GPUTest } from '../../../gpu_test.js';
@@ -28,8 +28,8 @@ g.test('depth_compare_func')
   .desc(
     `Tests each depth compare function works properly. Clears the depth attachment to various values, and renders a point at depth 0.5 with various depthCompare modes.`
   )
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(
         poptions(
           'format',

@@ -731,8 +731,8 @@ g.test('shader_stages_and_visibility')
 // call site upon the same index in the same render pass. However, replaced bindings in compute
 // should not be validated.
 g.test('replaced_binding')
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(pbool('compute'))
       .combine(pbool('callDrawOrDispatch'))
       .combine(

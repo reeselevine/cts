@@ -515,8 +515,8 @@ g.test('vertex_attribute_offset_alignment')
     - Test for various vertex buffer indices
     - Test for various amounts of attributes in that vertex buffer`
   )
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('format', kVertexFormats))
       .combine(poptions('arrayStride', [256, kMaxVertexBufferArrayStride]))
       .expand(p => {
@@ -535,9 +535,7 @@ g.test('vertex_attribute_offset_alignment')
           ])
         );
       })
-  )
-  .subcases(() =>
-    params()
+      .beginSubcases()
       .combine(poptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1]))
       .combine(poptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1]))
       .combine(pbool('testAttributeAtStart'))

@@ -12,7 +12,7 @@ TODO:
   - mode= {draw, drawIndexed}
 `;
 
-import { params, pbool, poptions } from '../../../../common/framework/params_builder.js';
+import { pbool, poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { assert } from '../../../../common/framework/util/util.js';
 import {
@@ -46,8 +46,8 @@ Params:
   - base_vertex= {0, 9} - only for indexed draws
   `
   )
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('first', [0, 3] as const))
       .combine(poptions('count', [0, 3, 6] as const))
       .combine(poptions('first_instance', [0, 2] as const))
@@ -337,8 +337,8 @@ g.test('vertex_attributes,basic')
   - step_mode= {undefined, vertex, instance, mixed} - where mixed only applies for vertex_buffer_count > 1
   `
   )
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('vertex_attribute_count', [1, 4, 8, 16]))
       .combine(poptions('vertex_buffer_count', [1, 4, 8]))
       .combine(poptions('vertex_format', ['uint32', 'float32'] as const))

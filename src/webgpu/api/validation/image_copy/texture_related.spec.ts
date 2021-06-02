@@ -18,8 +18,8 @@ export const g = makeTestGroup(ImageCopyTest);
 
 g.test('valid')
   .desc(`The texture must be valid and not destroyed.`)
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('method', kImageCopyTypes))
       .combine(poptions('textureState', ['valid', 'destroyed', 'error']))
   )
@@ -141,18 +141,14 @@ g.test('mip_level')
 
 g.test('origin_alignment')
   .desc(`Copy origin must be aligned to block size.`)
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('method', kImageCopyTypes))
       .combine(poptions('format', kSizedTextureFormats))
       .filter(formatCopyableWithMethod)
-  )
-  .subcases(p =>
-    params()
+      .beginSubcases()
       .combine(poptions('coordinateToTest', ['x', 'y', 'z'] as const))
-      .expand(({ coordinateToTest }) =>
-        texelBlockAlignmentTestExpanderForValueToCoordinate({ format: p.format, coordinateToTest })
-      )
+      .expand(texelBlockAlignmentTestExpanderForValueToCoordinate)
   )
   .fn(async t => {
     const { valueToCoordinate, coordinateToTest, format, method } = t.params;
@@ -222,18 +218,14 @@ g.test('1d')
 
 g.test('size_alignment')
   .desc(`Copy size must be aligned to block size.`)
-  .cases(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('method', kImageCopyTypes))
       .combine(poptions('format', kSizedTextureFormats))
       .filter(formatCopyableWithMethod)
-  )
-  .subcases(p =>
-    params()
+      .beginSubcases()
       .combine(poptions('coordinateToTest', ['width', 'height', 'depthOrArrayLayers'] as const))
-      .expand(({ coordinateToTest }) =>
-        texelBlockAlignmentTestExpanderForValueToCoordinate({ format: p.format, coordinateToTest })
-      )
+      .expand(texelBlockAlignmentTestExpanderForValueToCoordinate)
   )
   .fn(async t => {
     const { valueToCoordinate, coordinateToTest, format, method } = t.params;
