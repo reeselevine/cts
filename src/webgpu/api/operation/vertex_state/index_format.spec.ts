@@ -2,7 +2,7 @@ export const description = `
 Test indexing, index format and primitive restart.
 `;
 
-import { params, poptions } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { GPUTest } from '../../../gpu_test.js';
 import { getTextureCopyLayout } from '../../../util/texture/layout.js';
@@ -183,11 +183,13 @@ export const g = makeTestGroup(IndexFormatTest);
 
 g.test('index_format,uint16')
   .desc('Test rendering result of indexed draw with index format of uint16.')
-  .params([
-    { indexOffset: 0, _expectedShape: kSquare },
-    { indexOffset: 6, _expectedShape: kBottomLeftTriangle },
-    { indexOffset: 18, _expectedShape: kNothing },
-  ])
+  .params2(u =>
+    u.beginSubcases().combine([
+      { indexOffset: 0, _expectedShape: kSquare },
+      { indexOffset: 6, _expectedShape: kBottomLeftTriangle },
+      { indexOffset: 18, _expectedShape: kNothing },
+    ])
+  )
   .fn(t => {
     const { indexOffset, _expectedShape } = t.params;
 
@@ -205,11 +207,13 @@ g.test('index_format,uint16')
 
 g.test('index_format,uint32')
   .desc('Test rendering result of indexed draw with index format of uint32.')
-  .params([
-    { indexOffset: 0, _expectedShape: kSquare },
-    { indexOffset: 12, _expectedShape: kBottomLeftTriangle },
-    { indexOffset: 36, _expectedShape: kNothing },
-  ])
+  .params2(u =>
+    u.beginSubcases().combine([
+      { indexOffset: 0, _expectedShape: kSquare },
+      { indexOffset: 12, _expectedShape: kBottomLeftTriangle },
+      { indexOffset: 36, _expectedShape: kNothing },
+    ])
+  )
   .fn(t => {
     const { indexOffset, _expectedShape } = t.params;
 
@@ -316,8 +320,8 @@ is different from what you would get if the topology were incorrect.
         |########|
 `
   )
-  .params(
-    params()
+  .params2(u =>
+    u //
       .combine(poptions('indexFormat', ['uint16', 'uint32'] as const))
       .combine([
         {

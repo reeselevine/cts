@@ -30,7 +30,7 @@ Test various validation behaviors when a resolveTarget is provided.
 - resolve source and target have different sizes.
 `
   )
-  .params([
+  .params2([
     // control case should be valid
     { _valid: true },
     // a single sampled resolve source should cause a validation error.

@@ -18,7 +18,7 @@ Use 2 triangles with different winding orders:
   - Some primitive topologies (triangle-list, TODO: triangle-strip)
 `;
 
-import { poptions, params } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { GPUTest } from '../../../gpu_test.js';
 
@@ -41,10 +41,11 @@ function faceColor(face: 'cw' | 'ccw', frontFace: GPUFrontFace, cullMode: GPUCul
 export const g = makeTestGroup(GPUTest);
 
 g.test('culling')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('frontFace', ['ccw', 'cw'] as const))
       .combine(poptions('cullMode', ['none', 'front', 'back'] as const))
+      .beginSubcases()
       .combine(
         poptions('depthStencilFormat', [
           null,

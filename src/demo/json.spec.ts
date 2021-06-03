@@ -6,5 +6,5 @@ import { UnitTest } from '../unittests/unit_test.js';
 export const g = makeTestGroup(UnitTest);
 
 g.test('json')
-  .params([{ p: { x: 1, y: 'two' } }])
+  .params2([{ p: { x: 1, y: 'two' } }])
   .fn(() => {});

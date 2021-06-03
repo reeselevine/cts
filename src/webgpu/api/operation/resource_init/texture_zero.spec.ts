@@ -12,10 +12,10 @@ TODO:
 
 import { TestCaseRecorder } from '../../../../common/framework/logging/test_case_recorder.js';
 import {
-  params,
   poptions,
   pbool,
-  ParamsBuilder,
+  kUnitCaseParamsBuilder,
+  ParamTypeOf,
 } from '../../../../common/framework/params_builder.js';
 import { TestParams } from '../../../../common/framework/params_utils.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
@@ -197,10 +197,10 @@ function getRequiredTextureUsage(
 export class TextureZeroInitTest extends GPUTest {
   readonly stateToTexelComponents: { [k in InitializedState]: PerTexelComponent<number> };
 
-  private p: Params;
+  private p: TextureZeroParams;
   constructor(rec: TestCaseRecorder, params: TestParams) {
     super(rec, params);
-    this.p = params as Params;
+    this.p = params as TextureZeroParams;
 
     const stateToTexelComponents = (state: InitializedState) => {
       const [R, G, B, A] = initializedStateAsColor(state, this.p.format);
@@ -438,7 +438,7 @@ export class TextureZeroInitTest extends GPUTest {
   }
 }
 
-const paramsBuilder = params()
+const kTestParams = kUnitCaseParamsBuilder
   .combine(
     poptions('readMethod', [
       ReadMethod.CopyToBuffer,
@@ -449,7 +449,19 @@ const paramsBuilder = params()
     ])
   )
   .combine(poptions('format', kUncompressedTextureFormats))
+  .combine(poptions('uninitializeMethod', kUninitializeMethods))
+  .beginSubcases()
   .combine(poptions('aspect', kTextureAspects))
+  .combine(pbool('nonPowerOfTwo'))
+  .combine(pbool('canaryOnCreation'))
+  .filter(({ canaryOnCreation, format }) => {
+    // We can only initialize the texture if it's encodable or renderable.
+    const canInitialize =
+      format in kEncodableTextureFormatInfo || kAllTextureFormatInfo[format].renderable;
+
+    // Filter out cases where we want canary values but can't initialize.
+    return !canaryOnCreation || canInitialize;
+  })
   .unless(({ readMethod, format, aspect }) => {
     const info = kUncompressedTextureFormatInfo[format];
     // console.log(readMethod, format, aspect, info.depth, info.stencil);
@@ -478,10 +490,6 @@ const paramsBuilder = params()
   )
   // Multisampled textures may only have one mip
   .unless(({ sampleCount, mipLevelCount }) => sampleCount > 1 && mipLevelCount > 1)
-  .combine(poptions('uninitializeMethod', kUninitializeMethods))
-  .combine(kCreationSizes)
-  // Multisampled 3D / 2D array textures not supported.
-  .unless(({ sampleCount, sliceCount }) => sampleCount > 1 && sliceCount > 1)
   .unless(({ format, sampleCount, uninitializeMethod, readMethod }) => {
     const usage = getRequiredTextureUsage(format, sampleCount, uninitializeMethod, readMethod);
     const info = kUncompressedTextureFormatInfo[format];
@@ -491,22 +499,15 @@ const paramsBuilder = params()
       ((usage & GPUConst.TextureUsage.STORAGE) !== 0 && !info.storage)
     );
   })
-  .combine(pbool('nonPowerOfTwo'))
-  .combine(pbool('canaryOnCreation'))
-  .filter(({ canaryOnCreation, format }) => {
-    // We can only initialize the texture if it's encodable or renderable.
-    const canInitialize =
-      format in kEncodableTextureFormatInfo || kAllTextureFormatInfo[format].renderable;
+  .combine(kCreationSizes)
+  // Multisampled 3D / 2D array textures not supported.
+  .unless(({ sampleCount, sliceCount }) => sampleCount > 1 && sliceCount > 1);
 
-    // Filter out cases where we want canary values but can't initialize.
-    return !canaryOnCreation || canInitialize;
-  });
-
-export type Params = typeof paramsBuilder extends ParamsBuilder<infer I> ? I : never;
+type TextureZeroParams = ParamTypeOf<typeof kTestParams>;
 
 export type CheckContents = (
   t: TextureZeroInitTest,
-  params: Params,
+  params: TextureZeroParams,
   texture: GPUTexture,
   state: InitializedState,
   subresourceRange: SubresourceRange
@@ -532,7 +533,7 @@ const checkContentsImpl: { [k in ReadMethod]: CheckContents } = {
 export const g = makeTestGroup(TextureZeroInitTest);
 
 g.test('uninitialized_texture_is_zero')
-  .params(paramsBuilder)
+  .params2(kTestParams)
   .fn(async t => {
     await t.selectDeviceOrSkipTestCase(kUncompressedTextureFormatInfo[t.params.format].feature);
 

@@ -36,7 +36,7 @@ Test Plan: (TODO(jiawei.shao@intel.com): add tests on 1D/3D textures)
     texture subresources.
 `;
 
-import { poptions, params } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import {
   kAllTextureFormatInfo,
@@ -152,8 +152,8 @@ g.test('mipmap_level')
   });
 
 g.test('texture_usage')
-  .params(
-    params()
+  .subcases2(u =>
+    u //
       .combine(poptions('srcUsage', kTextureUsages))
       .combine(poptions('dstUsage', kTextureUsages))
   )
@@ -183,8 +183,8 @@ g.test('texture_usage')
   });
 
 g.test('sample_count')
-  .params(
-    params()
+  .subcases2(u =>
+    u //
       .combine(poptions('srcSampleCount', [1, 4]))
       .combine(poptions('dstSampleCount', [1, 4]))
   )

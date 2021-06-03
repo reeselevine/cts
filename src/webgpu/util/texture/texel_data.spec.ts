@@ -1,6 +1,6 @@
 export const description = 'Test helpers for texel data produce the expected data in the shader';
 
-import { params, poptions } from '../../../common/framework/params_builder.js';
+import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { assert } from '../../../common/framework/util/util.js';
 import {
@@ -137,8 +137,8 @@ function makeParam(
 }
 
 g.test('unorm_texel_data_in_shader')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('format', kEncodableTextureFormats))
       .filter(({ format }) => {
         return (
@@ -147,6 +147,7 @@ g.test('unorm_texel_data_in_shader')
           getSingleDataType(format) === 'unorm'
         );
       })
+      .beginSubcases()
       .expand(({ format }) => {
         const max = (bitLength: number) => Math.pow(2, bitLength) - 1;
         return [
@@ -168,8 +169,8 @@ g.test('unorm_texel_data_in_shader')
   .fn(doTest);
 
 g.test('snorm_texel_data_in_shader')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('format', kEncodableTextureFormats))
       .filter(({ format }) => {
         return (
@@ -178,6 +179,7 @@ g.test('snorm_texel_data_in_shader')
           getSingleDataType(format) === 'snorm'
         );
       })
+      .beginSubcases()
       .expand(({ format }) => {
         const max = (bitLength: number) => Math.pow(2, bitLength - 1) - 1;
         return [
@@ -202,8 +204,8 @@ g.test('snorm_texel_data_in_shader')
   .fn(doTest);
 
 g.test('uint_texel_data_in_shader')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('format', kEncodableTextureFormats))
       .filter(({ format }) => {
         return (
@@ -212,6 +214,7 @@ g.test('uint_texel_data_in_shader')
           getSingleDataType(format) === 'uint'
         );
       })
+      .beginSubcases()
       .expand(({ format }) => {
         const max = (bitLength: number) => Math.pow(2, bitLength) - 1;
         return [
@@ -233,8 +236,8 @@ g.test('uint_texel_data_in_shader')
   .fn(doTest);
 
 g.test('sint_texel_data_in_shader')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('format', kEncodableTextureFormats))
       .filter(({ format }) => {
         return (
@@ -243,6 +246,7 @@ g.test('sint_texel_data_in_shader')
           getSingleDataType(format) === 'sint'
         );
       })
+      .beginSubcases()
       .expand(({ format }) => {
         const max = (bitLength: number) => Math.pow(2, bitLength - 1) - 1;
         return [
@@ -266,8 +270,8 @@ g.test('sint_texel_data_in_shader')
   .fn(doTest);
 
 g.test('float_texel_data_in_shader')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('format', kEncodableTextureFormats))
       .filter(({ format }) => {
         return (
@@ -276,6 +280,7 @@ g.test('float_texel_data_in_shader')
           getSingleDataType(format) === 'float'
         );
       })
+      .beginSubcases()
       .expand(({ format }) => {
         return [
           // Test extrema
@@ -301,8 +306,8 @@ g.test('float_texel_data_in_shader')
   .fn(doTest);
 
 g.test('ufloat_texel_data_in_shader')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('format', kEncodableTextureFormats))
       .filter(({ format }) => {
         return (
@@ -311,6 +316,7 @@ g.test('ufloat_texel_data_in_shader')
           getSingleDataType(format) === 'ufloat'
         );
       })
+      .beginSubcases()
       .expand(({ format }) => {
         return [
           // Test extrema

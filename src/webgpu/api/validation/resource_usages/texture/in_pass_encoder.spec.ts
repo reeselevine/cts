@@ -42,7 +42,7 @@ Test Coverage:
       dispatch call in compute.
 `;
 
-import { pbool, poptions, params } from '../../../../../common/framework/params_builder.js';
+import { pbool, poptions } from '../../../../../common/framework/params_builder.js';
 import { pp } from '../../../../../common/framework/preprocessor.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { assert } from '../../../../../common/framework/util/util.js';
@@ -231,11 +231,37 @@ const SLICE_COUNT = 2;
 
 // For all tests below, we test compute pass if 'compute' is true, and test render pass otherwise.
 g.test('subresources_and_binding_types_combination_for_color')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(pbool('compute'))
+      .combine([
+        { _usageOK: true, type0: 'sampled-texture', type1: 'sampled-texture' },
+        { _usageOK: true, type0: 'sampled-texture', type1: 'readonly-storage-texture' },
+        { _usageOK: false, type0: 'sampled-texture', type1: 'writeonly-storage-texture' },
+        { _usageOK: false, type0: 'sampled-texture', type1: 'render-target' },
+        { _usageOK: true, type0: 'readonly-storage-texture', type1: 'readonly-storage-texture' },
+        { _usageOK: false, type0: 'readonly-storage-texture', type1: 'writeonly-storage-texture' },
+        { _usageOK: false, type0: 'readonly-storage-texture', type1: 'render-target' },
+        // Race condition upon multiple writable storage texture is valid.
+        { _usageOK: true, type0: 'writeonly-storage-texture', type1: 'writeonly-storage-texture' },
+        { _usageOK: false, type0: 'writeonly-storage-texture', type1: 'render-target' },
+        { _usageOK: false, type0: 'render-target', type1: 'render-target' },
+      ] as const)
+      .beginSubcases()
       .combine(pbool('binding0InBundle'))
       .combine(pbool('binding1InBundle'))
+      .unless(
+        p =>
+          // We can't set 'render-target' in bundle, so we need to exclude it from bundle.
+          (p.binding0InBundle && p.type0 === 'render-target') ||
+          (p.binding1InBundle && p.type1 === 'render-target') ||
+          // We can't set 'render-target' or bundle in compute.
+          (p.compute &&
+            (p.binding0InBundle ||
+              p.binding1InBundle ||
+              p.type0 === 'render-target' ||
+              p.type1 === 'render-target'))
+      )
       .combine([
         // Two texture usages are binding to the same texture subresource.
         {
@@ -369,44 +395,15 @@ g.test('subresources_and_binding_types_combination_for_color')
           _resourceSuccess: false,
         },
       ])
-      .combine([
-        { _usageOK: true, type0: 'sampled-texture', type1: 'sampled-texture' },
-        { _usageOK: true, type0: 'sampled-texture', type1: 'readonly-storage-texture' },
-        { _usageOK: false, type0: 'sampled-texture', type1: 'writeonly-storage-texture' },
-        { _usageOK: false, type0: 'sampled-texture', type1: 'render-target' },
-        { _usageOK: true, type0: 'readonly-storage-texture', type1: 'readonly-storage-texture' },
-        { _usageOK: false, type0: 'readonly-storage-texture', type1: 'writeonly-storage-texture' },
-        { _usageOK: false, type0: 'readonly-storage-texture', type1: 'render-target' },
-        // Race condition upon multiple writable storage texture is valid.
-        { _usageOK: true, type0: 'writeonly-storage-texture', type1: 'writeonly-storage-texture' },
-        { _usageOK: false, type0: 'writeonly-storage-texture', type1: 'render-target' },
-        { _usageOK: false, type0: 'render-target', type1: 'render-target' },
-      ] as const)
-      // Every color attachment can use only one single subresource.
       .unless(
         p =>
+          // Every color attachment can use only one single subresource.
           (p.type0 === 'render-target' && (p.levelCount0 !== 1 || p.layerCount0 !== 1)) ||
-          (p.type1 === 'render-target' && (p.levelCount1 !== 1 || p.layerCount1 !== 1))
-      )
-      // All color attachments' size should be the same.
-      .unless(
-        p =>
-          p.type0 === 'render-target' && p.type1 === 'render-target' && p.baseLevel1 !== BASE_LEVEL
-      )
-      .unless(
-        p =>
-          // We can't set 'render-target' in bundle, so we need to exclude it from bundle.
-          (p.binding0InBundle && p.type0 === 'render-target') ||
-          (p.binding1InBundle && p.type1 === 'render-target')
-      )
-      .unless(
-        p =>
-          // We can't set 'render-target' or bundle in compute.
-          p.compute &&
-          (p.binding0InBundle ||
-            p.binding1InBundle ||
-            p.type0 === 'render-target' ||
-            p.type1 === 'render-target')
+          (p.type1 === 'render-target' && (p.levelCount1 !== 1 || p.layerCount1 !== 1)) ||
+          // All color attachments' size should be the same.
+          (p.type0 === 'render-target' &&
+            p.type1 === 'render-target' &&
+            p.baseLevel1 !== BASE_LEVEL)
       )
   )
   .fn(async t => {
@@ -507,12 +504,13 @@ g.test('subresources_and_binding_types_combination_for_color')
   });
 
 g.test('subresources_and_binding_types_combination_for_aspect')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(pbool('compute'))
+      .combine(poptions('format', kDepthStencilFormats))
+      .beginSubcases()
       .combine(pbool('binding0InBundle'))
       .combine(pbool('binding1InBundle'))
-      .combine(poptions('format', kDepthStencilFormats))
       .combine([
         {
           baseLevel: BASE_LEVEL,
@@ -665,8 +663,8 @@ g.test('subresources_and_binding_types_combination_for_aspect')
   });
 
 g.test('shader_stages_and_visibility')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(pbool('compute'))
       .combine(poptions('readVisibility', [0, ...kShaderStages]))
       .combine(poptions('writeVisibility', [0, ...kShaderStages]))
@@ -803,12 +801,13 @@ g.test('replaced_binding')
   });
 
 g.test('bindings_in_bundle')
-  .params(
-    params()
-      .combine(pbool('binding0InBundle'))
-      .combine(pbool('binding1InBundle'))
+  .params2(u =>
+    u
       .combine(poptions('type0', ['render-target', ...kTextureBindingTypes] as const))
       .combine(poptions('type1', ['render-target', ...kTextureBindingTypes] as const))
+      .beginSubcases()
+      .combine(pbool('binding0InBundle'))
+      .combine(pbool('binding1InBundle'))
       .unless(
         p =>
           // We can't set 'render-target' in bundle, so we need to exclude it from bundle.
@@ -886,8 +885,8 @@ g.test('bindings_in_bundle')
   });
 
 g.test('unused_bindings_in_pipeline')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(pbool('compute'))
       .combine(pbool('useBindGroup0'))
       .combine(pbool('useBindGroup1'))
@@ -989,7 +988,7 @@ g.test('unused_bindings_in_pipeline')
   });
 
 g.test('validation_scope,no_draw_or_dispatch')
-  .params(pbool('compute'))
+  .params2(u => u.combineOptions('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
 
@@ -1007,7 +1006,7 @@ g.test('validation_scope,no_draw_or_dispatch')
   });
 
 g.test('validation_scope,same_draw_or_dispatch')
-  .params(pbool('compute'))
+  .params2(u => u.combineOptions('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
 
@@ -1024,7 +1023,7 @@ g.test('validation_scope,same_draw_or_dispatch')
   });
 
 g.test('validation_scope,different_draws_or_dispatches')
-  .params(pbool('compute'))
+  .params2(u => u.combineOptions('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
     const { bindGroup0, bindGroup1, encoder, pass, pipeline } = t.testValidationScope(compute);
@@ -1045,7 +1044,7 @@ g.test('validation_scope,different_draws_or_dispatches')
   });
 
 g.test('validation_scope,different_passes')
-  .params(pbool('compute'))
+  .params2(u => u.combineOptions('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
     const { bindGroup0, bindGroup1, encoder, pass, pipeline } = t.testValidationScope(compute);

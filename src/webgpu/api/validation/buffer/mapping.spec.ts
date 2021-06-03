@@ -24,7 +24,7 @@ TODO: review existing tests and merge with this plan:
 >     - check x.size == 0, y.size == mapping size
 `;
 
-import { pbool, poptions, params } from '../../../../common/framework/params_builder.js';
+import { pbool, poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { attemptGarbageCollection } from '../../../../common/framework/util/collect_garbage.js';
 import { assert, unreachable } from '../../../../common/framework/util/util.js';
@@ -437,7 +437,7 @@ Test for various cases of being destroyed: at creation, after a mapAsync call or
 
 g.test('getMappedRange,state,mappingPending')
   .desc('Test that it is invalid to call getMappedRange in the mappingPending state.')
-  .params(kMapModeOptions)
+  .params2(kMapModeOptions)
   .fn(t => {
     const { mapMode } = t.params;
     const buffer = t.createMappableBuffer(mapMode, 16);
@@ -451,9 +451,10 @@ g.test('getMappedRange,offsetAndSizeAlignment')
     `Test that getMappedRange fails if the alignment of offset and size isn't correct.
   TODO: x= {mappedAtCreation, mapAsync at {0, >0}`
   )
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(kMapModeOptions)
+      .beginSubcases()
       .combine([
         // Valid cases, 0 and required alignments values are valid.
         { offset: 0, size: 0 },

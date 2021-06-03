@@ -27,7 +27,7 @@ export const description = `API Operation Tests for RenderPass StoreOp.
       TODO: depth slice set to {'0', slice > '0'} for 3D textures
       TODO: test with more interesting loadOp values`;
 
-import { params, poptions } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import {
   kEncodableTextureFormatInfo,
@@ -58,8 +58,8 @@ export const g = makeTestGroup(GPUTest);
 // Tests a render pass with both a color and depth stencil attachment to ensure store operations are
 // set independently.
 g.test('render_pass_store_op,color_attachment_with_depth_stencil_attachment')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('colorStoreOperation', kStoreOps))
       .combine(poptions('depthStencilStoreOperation', kStoreOps))
   )
@@ -140,8 +140,8 @@ g.test('render_pass_store_op,color_attachment_with_depth_stencil_attachment')
 // Tests that render pass color attachment store operations work correctly for all renderable color
 // formats, mip levels and array layers.
 g.test('render_pass_store_op,color_attachment_only')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('colorFormat', kEncodableTextureFormats))
       // Filter out any non-renderable formats
       .filter(({ colorFormat }) => {
@@ -149,6 +149,7 @@ g.test('render_pass_store_op,color_attachment_only')
         return info.color && info.renderable;
       })
       .combine(poptions('storeOperation', kStoreOps))
+      .beginSubcases()
       .combine(poptions('mipLevel', kMipLevel))
       .combine(poptions('arrayLayer', kArrayLayers))
   )
@@ -204,11 +205,12 @@ g.test('render_pass_store_op,color_attachment_only')
 
 // Test with multiple color attachments to ensure each attachment's storeOp is set independently.
 g.test('render_pass_store_op,multiple_color_attachments')
-  .params(
-    params()
-      .combine(poptions('colorAttachments', kNumColorAttachments))
+  .params2(u =>
+    u
       .combine(poptions('storeOperation1', kStoreOps))
       .combine(poptions('storeOperation2', kStoreOps))
+      .beginSubcases()
+      .combine(poptions('colorAttachments', kNumColorAttachments))
   )
   .fn(t => {
     const kColorFormat: GPUTextureFormat = 'rgba8unorm';
@@ -271,10 +273,11 @@ formats, mip levels and array layers.
 TODO: Also test unsized depth/stencil formats
   `
   )
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('depthStencilFormat', kSizedDepthStencilFormats)) // TODO
       .combine(poptions('storeOperation', kStoreOps))
+      .beginSubcases()
       .combine(poptions('mipLevel', kMipLevel))
       .combine(poptions('arrayLayer', kArrayLayers))
   )

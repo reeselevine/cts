@@ -4,7 +4,7 @@ createPipelineLayout validation tests.
 TODO: review existing tests, write descriptions, and make sure tests are complete.
 `;
 
-import { poptions, params } from '../../../common/framework/params_builder.js';
+import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { bufferBindingTypeInfo, kBufferBindingTypes } from '../../capability_info.js';
 
@@ -22,8 +22,9 @@ g.test('number_of_dynamic_buffers_exceeds_the_maximum_value')
 
 TODO(#230): Update to enforce per-stage and per-pipeline-layout limits on BGLs as well.`
   )
-  .params(
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('visibility', [0, 2, 4, 6]))
       .combine(poptions('type', kBufferBindingTypes))
   )

@@ -4,7 +4,7 @@ API validation test for compute pass
 Does **not** test usage scopes (resource_usages/) or programmable pass stuff (programmable_pass).
 `;
 
-import { params, poptions } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { ValidationTest } from '../../validation_test.js';
 
@@ -51,7 +51,7 @@ g.test('set_pipeline')
 setPipeline should generate an error iff using an 'invalid' pipeline.
 `
   )
-  .params(poptions('state', ['valid', 'invalid'] as const))
+  .params2(u => u.beginSubcases().combineOptions('state', ['valid', 'invalid'] as const))
   .fn(t => {
     const pipeline = t.createComputePipeline(t.params.state);
     const { encoder, finish } = t.createEncoder('compute pass');
@@ -70,9 +70,10 @@ Test 'direct' and 'indirect' dispatch with various sizes.
     - invalid, TODO: workSizes {x,y,z} just under and above limit, once limit is established.
 `
   )
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('dispatchType', ['direct', 'indirect'] as const))
+      .beginSubcases()
       .combine(
         poptions('workSizes', [
           [0, 0, 0],
@@ -109,8 +110,9 @@ TODO: test specifically which call the validation error occurs in.
       (Should be finish() for invalid, but submit() for destroyed.)
 `
   )
-  .params(
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('state', ['valid', 'invalid', 'destroyed'] as const))
       .combine(
         poptions('offset', [

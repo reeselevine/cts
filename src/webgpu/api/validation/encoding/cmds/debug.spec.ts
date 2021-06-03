@@ -11,16 +11,17 @@ Test Coverage:
     - Test inserting a debug marker with empty and non-empty strings.
 `;
 
-import { poptions, params } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { ValidationTest, kEncoderTypes } from '../../validation_test.js';
 
 export const g = makeTestGroup(ValidationTest);
 
 g.test('debug_group_balanced')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('encoderType', kEncoderTypes))
+      .beginSubcases()
       .combine(poptions('pushCount', [0, 1, 2]))
       .combine(poptions('popCount', [0, 1, 2]))
   )
@@ -40,9 +41,10 @@ g.test('debug_group_balanced')
   });
 
 g.test('debug_group')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('encoderType', kEncoderTypes))
+      .beginSubcases()
       .combine(poptions('label', ['', 'group']))
   )
   .fn(t => {
@@ -54,9 +56,10 @@ g.test('debug_group')
   });
 
 g.test('debug_marker')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('encoderType', kEncoderTypes))
+      .beginSubcases()
       .combine(poptions('label', ['', 'marker']))
   )
   .fn(t => {

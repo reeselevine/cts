@@ -25,7 +25,7 @@ Test Plan:
 TODO: copying into slices of 2d array textures. 1d and 3d as well if they're not invalid.
 `;
 
-import { poptions, params, pbool } from '../../../../../common/framework/params_builder.js';
+import { poptions, pbool } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import {
   kAllTextureFormatInfo,
@@ -176,9 +176,10 @@ class CopyImageBitmapToTextureTest extends ValidationTest {
 export const g = makeTestGroup(CopyImageBitmapToTextureTest);
 
 g.test('source_imageBitmap,state')
-  .params(
-    params()
+  .params2(u =>
+    u //
       .combine(pbool('closed'))
+      .beginSubcases()
       .combine(
         poptions('copySize', [
           { width: 0, height: 0, depthOrArrayLayers: 0 },
@@ -207,9 +208,10 @@ g.test('source_imageBitmap,state')
   });
 
 g.test('destination_texture,state')
-  .params(
-    params()
+  .params2(u =>
+    u //
       .combine(poptions('state', ['valid', 'invalid', 'destroyed'] as const))
+      .beginSubcases()
       .combine(
         poptions('copySize', [
           { width: 0, height: 0, depthOrArrayLayers: 0 },
@@ -226,9 +228,10 @@ g.test('destination_texture,state')
   });
 
 g.test('destination_texture,usage')
-  .params(
-    params()
+  .params2(u =>
+    u //
       .combine(poptions('usage', kTextureUsages))
+      .beginSubcases()
       .combine(
         poptions('copySize', [
           { width: 0, height: 0, depthOrArrayLayers: 0 },
@@ -254,9 +257,10 @@ g.test('destination_texture,usage')
   });
 
 g.test('destination_texture,sample_count')
-  .params(
-    params()
+  .params2(u =>
+    u //
       .combine(poptions('sampleCount', [1, 4]))
+      .beginSubcases()
       .combine(
         poptions('copySize', [
           { width: 0, height: 0, depthOrArrayLayers: 0 },
@@ -278,9 +282,10 @@ g.test('destination_texture,sample_count')
   });
 
 g.test('destination_texture,mipLevel')
-  .params(
-    params()
+  .params2(u =>
+    u //
       .combine(poptions('mipLevel', [0, kDefaultMipLevelCount - 1, kDefaultMipLevelCount]))
+      .beginSubcases()
       .combine(
         poptions('copySize', [
           { width: 0, height: 0, depthOrArrayLayers: 0 },
@@ -307,9 +312,10 @@ g.test('destination_texture,mipLevel')
   });
 
 g.test('destination_texture,format')
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('format', kAllTextureFormats))
+      .beginSubcases()
       .combine(
         poptions('copySize', [
           { width: 0, height: 0, depthOrArrayLayers: 0 },
@@ -345,8 +351,8 @@ g.test('destination_texture,format')
   });
 
 g.test('OOB,source')
-  .params(
-    params()
+  .subcases2(u =>
+    u
       .combine(
         poptions('srcOrigin', [
           { x: 0, y: 0 }, // origin is on top-left
@@ -387,8 +393,8 @@ g.test('OOB,source')
   });
 
 g.test('OOB,destination')
-  .params(
-    params()
+  .subcases2(u =>
+    u
       .combine(poptions('mipLevel', [0, 1, kDefaultMipLevelCount - 2]))
       .expand(generateDstOriginValue)
       .expand(generateCopySizeForDstOOB)

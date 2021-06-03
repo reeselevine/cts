@@ -2,7 +2,7 @@ export const description = `
 Tests for capability checking for features enabling optional query types.
 `;
 
-import { params, pbool, poptions } from '../../../../../common/framework/params_builder.js';
+import { pbool, poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { ValidationTest } from '../../validation_test.js';
 
@@ -21,8 +21,8 @@ TODO: This test should expect *synchronous* exceptions, not validation errors, p
 As of this writing, the spec needs to be fixed as well.
   `
   )
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('type', ['occlusion', 'pipeline-statistics', 'timestamp'] as const))
       .combine(pbool('pipelineStatisticsQueryEnable'))
       .combine(pbool('timestampQueryEnable'))

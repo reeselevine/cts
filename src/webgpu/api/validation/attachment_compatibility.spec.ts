@@ -4,7 +4,7 @@ Validation for attachment compatibility between render passes, bundles, and pipe
 TODO: Add sparse color attachment compatibility test when defined by specification
 `;
 
-import { poptions, params } from '../../../common/framework/params_builder.js';
+import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { range } from '../../../common/framework/util/util.js';
 import {
@@ -145,8 +145,9 @@ const kColorAttachmentFormats = kRegularTextureFormats.filter(format => {
 
 g.test('render_pass_and_bundle,color_format')
   .desc('Test that color attachment formats in render passes and bundles must match.')
-  .params(
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('passFormat', kColorAttachmentFormats))
       .combine(poptions('bundleFormat', kColorAttachmentFormats))
   )
@@ -175,8 +176,9 @@ g.test('render_pass_and_bundle,color_count')
   TODO: Add sparse color attachment compatibility test when defined by specification
   `
   )
-  .params(
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('passCount', kColorAttachmentCounts))
       .combine(poptions('bundleCount', kColorAttachmentCounts))
   )
@@ -200,8 +202,9 @@ g.test('render_pass_and_bundle,color_count')
 
 g.test('render_pass_and_bundle,depth_format')
   .desc('Test that the depth attachment format in render passes and bundles must match.')
-  .params(
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('passFormat', kDepthStencilAttachmentFormats))
       .combine(poptions('bundleFormat', kDepthStencilAttachmentFormats))
   )
@@ -229,8 +232,9 @@ g.test('render_pass_and_bundle,depth_format')
 
 g.test('render_pass_and_bundle,sample_count')
   .desc('Test that the sample count in render passes and bundles must match.')
-  .params(
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('renderSampleCount', kTextureSampleCounts))
       .combine(poptions('bundleSampleCount', kTextureSampleCounts))
   )
@@ -258,9 +262,10 @@ g.test('render_pass_or_bundle_and_pipeline,color_format')
 Test that color attachment formats in render passes or bundles match the pipeline color format.
 `
   )
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('encoderType', ['render pass', 'render bundle'] as const))
+      .beginSubcases()
       .combine(poptions('encoderFormat', kColorAttachmentFormats))
       .combine(poptions('pipelineFormat', kColorAttachmentFormats))
   )
@@ -285,9 +290,10 @@ count.
 TODO: Add sparse color attachment compatibility test when defined by specification
 `
   )
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('encoderType', ['render pass', 'render bundle'] as const))
+      .beginSubcases()
       .combine(poptions('encoderCount', kColorAttachmentCounts))
       .combine(poptions('pipelineCount', kColorAttachmentCounts))
   )
@@ -312,9 +318,10 @@ g.test('render_pass_or_bundle_and_pipeline,depth_format')
 Test that the depth attachment format in render passes or bundles match the pipeline depth format.
 `
   )
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('encoderType', ['render pass', 'render bundle'] as const))
+      .beginSubcases()
       .combine(poptions('encoderFormat', kDepthStencilAttachmentFormats))
       .combine(poptions('pipelineFormat', kDepthStencilAttachmentFormats))
   )
@@ -345,9 +352,10 @@ g.test('render_pass_or_bundle_and_pipeline,sample_count')
 Test that the sample count in render passes or bundles match the pipeline sample count.
 `
   )
-  .params(
-    params()
+  .params2(u =>
+    u
       .combine(poptions('encoderType', ['render pass', 'render bundle'] as const))
+      .beginSubcases()
       .combine(poptions('encoderSampleCount', kTextureSampleCounts))
       .combine(poptions('pipelineSampleCount', kTextureSampleCounts))
   )
