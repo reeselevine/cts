@@ -78,9 +78,8 @@ g.test('pipelineStatistics,duplicates_and_all')
 Tests that create query set with the duplicate values and all values of GPUPipelineStatisticName for pipeline-statistics query.
   `
   )
-  .params2(u =>
+  .subcases2(u =>
     u //
-      .beginSubcases()
       .combineOptions('pipelineStatistics', [
         ['clipper-invocations', 'clipper-invocations'] as const,
         [

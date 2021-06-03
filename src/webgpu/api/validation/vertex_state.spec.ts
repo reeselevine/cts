@@ -144,9 +144,8 @@ g.test('max_vertex_buffer_limit')
    - Tests with the last buffer having an attribute or not.
   This also happens to test that vertex buffers with no attributes are allowed and that a vertex state with no buffers is allowed.`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('count', [0, 1, kMaxVertexBuffers, kMaxVertexBuffers + 1])
       .combineOptions('lastEmpty', [false, true])
   )
@@ -175,9 +174,8 @@ g.test('max_vertex_attribute_limit')
    - Tests with 0, 1, limit, limits + 1 vertex attribute.
    - Tests with 0, 1, 4 attributes per buffer (with remaining attributes in the last buffer).`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('attribCount', [0, 1, kMaxVertexAttributes, kMaxVertexAttributes + 1])
       .combineOptions('attribsPerBuffer', [0, 1, 4])
   )
@@ -213,9 +211,8 @@ g.test('max_vertex_buffer_array_stride_limit')
    - Test for various vertex buffer indices
    - Test for array strides 0, 4, 256, limit - 4, limit, limit + 4`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('arrayStride', [
         0,
@@ -242,9 +239,8 @@ g.test('vertex_buffer_array_stride_limit_alignment')
    - Test for various vertex buffer indices
    - Test for array strides 0, 1, 2, 4, limit - 4, limit - 2, limit`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('arrayStride', [
         0,
@@ -273,9 +269,8 @@ g.test('vertex_attribute_shaderLocation_limit')
    - Test for various amounts of attributes in that vertex buffer
    - Test for shaderLocation 0, 1, limit - 1, limit`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1])
       .combineOptions('testAttributeAtStart', [false, true])
@@ -311,9 +306,8 @@ g.test('vertex_attribute_shaderLocation_unique')
    - Test for the potentially conflicting attributes in various places in the buffers (with dummy attributes)
    - Test for various shaderLocations that conflict or not`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('vertexBufferIndexA', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('vertexBufferIndexB', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('testAttributeAtStartA', [false, true])
@@ -375,9 +369,8 @@ g.test('vertex_shader_input_location_limit')
     `Test that vertex shader's input's location decoration must be less than maxVertexAttributes.
    - Test for shaderLocation 0, 1, limit - 1, limit`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('testLocation', [
         0,
         1,
@@ -420,9 +413,8 @@ g.test('vertex_shader_input_location_in_vertex_state')
        - Test for various input locations.
        - Test for the attribute in various places in the list of vertex buffer and various places inside the vertex buffer descriptor`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1])
       .combineOptions('testAttributeAtStart', [false, true])

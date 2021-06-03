@@ -186,6 +186,26 @@ In this example, the following single case is generated:
   )
   .fn(() => {});
 
+g.test('basic,builder_subcases_short')
+  .desc(
+    `
+As a shorthand, .subcases2() can be used.
+
+In this example, the following single case is generated:
+  - webgpu:examples:basic,cases:         runs 4 subcases, with t.params set to:
+      - { x: 1, y: 1 }
+      - { x: 1, y: 2 }
+      - { x: 2, y: 1 }
+      - { x: 2, y: 2 }
+  `
+  )
+  .subcases2(u =>
+    u //
+      .combine([{ x: 1 }, { x: 2 }])
+      .combine([{ y: 1 }, { y: 2 }])
+  )
+  .fn(() => {});
+
 g.test('gpu,async').fn(async t => {
   const x = await t.queue.onSubmittedWorkDone();
   t.expect(x === undefined);

@@ -203,9 +203,8 @@ g.test('param_value,invalid').fn(t => {
 g.test('subcases').fn(async t0 => {
   const g = makeTestGroupForUnitTesting(UnitTest);
   g.test('a')
-    .params2(u =>
+    .subcases2(u =>
       u //
-        .beginSubcases()
         .combine([{ a: 1 }])
     )
     .fn(t => {

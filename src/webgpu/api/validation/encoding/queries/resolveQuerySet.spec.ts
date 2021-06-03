@@ -17,15 +17,11 @@ Tests that resolve query set with invalid object.
 - invalid destination buffer that failed during creation.
   `
   )
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine([
-        { querySetState: 'valid', destinationState: 'valid' }, // control case
-        { querySetState: 'invalid', destinationState: 'valid' },
-        { querySetState: 'valid', destinationState: 'invalid' },
-      ] as const)
-  )
+  .subcases2([
+    { querySetState: 'valid', destinationState: 'valid' }, // control case
+    { querySetState: 'invalid', destinationState: 'valid' },
+    { querySetState: 'valid', destinationState: 'invalid' },
+  ] as const)
   .fn(async t => {
     const { querySetState, destinationState } = t.params;
 
@@ -51,16 +47,12 @@ Tests that resolve query set with invalid firstQuery and queryCount:
 - firstQuery and/or queryCount out of range
   `
   )
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine([
-        { firstQuery: 0, queryCount: kQueryCount }, // control case
-        { firstQuery: 0, queryCount: kQueryCount + 1 },
-        { firstQuery: 1, queryCount: kQueryCount },
-        { firstQuery: kQueryCount, queryCount: 1 },
-      ])
-  )
+  .subcases2([
+    { firstQuery: 0, queryCount: kQueryCount }, // control case
+    { firstQuery: 0, queryCount: kQueryCount + 1 },
+    { firstQuery: 1, queryCount: kQueryCount },
+    { firstQuery: kQueryCount, queryCount: 1 },
+  ])
   .fn(async t => {
     const { firstQuery, queryCount } = t.params;
 
@@ -85,9 +77,8 @@ Tests that resolve query set with invalid destinationBuffer:
 - Buffer usage {with, without} QUERY_RESOLVE
   `
   )
-  .params2(u =>
+  .subcases2(u =>
     u //
-      .beginSubcases()
       .combineOptions('bufferUsage', [
         GPUConst.BufferUsage.STORAGE,
         GPUConst.BufferUsage.QUERY_RESOLVE, // control case
@@ -117,11 +108,7 @@ Tests that resolve query set with invalid destinationOffset:
 - destinationOffset out of range
   `
   )
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combineOptions('destinationOffset', [0, 6, 8, 16])
-  )
+  .subcases2(u => u.combineOptions('destinationOffset', [0, 6, 8, 16]))
   .fn(async t => {
     const querySet = t.device.createQuerySet({ type: 'occlusion', count: kQueryCount });
     const destination = t.device.createBuffer({

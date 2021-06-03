@@ -108,9 +108,8 @@ g.test('mapAsync,usage')
     Test that the mapAsync call is valid iff the mapping usage is not 0 and the buffer usage
     the mapMode flag.`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combine([
         { mapMode: GPUConst.MapMode.READ, validUsage: GPUConst.BufferUsage.MAP_READ },
         { mapMode: GPUConst.MapMode.WRITE, validUsage: GPUConst.BufferUsage.MAP_WRITE },
@@ -133,11 +132,7 @@ g.test('mapAsync,usage')
 
 g.test('mapAsync,invalidBuffer')
   .desc('Test that mapAsync is an error when called on an invalid buffer.')
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine(kMapModeOptions)
-  )
+  .subcases2(kMapModeOptions)
   .fn(async t => {
     const { mapMode } = t.params;
     const buffer = t.getErrorBuffer();
@@ -146,11 +141,7 @@ g.test('mapAsync,invalidBuffer')
 
 g.test('mapAsync,state,destroyed')
   .desc('Test that mapAsync is an error when called on a destroyed buffer.')
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine(kMapModeOptions)
-  )
+  .subcases2(kMapModeOptions)
   .fn(async t => {
     const { mapMode } = t.params;
     const buffer = t.createMappableBuffer(mapMode, 16);
@@ -163,14 +154,11 @@ g.test('mapAsync,state,mappedAtCreation')
     `Test that mapAsync is an error when called on a buffer mapped at creation,
     but succeeds after unmapping it.`
   )
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine([
-        { mapMode: GPUConst.MapMode.READ, validUsage: GPUConst.BufferUsage.MAP_READ },
-        { mapMode: GPUConst.MapMode.WRITE, validUsage: GPUConst.BufferUsage.MAP_WRITE },
-      ])
-  )
+  .subcases2([
+    { mapMode: GPUConst.MapMode.READ, validUsage: GPUConst.BufferUsage.MAP_READ },
+    { mapMode: GPUConst.MapMode.WRITE, validUsage: GPUConst.BufferUsage.MAP_WRITE },
+  ])
+
   .fn(async t => {
     const { mapMode, validUsage } = t.params;
 
@@ -190,11 +178,7 @@ g.test('mapAsync,state,mapped')
     `Test that mapAsync is an error when called on a mapped buffer, but succeeds
     after unmapping it.`
   )
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine(kMapModeOptions)
-  )
+  .subcases2(kMapModeOptions)
   .fn(async t => {
     const { mapMode } = t.params;
 
@@ -211,11 +195,7 @@ g.test('mapAsync,state,mappingPending')
     `Test that mapAsync is an error when called on a buffer that is being mapped,
     but succeeds after the previous mapping request is cancelled.`
   )
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine(kMapModeOptions)
-  )
+  .subcases2(kMapModeOptions)
   .fn(async t => {
     const { mapMode } = t.params;
 
@@ -243,9 +223,8 @@ g.test('mapAsync,sizeUnspecifiedOOB')
     with various cases at the limits of the buffer size or with a misaligned offset.
     Also test for an empty buffer.`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combine(kMapModeOptions)
       .combine([
         // 0 size buffer.
@@ -271,9 +250,8 @@ g.test('mapAsync,sizeUnspecifiedOOB')
 
 g.test('mapAsync,offsetAndSizeAlignment')
   .desc("Test that mapAsync fails if the alignment of offset and size isn't correct.")
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combine(kMapModeOptions)
       .combine([
         // Valid cases, 0 and required alignments values are valid.
@@ -297,9 +275,8 @@ g.test('mapAsync,offsetAndSizeAlignment')
 
 g.test('mapAsync,offsetAndSizeOOB')
   .desc('Test that mapAsync fails if offset + size is larger than the buffer size.')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combine(kMapModeOptions)
       .combine([
         // For a 0 size buffer
@@ -340,11 +317,7 @@ g.test('mapAsync,offsetAndSizeOOB')
 
 g.test('getMappedRange,state,mapped')
   .desc('Test that it is valid to call getMappedRange in the mapped state')
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine(kMapModeOptions)
-  )
+  .subcases2(kMapModeOptions)
   .fn(async t => {
     const { mapMode } = t.params;
     const buffer = t.createMappableBuffer(mapMode, 16);
@@ -357,11 +330,7 @@ g.test('getMappedRange,state,mappedAtCreation')
   .desc(
     'Test that it is valid to call getMappedRange in the mapped at creation state, for all buffer usages'
   )
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combineOptions('bufferUsage', kBufferUsages)
-  )
+  .subcases2(u => u.combineOptions('bufferUsage', kBufferUsages))
   .fn(async t => {
     const { bufferUsage } = t.params;
     const buffer = t.device.createBuffer({
@@ -484,40 +453,36 @@ g.test('getMappedRange,sizeAndOffsetOOB,forMappedAtCreation')
     `Test that getMappedRange size + offset must be less than the buffer size for a
     buffer mapped at creation. (and offset has not constraints on its own)`
   )
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine([
-        // Tests for a zero-sized buffer, with and without a size defined.
-        { bufferSize: 0, offset: undefined, size: undefined },
-        { bufferSize: 0, offset: undefined, size: 0 },
-        { bufferSize: 0, offset: undefined, size: kSizeAlignment },
-        { bufferSize: 0, offset: 0, size: undefined },
-        { bufferSize: 0, offset: 0, size: 0 },
-        { bufferSize: 0, offset: kOffsetAlignment, size: undefined },
-        { bufferSize: 0, offset: kOffsetAlignment, size: 0 },
+  .subcases2([
+    // Tests for a zero-sized buffer, with and without a size defined.
+    { bufferSize: 0, offset: undefined, size: undefined },
+    { bufferSize: 0, offset: undefined, size: 0 },
+    { bufferSize: 0, offset: undefined, size: kSizeAlignment },
+    { bufferSize: 0, offset: 0, size: undefined },
+    { bufferSize: 0, offset: 0, size: 0 },
+    { bufferSize: 0, offset: kOffsetAlignment, size: undefined },
+    { bufferSize: 0, offset: kOffsetAlignment, size: 0 },
 
-        // Tests for a non-empty buffer, with an undefined offset.
-        { bufferSize: 80, offset: undefined, size: 80 },
-        { bufferSize: 80, offset: undefined, size: 80 + kSizeAlignment },
+    // Tests for a non-empty buffer, with an undefined offset.
+    { bufferSize: 80, offset: undefined, size: 80 },
+    { bufferSize: 80, offset: undefined, size: 80 + kSizeAlignment },
 
-        // Tests for a non-empty buffer, with an undefined size.
-        { bufferSize: 80, offset: undefined, size: undefined },
-        { bufferSize: 80, offset: 0, size: undefined },
-        { bufferSize: 80, offset: kOffsetAlignment, size: undefined },
-        { bufferSize: 80, offset: 80, size: undefined },
-        { bufferSize: 80, offset: 80 + kOffsetAlignment, size: undefined },
+    // Tests for a non-empty buffer, with an undefined size.
+    { bufferSize: 80, offset: undefined, size: undefined },
+    { bufferSize: 80, offset: 0, size: undefined },
+    { bufferSize: 80, offset: kOffsetAlignment, size: undefined },
+    { bufferSize: 80, offset: 80, size: undefined },
+    { bufferSize: 80, offset: 80 + kOffsetAlignment, size: undefined },
 
-        // Tests for a non-empty buffer with a size defined.
-        { bufferSize: 80, offset: 0, size: 80 },
-        { bufferSize: 80, offset: 0, size: 80 + kSizeAlignment },
-        { bufferSize: 80, offset: kOffsetAlignment, size: 80 },
+    // Tests for a non-empty buffer with a size defined.
+    { bufferSize: 80, offset: 0, size: 80 },
+    { bufferSize: 80, offset: 0, size: 80 + kSizeAlignment },
+    { bufferSize: 80, offset: kOffsetAlignment, size: 80 },
 
-        { bufferSize: 80, offset: 40, size: 40 },
-        { bufferSize: 80, offset: 40 + kOffsetAlignment, size: 40 },
-        { bufferSize: 80, offset: 40, size: 40 + kSizeAlignment },
-      ])
-  )
+    { bufferSize: 80, offset: 40, size: 40 },
+    { bufferSize: 80, offset: 40 + kOffsetAlignment, size: 40 },
+    { bufferSize: 80, offset: 40, size: 40 + kSizeAlignment },
+  ])
   .fn(t => {
     const { bufferSize, offset, size } = t.params;
     const buffer = t.device.createBuffer({
@@ -535,9 +500,8 @@ g.test('getMappedRange,sizeAndOffsetOOB,forMappedAtCreation')
 
 g.test('getMappedRange,sizeAndOffsetOOB,forMapped')
   .desc('Test that getMappedRange size + offset must be less than the mapAsync range.')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combine(kMapModeOptions)
       .combine([
         // Tests for an empty buffer, and implicit mapAsync size.
@@ -650,9 +614,8 @@ g.test('getMappedRange,sizeAndOffsetOOB,forMapped')
 
 g.test('getMappedRange,disjointRanges')
   .desc('Test that the ranges asked through getMappedRange must be disjoint.')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('remapBetweenCalls', [false, true])
       .combine([
         // Disjoint ranges with one that's empty.
@@ -806,9 +769,8 @@ g.test('unmap,state,destroyed')
 
 g.test('unmap,state,mappedAtCreation')
   .desc('Test it is valid to call unmap on a buffer mapped at creation, for various usages')
-  .params2(u =>
+  .subcases2(u =>
     u //
-      .beginSubcases()
       .combineOptions('bufferUsage', kBufferUsages)
   )
   .fn(t => {
@@ -820,11 +782,7 @@ g.test('unmap,state,mappedAtCreation')
 
 g.test('unmap,state,mapped')
   .desc("Test it is valid to call unmap on a buffer that's mapped")
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine(kMapModeOptions)
-  )
+  .subcases2(kMapModeOptions)
   .fn(async t => {
     const { mapMode } = t.params;
     const buffer = t.createMappableBuffer(mapMode, 16);
@@ -835,11 +793,7 @@ g.test('unmap,state,mapped')
 
 g.test('unmap,state,mappingPending')
   .desc("Test it is valid to call unmap on a buffer that's being mapped")
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine(kMapModeOptions)
-  )
+  .subcases2(kMapModeOptions)
   .fn(t => {
     const { mapMode } = t.params;
     const buffer = t.createMappableBuffer(mapMode, 16);
@@ -886,11 +840,7 @@ g.test('gc_behavior,mapAsync')
   .desc(
     "Test that GCing the buffer while mappings are handed out doesn't invalidate them - mapAsync case"
   )
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine(kMapModeOptions)
-  )
+  .subcases2(kMapModeOptions)
   .fn(async t => {
     const { mapMode } = t.params;
 

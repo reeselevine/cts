@@ -16,9 +16,8 @@ g.test('single')
   - covers the end of the dstBuffer
   - covers neither the beginning nor the end of the dstBuffer`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('srcOffset', [0, 4, 8, 16])
       .combineOptions('dstOffset', [0, 4, 8, 16])
       .combineOptions('copySize', [0, 4, 8, 16])

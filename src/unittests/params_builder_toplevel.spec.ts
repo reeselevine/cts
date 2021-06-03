@@ -45,9 +45,8 @@ g.test('combine_one,case')
   });
 
 g.test('combine_one,subcase')
-  .params2(u =>
+  .subcases2(u =>
     u //
-      .beginSubcases()
       .combine([{ x: 1 }])
   )
   .fn(t => {

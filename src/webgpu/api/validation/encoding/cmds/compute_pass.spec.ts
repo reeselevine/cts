@@ -107,9 +107,8 @@ TODO: test specifically which call the validation error occurs in.
       (Should be finish() for invalid, but submit() for destroyed.)
 `
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('state', ['valid', 'invalid', 'destroyed'] as const)
       .combineOptions('offset', [
         // valid (for 'valid' buffers)

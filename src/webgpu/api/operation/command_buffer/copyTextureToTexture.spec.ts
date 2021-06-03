@@ -516,9 +516,8 @@ g.test('zero_sized')
   of that dimension.
   `
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('copyBoxOffset', [
         // copyExtent.width === 0
         {

@@ -27,9 +27,8 @@ export const g = makeTestGroup(ValidationTest);
 
 g.test('binding_count_mismatch')
   .desc('Test that the number of entries must match the number of entries in the BindGroupLayout.')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('layoutEntryCount', [1, 2, 3])
       .combineOptions('bindGroupEntryCount', [1, 2, 3])
   )
@@ -67,9 +66,8 @@ g.test('binding_must_be_present_in_layout')
   .desc(
     'Test that the binding slot for each entry matches a binding slot defined in the BindGroupLayout.'
   )
-  .params2(u =>
+  .subcases2(u =>
     u //
-      .beginSubcases()
       .combineOptions('layoutBinding', [0, 1, 2])
       .combineOptions('binding', [0, 1, 2])
   )
@@ -97,9 +95,8 @@ g.test('binding_must_contain_resource_defined_in_layout')
   .desc(
     'Test that only the resource type specified in the BindGroupLayout is allowed for each entry.'
   )
-  .params2(u =>
+  .subcases2(u =>
     u //
-      .beginSubcases()
       .combineOptions('resourceType', kBindableResources)
       .combineOptions('entry', allBindingEntries(false))
   )
@@ -121,9 +118,8 @@ g.test('binding_must_contain_resource_defined_in_layout')
 
 g.test('texture_binding_must_have_correct_usage')
   .desc('Tests that texture bindings must have the correct usage.')
-  .params2(u =>
+  .subcases2(u =>
     u //
-      .beginSubcases()
       .combineOptions('entry', sampledAndStorageBindingEntries(false))
       .combineOptions('usage', kTextureUsages)
       .unless(({ entry, usage }) => {
@@ -348,9 +344,8 @@ g.test('buffer_offset_and_size_for_bind_groups_match')
 
 g.test('minBindingSize')
   .desc('Tests that minBindingSize is correctly enforced.')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('minBindingSize', [undefined, 4, 256])
       .expandOptions('size', ({ minBindingSize }) =>
         minBindingSize !== undefined

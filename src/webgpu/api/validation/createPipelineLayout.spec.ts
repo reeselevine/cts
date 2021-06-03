@@ -21,9 +21,8 @@ g.test('number_of_dynamic_buffers_exceeds_the_maximum_value')
 
 TODO(#230): Update to enforce per-stage and per-pipeline-layout limits on BGLs as well.`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('visibility', [0, 2, 4, 6])
       .combineOptions('type', kBufferBindingTypes)
   )

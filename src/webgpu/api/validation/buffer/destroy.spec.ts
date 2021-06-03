@@ -10,9 +10,8 @@ export const g = makeTestGroup(ValidationTest);
 
 g.test('twice')
   .desc('Tests various mapping-related descripton options that could affect how state is tracked.')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('mappedAtCreation', [false, true])
       .combine([
         { size: 4, usage: GPUConst.BufferUsage.COPY_SRC },

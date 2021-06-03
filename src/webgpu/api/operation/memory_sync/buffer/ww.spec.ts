@@ -19,9 +19,8 @@ export const g = makeTestGroup(BufferSyncTest);
 
 g.test('same_cmdbuf')
   .desc('Test write-after-write operations in the same command buffer.')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('firstWriteOp', kAllWriteOps)
       .combineOptions('secondWriteOp', kAllWriteOps)
   )
@@ -39,9 +38,8 @@ g.test('same_cmdbuf')
 
 g.test('separate_cmdbufs')
   .desc('Test write-after-write operations in separate command buffers via the same submit.')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('firstWriteOp', kAllWriteOps)
       .combineOptions('secondWriteOp', kAllWriteOps)
   )
@@ -59,9 +57,8 @@ g.test('separate_cmdbufs')
 
 g.test('separate_submits')
   .desc('Test write-after-write operations via separate submits in the same queue.')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('firstWriteOp', ['write-buffer', ...kAllWriteOps] as const)
       .combineOptions('secondWriteOp', ['write-buffer', ...kAllWriteOps] as const)
   )
@@ -85,9 +82,8 @@ g.test('two_draws_in_the_same_render_pass')
     a storage buffer. The second write will write 2 into the same buffer in the same pass. Expected
     data in buffer is either 1 or 2. It may use bundle in each draw.`
   )
-  .params2(u =>
+  .subcases2(u =>
     u //
-      .beginSubcases()
       .combineOptions('firstDrawUseBundle', [false, true])
       .combineOptions('secondDrawUseBundle', [false, true])
   )

@@ -156,9 +156,8 @@ g.test('mipLevelCount,bound_check')
     `Test mip level count bound check upon different texture size and different texture dimension types.
     The cases below test: 1) there must be no mip levels after a 1 level (1D texture), or 1x1 level (2D texture), or 1x1x1 level (3D texture), 2) array layers are not mip-mapped, 3) power-of-two, non-power-of-two, and non-square sizes.`
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('format', ['rgba8unorm', 'bc1-rgba-unorm'] as const)
       .combine([
         { size: [32, 32] }, // Mip level sizes: 32x32, 16x16, 8x8, 4x4, 2x2, 1x1
@@ -387,9 +386,8 @@ g.test('texture_size,default_value_and_smallest_size,compressed_format')
 
 g.test('texture_size,1d_texture')
   .desc(`Test texture size requirement for 1D texture`)
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       // Compressed textures are invalid for 1D.
       .combineOptions('format', kUncompressedTextureFormats)
       .combineOptions('width', [
@@ -535,9 +533,8 @@ g.test('texture_size,2d_texture,compressed_format')
 
 g.test('texture_size,3d_texture,uncompressed_format')
   .desc(`Test texture size requirement for 3D texture with uncompressed format.`)
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('format', kUncompressedTextureFormats)
       .combineOptions('size', [
         // Test the bound of width
@@ -577,9 +574,8 @@ g.test('texture_size,3d_texture,uncompressed_format')
 
 g.test('texture_size,3d_texture,compressed_format')
   .desc(`Test texture size requirement for 3D texture with compressed format.`)
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('format', kCompressedTextureFormats)
       .expandOptions('size', p => {
         const { blockWidth, blockHeight } = kAllTextureFormatInfo[p.format];

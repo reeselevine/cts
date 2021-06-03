@@ -111,20 +111,17 @@ g.test('copy_with_invalid_texture').fn(async t => {
 });
 
 g.test('mipmap_level')
-  .params2(u =>
-    u //
-      .beginSubcases()
-      .combine([
-        { srcLevelCount: 1, dstLevelCount: 1, srcCopyLevel: 0, dstCopyLevel: 0 },
-        { srcLevelCount: 1, dstLevelCount: 1, srcCopyLevel: 1, dstCopyLevel: 0 },
-        { srcLevelCount: 1, dstLevelCount: 1, srcCopyLevel: 0, dstCopyLevel: 1 },
-        { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 0, dstCopyLevel: 0 },
-        { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 2, dstCopyLevel: 0 },
-        { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 3, dstCopyLevel: 0 },
-        { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 0, dstCopyLevel: 2 },
-        { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 0, dstCopyLevel: 3 },
-      ] as const)
-  )
+  .subcases2([
+    { srcLevelCount: 1, dstLevelCount: 1, srcCopyLevel: 0, dstCopyLevel: 0 },
+    { srcLevelCount: 1, dstLevelCount: 1, srcCopyLevel: 1, dstCopyLevel: 0 },
+    { srcLevelCount: 1, dstLevelCount: 1, srcCopyLevel: 0, dstCopyLevel: 1 },
+    { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 0, dstCopyLevel: 0 },
+    { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 2, dstCopyLevel: 0 },
+    { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 3, dstCopyLevel: 0 },
+    { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 0, dstCopyLevel: 2 },
+    { srcLevelCount: 3, dstLevelCount: 3, srcCopyLevel: 0, dstCopyLevel: 3 },
+  ] as const)
+
   .fn(async t => {
     const { srcLevelCount, dstLevelCount, srcCopyLevel, dstCopyLevel } = t.params;
 
@@ -213,9 +210,8 @@ g.test('sample_count')
   });
 
 g.test('multisampled_copy_restrictions')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('srcCopyOrigin', [
         { x: 0, y: 0, z: 0 },
         { x: 1, y: 0, z: 0 },
@@ -262,9 +258,8 @@ g.test('multisampled_copy_restrictions')
   });
 
 g.test('texture_format_equality')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('srcFormat', kAllTextureFormats)
       .combineOptions('dstFormat', kAllTextureFormats)
   )
@@ -381,9 +376,8 @@ g.test('depth_stencil_copy_restrictions')
   });
 
 g.test('copy_ranges')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('copyBoxOffsets', [
         { x: 0, y: 0, z: 0, width: 0, height: 0, depthOrArrayLayers: -2 },
         { x: 1, y: 0, z: 0, width: 0, height: 0, depthOrArrayLayers: -2 },
@@ -472,9 +466,8 @@ g.test('copy_ranges')
   });
 
 g.test('copy_within_same_texture')
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('srcCopyOriginZ', [0, 2, 4])
       .combineOptions('dstCopyOriginZ', [0, 2, 4])
       .combineOptions('copyExtentDepth', [1, 2, 3])

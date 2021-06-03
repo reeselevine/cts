@@ -133,9 +133,8 @@ Tests that writeBuffer currently handles different offsets and writes. This incl
 - Multiple overlapping writes with decreasing sizes
     `
   )
-  .params2(u =>
+  .subcases2(u =>
     u //
-      .beginSubcases()
       .combine([
         {
           // Concatenate 2 Uint32Arrays

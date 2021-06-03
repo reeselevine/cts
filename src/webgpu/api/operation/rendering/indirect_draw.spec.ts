@@ -26,9 +26,8 @@ Params:
     - indirectOffset= {0, 4, k * sizeof(args struct), k * sizeof(args struct) + 4}
     `
   )
-  .params2(u =>
-    u
-      .beginSubcases()
+  .subcases2(u =>
+    u //
       .combineOptions('indirectOffset', [
         0,
         Uint32Array.BYTES_PER_ELEMENT,
