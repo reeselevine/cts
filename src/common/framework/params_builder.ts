@@ -1,11 +1,4 @@
-import {
-  TestParams,
-  TestParamsIterable,
-  FlattenUnionOfInterfaces,
-  Merged,
-  mergeParams,
-  publicParamsEquals,
-} from './params_utils.js';
+import { FlattenUnionOfInterfaces, Merged, mergeParams } from './params_utils.js';
 import { ResolveType } from './util/types.js';
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -51,71 +44,6 @@ function typeAssert<T extends 'pass'>() {}
     // Unexpected test results - hopefully okay to ignore these
     typeAssert<Test<FlattenUnionOfInterfaces<T21>, { b: string | undefined }>>();
     typeAssert<Test<FlattenUnionOfInterfaces<T26>, { a: number | undefined }>>();
-  }
-}
-
-/** @deprecated */
-export class ParamsBuilder<A extends {}> implements TestParamsIterable {
-  private paramSpecs: TestParamsIterable = [{}];
-
-  [Symbol.iterator](): Iterator<A> {
-    const iter: Iterator<TestParams> = this.paramSpecs[Symbol.iterator]();
-    return iter as Iterator<A>;
-  }
-
-  combine<B extends {}>(newParams: Iterable<B>): ParamsBuilder<Merged<A, B>> {
-    const paramSpecs = this.paramSpecs as Iterable<A>;
-    this.paramSpecs = makeReusableIterable(function* () {
-      for (const a of paramSpecs) {
-        for (const b of newParams) {
-          yield mergeParams(a, b);
-        }
-      }
-    }) as TestParamsIterable;
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return this as any;
-  }
-
-  expand<B extends {}>(expander: (_: A) => Iterable<B>): ParamsBuilder<Merged<A, B>> {
-    const paramSpecs = this.paramSpecs as Iterable<A>;
-    this.paramSpecs = makeReusableIterable(function* () {
-      for (const a of paramSpecs) {
-        for (const b of expander(a)) {
-          yield mergeParams(a, b);
-        }
-      }
-    }) as TestParamsIterable;
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    return this as any;
-  }
-
-  filter(pred: (_: A) => boolean): ParamsBuilder<A> {
-    const paramSpecs = this.paramSpecs as Iterable<A>;
-    this.paramSpecs = makeReusableIterable(function* () {
-      for (const p of paramSpecs) {
-        if (pred(p)) {
-          yield p;
-        }
-      }
-    });
-    return this;
-  }
-
-  unless(pred: (_: A) => boolean): ParamsBuilder<A> {
-    return this.filter(x => !pred(x));
-  }
-
-  exclude(exclude: TestParamsIterable): ParamsBuilder<A> {
-    const excludeArray = Array.from(exclude);
-    const paramSpecs = this.paramSpecs;
-    this.paramSpecs = makeReusableIterable(function* () {
-      for (const p of paramSpecs) {
-        if (excludeArray.every(e => !publicParamsEquals(p, e))) {
-          yield p;
-        }
-      }
-    });
-    return this;
   }
 }
 
