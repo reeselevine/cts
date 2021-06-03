@@ -203,7 +203,11 @@ g.test('param_value,invalid').fn(t => {
 g.test('subcases').fn(async t0 => {
   const g = makeTestGroupForUnitTesting(UnitTest);
   g.test('a')
-    .subcases(() => [{ a: 1 }])
+    .params2(u =>
+      u //
+        .beginSubcases()
+        .combine([{ a: 1 }])
+    )
     .fn(t => {
       t.expect(t.params.a === 1, 'a must be 1');
     });

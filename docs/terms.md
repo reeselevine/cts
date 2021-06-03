@@ -172,7 +172,7 @@ not all contexts allow subdividing cases into subcases.
 All of the subcases of a case will run _inside_ the case, essentially as a for-loop wrapping the
 test function. They do _not_ appear individually in `/standalone/` or WPT.
 
-If `TestBuilder.subcases()` is not used, there is exactly one subcase.
+If `CaseParamsBuilder.beginSubcases()` is not used, there is exactly one subcase per case.
 
 ## Test Parameters / Params
 
