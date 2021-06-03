@@ -4,7 +4,7 @@ createBindGroupLayout validation tests.
 TODO: make sure tests are complete.
 `;
 
-import { poptions, params } from '../../../common/framework/params_builder.js';
+import { poptions, kUnitCaseParamsBuilder } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import {
   kMaxBindingsPerBindGroup,
@@ -175,17 +175,17 @@ function* pickExtraBindingTypesForPerStage(
   }
 }
 
-function subcasesForMaxResourcesPerStageTests(caseParams: { maxedEntry: BGLEntry }) {
-  return params()
-    .combine(poptions('maxedVisibility', kShaderStages))
-    .filter(p => (bindingTypeInfo(caseParams.maxedEntry).validStages & p.maxedVisibility) !== 0)
-    .expand(function* () {
-      yield* poptions('extraEntry', pickExtraBindingTypesForPerStage(caseParams.maxedEntry, true));
-      yield* poptions('extraEntry', pickExtraBindingTypesForPerStage(caseParams.maxedEntry, false));
-    })
-    .combine(poptions('extraVisibility', kShaderStages))
-    .filter(p => (bindingTypeInfo(p.extraEntry).validStages & p.extraVisibility) !== 0);
-}
+const kMaxResourcesCases = kUnitCaseParamsBuilder
+  .combine(poptions('maxedEntry', allBindingEntries(false)))
+  .beginSubcases()
+  .combine(poptions('maxedVisibility', kShaderStages))
+  .filter(p => (bindingTypeInfo(p.maxedEntry).validStages & p.maxedVisibility) !== 0)
+  .expand(function* (p) {
+    yield* poptions('extraEntry', pickExtraBindingTypesForPerStage(p.maxedEntry, true));
+    yield* poptions('extraEntry', pickExtraBindingTypesForPerStage(p.maxedEntry, false));
+  })
+  .combine(poptions('extraVisibility', kShaderStages))
+  .filter(p => (bindingTypeInfo(p.extraEntry).validStages & p.extraVisibility) !== 0);
 
 // Should never fail unless kMaxBindingsPerBindGroup is exceeded, because the validation for
 // resources-of-type-per-stage is in pipeline layout creation.
@@ -199,12 +199,7 @@ g.test('max_resources_per_stage,in_bind_group_layout')
     - Test that creation of a bind group layout using the maximum number of bindings + 1 fails.
     - TODO(#230): Update to enforce per-stage and per-pipeline-layout limits on BGLs as well.`
   )
-  .params2(u =>
-    u
-      .combine(poptions('maxedEntry', allBindingEntries(false)))
-      .beginSubcases()
-      .expand(subcasesForMaxResourcesPerStageTests)
-  )
+  .params2(kMaxResourcesCases)
   .fn(async t => {
     const { maxedEntry, extraEntry, maxedVisibility, extraVisibility } = t.params;
     const maxedTypeInfo = bindingTypeInfo(maxedEntry);
@@ -251,12 +246,7 @@ g.test('max_resources_per_stage,in_pipeline_layout')
     - Test that creation of a pipeline using the maximum number of bindings + 1 fails.
   `
   )
-  .params2(u =>
-    u
-      .combine(poptions('maxedEntry', allBindingEntries(false)))
-      .beginSubcases()
-      .expand(subcasesForMaxResourcesPerStageTests)
-  )
+  .params2(kMaxResourcesCases)
   .fn(async t => {
     const { maxedEntry, extraEntry, maxedVisibility, extraVisibility } = t.params;
     const maxedTypeInfo = bindingTypeInfo(maxedEntry);

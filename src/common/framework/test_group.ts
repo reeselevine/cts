@@ -3,7 +3,6 @@ import { Expectation } from './logging/result.js';
 import { TestCaseRecorder } from './logging/test_case_recorder.js';
 import {
   CaseParamsBuilder,
-  CaseSubcaseIterable,
   kUnitCaseParamsBuilder,
   ParamsBuilderBase,
   SubcaseParamsBuilder,
@@ -181,7 +180,7 @@ class TestBuilder {
 
   private readonly fixture: FixtureClass;
   private testFn: TestFn<Fixture, {}> | undefined;
-  private testCases?: CaseSubcaseIterable<{}, {}> = undefined;
+  private testCases?: ParamsBuilderBase<{}, {}> = undefined;
 
   constructor(testPath: string[], fixture: FixtureClass, testCreationStack: Error) {
     this.testPath = testPath;
@@ -227,7 +226,7 @@ class TestBuilder {
     }
 
     const seen = new Set<string>();
-    for (const [caseParams, subcases] of this.testCases) {
+    for (const [caseParams, subcases] of this.testCases.iterateCaseSubcase()) {
       for (const subcaseParams of subcases ?? [{}]) {
         const params = mergeParams(caseParams, subcaseParams);
         // stringifyPublicParams also checks for invalid params values
@@ -242,26 +241,6 @@ class TestBuilder {
         seen.add(testcaseStringUnique);
       }
     }
-  }
-
-  /** @deprecated */
-  params(casesIterable: Iterable<{}>): TestBuilder {
-    return this.params2(casesIterable);
-  }
-
-  /** @deprecated */
-  cases(casesIterable: Iterable<{}>): TestBuilder {
-    assert(this.testCases === undefined, 'test case is already parameterized');
-    this.testCases = Array.from(casesIterable).map(c => [c, undefined]);
-    return this;
-  }
-
-  /** @deprecated */
-  subcases(specs: (_: {}) => Iterable<{}>): TestBuilder {
-    assert(this.testCases instanceof Array || this.testCases === undefined, '');
-    const oldTestCases = (this.testCases as [readonly [{}, Iterable<{}>]]) ?? [[{}, undefined]];
-    this.testCases = oldTestCases.map(([c]) => [c, specs(c)]);
-    return this;
   }
 
   params2(
@@ -285,15 +264,16 @@ class TestBuilder {
     subcases: Iterable<{}> | ((unit: SubcaseParamsBuilder<{}, {}>) => SubcaseParamsBuilder<{}, {}>)
   ): TestBuilder {
     if (subcases instanceof Function) {
-      subcases = subcases(kUnitCaseParamsBuilder.beginSubcases());
+      return this.params2(subcases(kUnitCaseParamsBuilder.beginSubcases()));
+    } else {
+      return this.params2(kUnitCaseParamsBuilder.beginSubcases().combine(subcases));
     }
-    return this.params2(subcases);
   }
 
   *iterate(): IterableIterator<RunCase> {
     assert(this.testFn !== undefined, 'No test function (.fn()) for test');
-    this.testCases ??= [[{}, undefined]];
-    for (const [caseParams, subcases] of this.testCases) {
+    this.testCases ??= kUnitCaseParamsBuilder;
+    for (const [caseParams, subcases] of this.testCases.iterateCaseSubcase()) {
       yield new RunCaseSpecific(
         this.testPath,
         caseParams,

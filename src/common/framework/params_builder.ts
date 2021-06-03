@@ -83,11 +83,6 @@ export function pbool<Name extends string>(
 }
 
 /** @deprecated */
-export function params(): ParamsBuilder<{}> {
-  return new ParamsBuilder();
-}
-
-/** @deprecated */
 export class ParamsBuilder<A extends {}> implements TestParamsIterable {
   private paramSpecs: TestParamsIterable = [{}];
 
@@ -166,19 +161,16 @@ function makeReusableIterable<P>(generatorFn: () => Generator<P>): Iterable<P> {
 export type CaseSubcaseIterable<CaseP, SubcaseP> = Iterable<
   readonly [CaseP, Iterable<SubcaseP> | undefined]
 >;
-type CaseSubcaseIterator<CaseP, SubcaseP> = Iterator<
-  readonly [CaseP, Iterable<SubcaseP> | undefined]
->;
 
-export abstract class ParamsBuilderBase<CaseP extends {}, SubcaseP extends {}>
-  implements CaseSubcaseIterable<CaseP, SubcaseP> {
+export abstract class ParamsBuilderBase<CaseP extends {}, SubcaseP extends {}> {
   protected readonly cases: () => Generator<CaseP>;
 
   constructor(cases: () => Generator<CaseP>) {
     this.cases = cases;
   }
 
-  abstract [Symbol.iterator](): CaseSubcaseIterator<CaseP, SubcaseP>;
+  // TODO: Hide this from test files
+  abstract iterateCaseSubcase(): CaseSubcaseIterable<CaseP, SubcaseP>;
 }
 
 /**
@@ -189,11 +181,17 @@ export abstract class ParamsBuilderBase<CaseP extends {}, SubcaseP extends {}>
  *
  * This means, for example, that the `punit` passed into `.params2()` can be reused.
  */
-export class CaseParamsBuilder<CaseP extends {}> extends ParamsBuilderBase<CaseP, {}> {
-  *[Symbol.iterator](): CaseSubcaseIterator<CaseP, {}> {
+export class CaseParamsBuilder<CaseP extends {}>
+  extends ParamsBuilderBase<CaseP, {}>
+  implements Iterable<CaseP> {
+  *iterateCaseSubcase(): CaseSubcaseIterable<CaseP, {}> {
     for (const a of this.cases()) {
       yield [a, undefined];
     }
+  }
+
+  [Symbol.iterator](): Iterator<CaseP> {
+    return this.cases();
   }
 
   /**
@@ -305,7 +303,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
     this.subcases = generator;
   }
 
-  *[Symbol.iterator](): CaseSubcaseIterator<CaseP, SubcaseP> {
+  *iterateCaseSubcase(): CaseSubcaseIterable<CaseP, SubcaseP> {
     for (const caseP of this.cases()) {
       yield [caseP, makeReusableIterable(() => this.subcases(caseP))];
     }
