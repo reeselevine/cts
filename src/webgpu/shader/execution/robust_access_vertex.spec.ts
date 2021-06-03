@@ -44,7 +44,7 @@ Vertex buffer contents could be randomized to prevent the case where a previous 
 a similar buffer to ours and the OOB-read seems valid. This should be deterministic, which adds
 more complexity that we may not need.`;
 
-import { pbool, poptions } from '../../../common/framework/params_builder.js';
+import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { GPUTest } from '../../gpu_test.js';
 
@@ -254,8 +254,8 @@ const typeInfoMap: { [k: string]: VertexInfo } = {
 g.test('vertexAccess')
   .params2(u =>
     u
-      .combine(pbool('indexed'))
-      .combine(pbool('indirect'))
+      .combineOptions('indexed', [false, true])
+      .combineOptions('indirect', [false, true])
       .expand(p =>
         poptions(
           'drawCallTestParameter',
@@ -273,8 +273,8 @@ g.test('vertexAccess')
       .beginSubcases()
       .combine(poptions('type', Object.keys(typeInfoMap)))
       .combine(poptions('additionalBuffers', [0, 4]))
-      .combine(pbool('partialLastNumber'))
-      .combine(pbool('offsetVertexBuffer'))
+      .combineOptions('partialLastNumber', [false, true])
+      .combineOptions('offsetVertexBuffer', [false, true])
       .combine(poptions('errorScale', [1, 4, 10 ** 2, 10 ** 4, 10 ** 6]))
   )
   .fn(async t => {

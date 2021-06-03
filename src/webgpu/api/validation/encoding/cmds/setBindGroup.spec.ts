@@ -10,7 +10,7 @@ TODO: merge these notes and implement.
 >     - setBindGroup in different orders (e.g. 0,1,2 vs 2,0,1)
 `;
 
-import { poptions, pbool } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { range, unreachable } from '../../../../../common/framework/util/util.js';
 import { kMinDynamicBufferOffsetAlignment } from '../../../../capability_info.js';
@@ -177,7 +177,7 @@ g.test('dynamic_offsets_match_expectations_in_pass_encoder')
         { dynamicOffsets: [0, 1024], _success: false },
         { dynamicOffsets: [0, 0xffffffff], _success: false },
       ])
-      .combine(pbool('useU32array'))
+      .combineOptions('useU32array', [false, true])
   )
   .fn(async t => {
     const kBindingSize = 9;

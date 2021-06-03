@@ -76,13 +76,6 @@ export function poptions<Name extends string, V>(
 }
 
 /** @deprecated */
-export function pbool<Name extends string>(
-  name: Name
-): CheckForStringLiteralType<Name, Iterable<{ [name in Name]: boolean }>> {
-  return poptions(name, [false, true]);
-}
-
-/** @deprecated */
 export class ParamsBuilder<A extends {}> implements TestParamsIterable {
   private paramSpecs: TestParamsIterable = [{}];
 

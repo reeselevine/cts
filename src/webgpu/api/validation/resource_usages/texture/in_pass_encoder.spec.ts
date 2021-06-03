@@ -42,7 +42,7 @@ Test Coverage:
       dispatch call in compute.
 `;
 
-import { pbool, poptions } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { pp } from '../../../../../common/framework/preprocessor.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { assert } from '../../../../../common/framework/util/util.js';
@@ -233,7 +233,7 @@ const SLICE_COUNT = 2;
 g.test('subresources_and_binding_types_combination_for_color')
   .params2(u =>
     u
-      .combine(pbool('compute'))
+      .combineOptions('compute', [false, true])
       .combine([
         { _usageOK: true, type0: 'sampled-texture', type1: 'sampled-texture' },
         { _usageOK: true, type0: 'sampled-texture', type1: 'readonly-storage-texture' },
@@ -248,8 +248,8 @@ g.test('subresources_and_binding_types_combination_for_color')
         { _usageOK: false, type0: 'render-target', type1: 'render-target' },
       ] as const)
       .beginSubcases()
-      .combine(pbool('binding0InBundle'))
-      .combine(pbool('binding1InBundle'))
+      .combineOptions('binding0InBundle', [false, true])
+      .combineOptions('binding1InBundle', [false, true])
       .unless(
         p =>
           // We can't set 'render-target' in bundle, so we need to exclude it from bundle.
@@ -506,11 +506,11 @@ g.test('subresources_and_binding_types_combination_for_color')
 g.test('subresources_and_binding_types_combination_for_aspect')
   .params2(u =>
     u
-      .combine(pbool('compute'))
+      .combineOptions('compute', [false, true])
       .combine(poptions('format', kDepthStencilFormats))
       .beginSubcases()
-      .combine(pbool('binding0InBundle'))
-      .combine(pbool('binding1InBundle'))
+      .combineOptions('binding0InBundle', [false, true])
+      .combineOptions('binding1InBundle', [false, true])
       .combine([
         {
           baseLevel: BASE_LEVEL,
@@ -665,7 +665,7 @@ g.test('subresources_and_binding_types_combination_for_aspect')
 g.test('shader_stages_and_visibility')
   .params2(u =>
     u
-      .combine(pbool('compute'))
+      .combineOptions('compute', [false, true])
       .combine(poptions('readVisibility', [0, ...kShaderStages]))
       .combine(poptions('writeVisibility', [0, ...kShaderStages]))
       .unless(
@@ -731,8 +731,8 @@ g.test('shader_stages_and_visibility')
 g.test('replaced_binding')
   .params2(u =>
     u
-      .combine(pbool('compute'))
-      .combine(pbool('callDrawOrDispatch'))
+      .combineOptions('compute', [false, true])
+      .combineOptions('callDrawOrDispatch', [false, true])
       .combine(
         poptions('entry', [
           { texture: {} },
@@ -806,8 +806,8 @@ g.test('bindings_in_bundle')
       .combine(poptions('type0', ['render-target', ...kTextureBindingTypes] as const))
       .combine(poptions('type1', ['render-target', ...kTextureBindingTypes] as const))
       .beginSubcases()
-      .combine(pbool('binding0InBundle'))
-      .combine(pbool('binding1InBundle'))
+      .combineOptions('binding0InBundle', [false, true])
+      .combineOptions('binding1InBundle', [false, true])
       .unless(
         p =>
           // We can't set 'render-target' in bundle, so we need to exclude it from bundle.
@@ -887,12 +887,12 @@ g.test('bindings_in_bundle')
 g.test('unused_bindings_in_pipeline')
   .params2(u =>
     u
-      .combine(pbool('compute'))
-      .combine(pbool('useBindGroup0'))
-      .combine(pbool('useBindGroup1'))
+      .combineOptions('compute', [false, true])
+      .combineOptions('useBindGroup0', [false, true])
+      .combineOptions('useBindGroup1', [false, true])
       .combine(poptions('setBindGroupsOrder', ['common', 'reversed'] as const))
       .combine(poptions('setPipeline', ['before', 'middle', 'after', 'none'] as const))
-      .combine(pbool('callDrawOrDispatch'))
+      .combineOptions('callDrawOrDispatch', [false, true])
   )
   .fn(async t => {
     const {

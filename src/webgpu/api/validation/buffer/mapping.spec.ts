@@ -24,7 +24,7 @@ TODO: review existing tests and merge with this plan:
 >     - check x.size == 0, y.size == mapping size
 `;
 
-import { pbool, poptions } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { attemptGarbageCollection } from '../../../../common/framework/util/collect_garbage.js';
 import { assert, unreachable } from '../../../../common/framework/util/util.js';
@@ -650,7 +650,7 @@ g.test('getMappedRange,disjointRanges')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(pbool('remapBetweenCalls'))
+      .combineOptions('remapBetweenCalls', [false, true])
       .combine([
         // Disjoint ranges with one that's empty.
         { offset1: 8, size1: 0, offset2: 8, size2: 8 },

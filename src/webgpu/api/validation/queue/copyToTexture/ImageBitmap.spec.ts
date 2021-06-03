@@ -25,7 +25,7 @@ Test Plan:
 TODO: copying into slices of 2d array textures. 1d and 3d as well if they're not invalid.
 `;
 
-import { poptions, pbool } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import {
   kAllTextureFormatInfo,
@@ -178,7 +178,7 @@ export const g = makeTestGroup(CopyImageBitmapToTextureTest);
 g.test('source_imageBitmap,state')
   .params2(u =>
     u //
-      .combine(pbool('closed'))
+      .combineOptions('closed', [false, true])
       .beginSubcases()
       .combine(
         poptions('copySize', [

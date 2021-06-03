@@ -13,7 +13,7 @@ TODO: Since there are no errors here, these should be "robustness" operation tes
 valid results).
 `;
 
-import { poptions, pbool } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { ValidationTest } from '../../validation_test.js';
 
@@ -140,7 +140,7 @@ g.test('out_of_bounds')
   .params2(
     u =>
       u
-        .combine(pbool('indirect'))
+        .combineOptions('indirect', [false, true])
         .beginSubcases()
         .combine([
           { indexCount: 6, firstIndex: 1 }, // indexCount + firstIndex out of bound
@@ -184,7 +184,7 @@ g.test('out_of_bounds_zero_sized_index_buffer')
   .params2(
     u =>
       u
-        .combine(pbool('indirect'))
+        .combineOptions('indirect', [false, true])
         .combine([
           { indexCount: 3, firstIndex: 1 }, // indexCount + firstIndex out of bound
           { indexCount: 0, firstIndex: 1 }, // indexCount is 0 but firstIndex out of bound

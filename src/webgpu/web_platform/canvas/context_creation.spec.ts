@@ -6,7 +6,7 @@ Options are configured in configureSwapChain instead.
 `;
 
 import { Fixture } from '../../../common/framework/fixture.js';
-import { pbool, poptions } from '../../../common/framework/params_builder.js';
+import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 
 export const g = makeTestGroup(Fixture);
@@ -19,7 +19,7 @@ g.test('return_type')
   )
   .params2(u =>
     u
-      .combine(pbool('offscreen'))
+      .combineOptions('offscreen', [false, true])
       .beginSubcases()
       .combine(poptions('attributes', [undefined, {}]))
   )

@@ -11,7 +11,7 @@ Wait on another fence, then call expectContents to verify the written buffer.
   - if not single pass, x= writes in {same cmdbuf, separate cmdbufs, separate submits, separate queues}
 `;
 
-import { pbool, poptions } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 
 import { kAllWriteOps, BufferSyncTest } from './buffer_sync_test.js';
@@ -89,8 +89,8 @@ g.test('two_draws_in_the_same_render_pass')
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(pbool('firstDrawUseBundle'))
-      .combine(pbool('secondDrawUseBundle'))
+      .combineOptions('firstDrawUseBundle', [false, true])
+      .combineOptions('secondDrawUseBundle', [false, true])
   )
   .fn(async t => {
     const { firstDrawUseBundle, secondDrawUseBundle } = t.params;

@@ -2,7 +2,7 @@ export const description = `
 Tests for capability checking for features enabling optional query types.
 `;
 
-import { pbool, poptions } from '../../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { ValidationTest } from '../../validation_test.js';
 
@@ -24,8 +24,8 @@ As of this writing, the spec needs to be fixed as well.
   .params2(u =>
     u
       .combine(poptions('type', ['occlusion', 'pipeline-statistics', 'timestamp'] as const))
-      .combine(pbool('pipelineStatisticsQueryEnable'))
-      .combine(pbool('timestampQueryEnable'))
+      .combineOptions('pipelineStatisticsQueryEnable', [false, true])
+      .combineOptions('timestampQueryEnable', [false, true])
   )
   .fn(async t => {
     const { type, pipelineStatisticsQueryEnable, timestampQueryEnable } = t.params;

@@ -14,7 +14,6 @@ TODO: tests for pipeline statistics queries:
         - }
 `;
 
-import { pbool } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { ValidationTest } from '../../validation_test.js';
 
@@ -108,7 +107,7 @@ Tests that two disjoint occlusion queries cannot be begun with same query index 
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(pbool('isOnSameRenderPass'))
+      .combineOptions('isOnSameRenderPass', [false, true])
   )
   .fn(async t => {
     const querySet = createQuerySetWithType(t, 'occlusion', 1);

@@ -12,7 +12,7 @@ TODO:
   - mode= {draw, drawIndexed}
 `;
 
-import { pbool, poptions } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { assert } from '../../../../common/framework/util/util.js';
 import {
@@ -52,8 +52,8 @@ Params:
       .combine(poptions('count', [0, 3, 6] as const))
       .combine(poptions('first_instance', [0, 2] as const))
       .combine(poptions('instance_count', [0, 1, 4] as const))
-      .combine(pbool('indexed'))
-      .combine(pbool('indirect'))
+      .combineOptions('indexed', [false, true])
+      .combineOptions('indirect', [false, true])
       .combine(poptions('vertex_buffer_offset', [0, 32] as const))
       .expand(p => poptions('index_buffer_offset', p.indexed ? ([0, 16] as const) : [undefined]))
       .expand(p => poptions('base_vertex', p.indexed ? ([0, 9] as const) : [undefined]))

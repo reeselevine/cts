@@ -2,7 +2,6 @@ export const description = `
 Destroying a buffer more than once is allowed.
 `;
 
-import { pbool } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { GPUConst } from '../../../constants.js';
 import { ValidationTest } from '../validation_test.js';
@@ -14,7 +13,7 @@ g.test('twice')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(pbool('mappedAtCreation'))
+      .combineOptions('mappedAtCreation', [false, true])
       .combine([
         { size: 4, usage: GPUConst.BufferUsage.COPY_SRC },
         { size: 4, usage: GPUConst.BufferUsage.MAP_WRITE | GPUConst.BufferUsage.COPY_SRC },

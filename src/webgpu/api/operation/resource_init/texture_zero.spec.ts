@@ -13,7 +13,6 @@ TODO:
 import { TestCaseRecorder } from '../../../../common/framework/logging/test_case_recorder.js';
 import {
   poptions,
-  pbool,
   kUnitCaseParamsBuilder,
   ParamTypeOf,
 } from '../../../../common/framework/params_builder.js';
@@ -452,8 +451,8 @@ const kTestParams = kUnitCaseParamsBuilder
   .combine(poptions('uninitializeMethod', kUninitializeMethods))
   .beginSubcases()
   .combine(poptions('aspect', kTextureAspects))
-  .combine(pbool('nonPowerOfTwo'))
-  .combine(pbool('canaryOnCreation'))
+  .combineOptions('nonPowerOfTwo', [false, true])
+  .combineOptions('canaryOnCreation', [false, true])
   .filter(({ canaryOnCreation, format }) => {
     // We can only initialize the texture if it's encodable or renderable.
     const canInitialize =

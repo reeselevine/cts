@@ -2,7 +2,7 @@ export const description = `
 Tests for validation in createBuffer.
 `;
 
-import { pbool, poptions } from '../../../../common/framework/params_builder.js';
+import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { assert } from '../../../../common/framework/util/util.js';
 import { kBufferSizeAlignment } from '../../../capability_info.js';
@@ -15,7 +15,7 @@ g.test('size')
   .desc('Test buffer size alignment.')
   .params2(u =>
     u
-      .combine(pbool('mappedAtCreation'))
+      .combineOptions('mappedAtCreation', [false, true])
       .beginSubcases()
       .combine(
         poptions('size', [
@@ -32,7 +32,7 @@ g.test('size')
 g.test('usage')
   .desc('Test combinations of (one to two?) usage flags.')
   .params2(u =>
-    u.beginSubcases().combine(pbool('mappedAtCreation')).combine(
+    u.beginSubcases().combineOptions('mappedAtCreation', [false, true]).combine(
       poptions('usage', [
         // TODO
       ])

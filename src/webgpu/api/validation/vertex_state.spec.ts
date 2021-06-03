@@ -1,6 +1,6 @@
 export const description = `vertexState validation tests.`;
 
-import { pbool, poptions } from '../../../common/framework/params_builder.js';
+import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import {
   kMaxVertexAttributes,
@@ -149,7 +149,7 @@ g.test('max_vertex_buffer_limit')
     u
       .beginSubcases()
       .combine(poptions('count', [0, 1, kMaxVertexBuffers, kMaxVertexBuffers + 1]))
-      .combine(pbool('lastEmpty'))
+      .combineOptions('lastEmpty', [false, true])
   )
   .fn(t => {
     const { count, lastEmpty } = t.params;
@@ -283,7 +283,7 @@ g.test('vertex_attribute_shaderLocation_limit')
       .beginSubcases()
       .combine(poptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1]))
       .combine(poptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1]))
-      .combine(pbool('testAttributeAtStart'))
+      .combineOptions('testAttributeAtStart', [false, true])
       .combine(
         poptions('testShaderLocation', [0, 1, kMaxVertexAttributes - 1, kMaxVertexAttributes])
       )
@@ -323,8 +323,8 @@ g.test('vertex_attribute_shaderLocation_unique')
       .beginSubcases()
       .combine(poptions('vertexBufferIndexA', [0, 1, kMaxVertexBuffers - 1]))
       .combine(poptions('vertexBufferIndexB', [0, 1, kMaxVertexBuffers - 1]))
-      .combine(pbool('testAttributeAtStartA'))
-      .combine(pbool('testAttributeAtStartB'))
+      .combineOptions('testAttributeAtStartA', [false, true])
+      .combineOptions('testAttributeAtStartB', [false, true])
       .combine(poptions('shaderLocationA', [0, 1, 7, kMaxVertexAttributes - 1]))
       .combine(poptions('shaderLocationB', [0, 1, 7, kMaxVertexAttributes - 1]))
       .combine(poptions('extraAttributeCount', [0, 4]))
@@ -434,7 +434,7 @@ g.test('vertex_shader_input_location_in_vertex_state')
       .beginSubcases()
       .combine(poptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1]))
       .combine(poptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1]))
-      .combine(pbool('testAttributeAtStart'))
+      .combineOptions('testAttributeAtStart', [false, true])
       .combine(poptions('testShaderLocation', [0, 1, 4, 7, kMaxVertexAttributes - 1]))
   )
   .fn(t => {
@@ -555,7 +555,7 @@ g.test('vertex_attribute_offset_alignment')
       .beginSubcases()
       .combine(poptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1]))
       .combine(poptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1]))
-      .combine(pbool('testAttributeAtStart'))
+      .combineOptions('testAttributeAtStart', [false, true])
   )
   .fn(t => {
     const {
@@ -624,7 +624,7 @@ g.test('vertex_attribute_contained_in_stride')
       })
       .combine(poptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1]))
       .combine(poptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1]))
-      .combine(pbool('testAttributeAtStart'))
+      .combineOptions('testAttributeAtStart', [false, true])
   )
   .fn(t => {
     const {
