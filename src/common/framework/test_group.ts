@@ -229,7 +229,7 @@ class TestBuilder {
 
   /** @deprecated */
   params(casesIterable: Iterable<{}>): TestBuilder {
-    return this.cases(casesIterable);
+    return this.params2(casesIterable);
   }
 
   /** @deprecated */

@@ -123,7 +123,7 @@ g.test('basic,builder_cases')
     `
 A "CaseParamsBuilder" or "SubcaseParamsBuilder" can be passed to .params2() instead.
 The params builder provides facilities for generating tests combinatorially (by cartesian
-product).
+product). For convenience, the "unit" CaseParamsBuilder is passed as an argument ("u" below).
 
 In this example, the following cases are generated, each with just one subcase:
   - webgpu:examples:basic,cases:x=1,y=1  runs 1 subcase, with t.params set to:
