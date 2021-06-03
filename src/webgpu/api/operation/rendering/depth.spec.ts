@@ -2,7 +2,6 @@ export const description = `
 Test related to depth buffer, depth op, compare func, etc.
 `;
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { kDepthStencilFormats } from '../../../capability_info.js';
 import { GPUTest } from '../../../gpu_test.js';
@@ -30,11 +29,9 @@ g.test('depth_compare_func')
   )
   .params2(u =>
     u
-      .combine(
-        poptions(
-          'format',
-          kDepthStencilFormats.filter(format => format !== 'stencil8')
-        )
+      .combineOptions(
+        'format',
+        kDepthStencilFormats.filter(format => format !== 'stencil8')
       )
       .combine([
         { depthCompare: 'never', depthLoadValue: 1.0, _expected: backgroundColor },

@@ -6,7 +6,6 @@ TODO:
 - Move all the tests here to image_copy/ and test writeTexture() with depth/stencil formats.
 `;
 
-import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { assert } from '../../../../../common/framework/util/util.js';
 import {
@@ -59,7 +58,7 @@ g.test('depth_stencil_format,copy_usage_and_aspect')
     u //
       .combineOptions('format', kDepthStencilFormats)
       .beginSubcases()
-      .combine(poptions('aspect', ['all', 'depth-only', 'stencil-only'] as const))
+      .combineOptions('aspect', ['all', 'depth-only', 'stencil-only'] as const)
   )
   .fn(async t => {
     const { format, aspect } = t.params;
@@ -103,20 +102,18 @@ g.test('depth_stencil_format,copy_buffer_size')
   )
   .params2(u =>
     u
-      .combine(poptions('format', kDepthStencilFormats))
-      .combine(poptions('aspect', ['depth-only', 'stencil-only'] as const))
-      .combine(poptions('copyType', ['CopyB2T', 'CopyT2B'] as const))
+      .combineOptions('format', kDepthStencilFormats)
+      .combineOptions('aspect', ['depth-only', 'stencil-only'] as const)
+      .combineOptions('copyType', ['CopyB2T', 'CopyT2B'] as const)
       .filter(param =>
         depthStencilBufferTextureCopySupported(param.copyType, param.format, param.aspect)
       )
       .beginSubcases()
-      .combine(
-        poptions('copySize', [
-          { width: 8, height: 1, depthOrArrayLayers: 1 },
-          { width: 4, height: 4, depthOrArrayLayers: 1 },
-          { width: 4, height: 4, depthOrArrayLayers: 3 },
-        ])
-      )
+      .combineOptions('copySize', [
+        { width: 8, height: 1, depthOrArrayLayers: 1 },
+        { width: 4, height: 4, depthOrArrayLayers: 1 },
+        { width: 4, height: 4, depthOrArrayLayers: 3 },
+      ])
   )
   .fn(async t => {
     const { format, aspect, copyType, copySize } = t.params;
@@ -186,14 +183,14 @@ g.test('depth_stencil_format,copy_buffer_offset')
   )
   .params2(u =>
     u
-      .combine(poptions('format', kDepthStencilFormats))
-      .combine(poptions('aspect', ['depth-only', 'stencil-only'] as const))
-      .combine(poptions('copyType', ['CopyB2T', 'CopyT2B'] as const))
+      .combineOptions('format', kDepthStencilFormats)
+      .combineOptions('aspect', ['depth-only', 'stencil-only'] as const)
+      .combineOptions('copyType', ['CopyB2T', 'CopyT2B'] as const)
       .filter(param =>
         depthStencilBufferTextureCopySupported(param.copyType, param.format, param.aspect)
       )
       .beginSubcases()
-      .combine(poptions('offset', [1, 2, 4, 6, 8]))
+      .combineOptions('offset', [1, 2, 4, 6, 8])
   )
   .fn(async t => {
     const { format, aspect, copyType, offset } = t.params;

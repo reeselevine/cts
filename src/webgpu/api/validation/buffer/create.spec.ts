@@ -2,7 +2,6 @@ export const description = `
 Tests for validation in createBuffer.
 `;
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { assert } from '../../../../common/framework/util/util.js';
 import { kBufferSizeAlignment } from '../../../capability_info.js';
@@ -17,25 +16,21 @@ g.test('size')
     u
       .combineOptions('mappedAtCreation', [false, true])
       .beginSubcases()
-      .combine(
-        poptions('size', [
-          0,
-          kBufferSizeAlignment * 0.5,
-          kBufferSizeAlignment,
-          kBufferSizeAlignment * 1.5,
-          kBufferSizeAlignment * 2,
-        ])
-      )
+      .combineOptions('size', [
+        0,
+        kBufferSizeAlignment * 0.5,
+        kBufferSizeAlignment,
+        kBufferSizeAlignment * 1.5,
+        kBufferSizeAlignment * 2,
+      ])
   )
   .unimplemented();
 
 g.test('usage')
   .desc('Test combinations of (one to two?) usage flags.')
   .params2(u =>
-    u.beginSubcases().combineOptions('mappedAtCreation', [false, true]).combine(
-      poptions('usage', [
-        // TODO
-      ])
-    )
+    u.beginSubcases().combineOptions('mappedAtCreation', [false, true]).combineOptions('usage', [
+      // TODO
+    ])
   )
   .unimplemented();

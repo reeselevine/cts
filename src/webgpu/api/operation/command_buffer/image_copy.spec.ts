@@ -34,7 +34,6 @@ TODO: Fix this test for the various skipped formats:
 - compressed formats
 `;
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { assert, unreachable } from '../../../../common/framework/util/util.js';
 import {
@@ -650,7 +649,7 @@ bytes in copy works for every format.
   .params2(u =>
     u
       .combine(kMethodsToTest)
-      .combine(poptions('format', kWorkingTextureFormats))
+      .combineOptions('format', kWorkingTextureFormats)
       .filter(formatCanBeTested)
       .beginSubcases()
       .combine([
@@ -747,7 +746,7 @@ works for every format with 2d and 2d-array textures.
     u =>
       u
         .combine(kMethodsToTest)
-        .combine(poptions('format', kWorkingTextureFormats))
+        .combineOptions('format', kWorkingTextureFormats)
         .filter(formatCanBeTested)
         .beginSubcases()
         .combine([
@@ -763,7 +762,7 @@ works for every format with 2d and 2d-array textures.
           { offsetInBlocks: 0, dataPaddingInBytes: 1 }, // dataPaddingInBytes > 0
           { offsetInBlocks: 1, dataPaddingInBytes: 8 }, // offset > 0 and dataPaddingInBytes > 0
         ])
-        .combine(poptions('copyDepth', [1, 2])) // 2d and 2d-array textures
+        .combineOptions('copyDepth', [1, 2]) // 2d and 2d-array textures
   )
   .fn(async t => {
     const {
@@ -815,18 +814,18 @@ for all formats. We pass origin and copyExtent as [number, number, number].`
   .params2(u =>
     u
       .combine(kMethodsToTest)
-      .combine(poptions('format', kWorkingTextureFormats))
+      .combineOptions('format', kWorkingTextureFormats)
       .filter(formatCanBeTested)
       .beginSubcases()
-      .combine(poptions('originValueInBlocks', [0, 7, 8]))
-      .combine(poptions('copySizeValueInBlocks', [0, 7, 8]))
-      .combine(poptions('textureSizePaddingValueInBlocks', [0, 7, 8]))
+      .combineOptions('originValueInBlocks', [0, 7, 8])
+      .combineOptions('copySizeValueInBlocks', [0, 7, 8])
+      .combineOptions('textureSizePaddingValueInBlocks', [0, 7, 8])
       .unless(
         p =>
           // we can't create an empty texture
           p.copySizeValueInBlocks + p.originValueInBlocks + p.textureSizePaddingValueInBlocks === 0
       )
-      .combine(poptions('coordinateToTest', [0, 1, 2] as const))
+      .combineOptions('coordinateToTest', [0, 1, 2] as const)
   )
   .fn(async t => {
     const {
@@ -906,7 +905,7 @@ function* generateTestTextureSizes({
   format: SizedTextureFormat;
   mipLevel: number;
   _mipSizeInBlocks: Required<GPUExtent3DDict>;
-}): Generator<{ textureSize: [number, number, number] }> {
+}): Generator<[number, number, number]> {
   const info = kSizedTextureFormatInfo[format];
 
   const widthAtThisLevel = _mipSizeInBlocks.width * info.blockWidth;
@@ -916,9 +915,7 @@ function* generateTestTextureSizes({
     heightAtThisLevel << mipLevel,
     _mipSizeInBlocks.depthOrArrayLayers,
   ];
-  yield {
-    textureSize,
-  };
+  yield textureSize;
 
   // We choose width and height of the texture so that the values are divisible by blockWidth and
   // blockHeight respectively and so that the virtual size at mip level corresponds to the same
@@ -936,19 +933,13 @@ function* generateTestTextureSizes({
   const modifyHeight = info.blockHeight > 1 && modifiedHeight !== textureSize[1];
 
   if (modifyWidth) {
-    yield {
-      textureSize: [modifiedWidth, textureSize[1], textureSize[2]],
-    };
+    yield [modifiedWidth, textureSize[1], textureSize[2]];
   }
   if (modifyHeight) {
-    yield {
-      textureSize: [textureSize[0], modifiedHeight, textureSize[2]],
-    };
+    yield [textureSize[0], modifiedHeight, textureSize[2]];
   }
   if (modifyWidth && modifyHeight) {
-    yield {
-      textureSize: [modifiedWidth, modifiedHeight, textureSize[2]],
-    };
+    yield [modifiedWidth, modifiedHeight, textureSize[2]];
   }
 }
 
@@ -962,7 +953,7 @@ g.test('mip_levels')
   .params2(u =>
     u
       .combine(kMethodsToTest)
-      .combine(poptions('format', kWorkingTextureFormats))
+      .combineOptions('format', kWorkingTextureFormats)
       .filter(formatCanBeTested)
       .beginSubcases()
       .combine([
@@ -1009,7 +1000,7 @@ g.test('mip_levels')
           mipLevel: 6,
         },
       ])
-      .expand(generateTestTextureSizes)
+      .expandOptions('textureSize', generateTestTextureSizes)
   )
   .fn(async t => {
     const {

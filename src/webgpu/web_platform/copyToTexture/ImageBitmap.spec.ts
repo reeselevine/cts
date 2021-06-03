@@ -10,7 +10,6 @@ TODO: Test ImageBitmap generated from all possible ImageBitmapSource, relevant I
 TODO: Test zero-sized copies from all sources (just make sure params cover it) (e.g. 0x0, 0x4, 4x0).
 `;
 
-import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { unreachable } from '../../../common/framework/util/util.js';
 import { RegularTextureFormat, kRegularTextureFormatInfo } from '../../capability_info.js';
@@ -251,24 +250,22 @@ g.test('from_ImageData')
   )
   .params2(u =>
     u
-      .combine(poptions('alpha', ['none', 'premultiply'] as const))
-      .combine(poptions('orientation', ['none', 'flipY'] as const))
-      .combine(
-        poptions('dstColorFormat', [
-          'rgba8unorm',
-          'bgra8unorm',
-          'rgba8unorm-srgb',
-          'bgra8unorm-srgb',
-          'rgb10a2unorm',
-          'rgba16float',
-          'rgba32float',
-          'rg8unorm',
-          'rg16float',
-        ] as const)
-      )
+      .combineOptions('alpha', ['none', 'premultiply'] as const)
+      .combineOptions('orientation', ['none', 'flipY'] as const)
+      .combineOptions('dstColorFormat', [
+        'rgba8unorm',
+        'bgra8unorm',
+        'rgba8unorm-srgb',
+        'bgra8unorm-srgb',
+        'rgb10a2unorm',
+        'rgba16float',
+        'rgba32float',
+        'rg8unorm',
+        'rg16float',
+      ] as const)
       .beginSubcases()
-      .combine(poptions('width', [1, 2, 4, 15, 255, 256]))
-      .combine(poptions('height', [1, 2, 4, 15, 255, 256]))
+      .combineOptions('width', [1, 2, 4, 15, 255, 256])
+      .combineOptions('height', [1, 2, 4, 15, 255, 256])
   )
   .fn(async t => {
     const { width, height, alpha, orientation, dstColorFormat } = t.params;
@@ -329,23 +326,21 @@ g.test('from_canvas')
   )
   .params2(u =>
     u
-      .combine(poptions('orientation', ['none', 'flipY'] as const))
-      .combine(
-        poptions('dstColorFormat', [
-          'rgba8unorm',
-          'bgra8unorm',
-          'rgba8unorm-srgb',
-          'bgra8unorm-srgb',
-          'rgb10a2unorm',
-          'rgba16float',
-          'rgba32float',
-          'rg8unorm',
-          'rg16float',
-        ] as const)
-      )
+      .combineOptions('orientation', ['none', 'flipY'] as const)
+      .combineOptions('dstColorFormat', [
+        'rgba8unorm',
+        'bgra8unorm',
+        'rgba8unorm-srgb',
+        'bgra8unorm-srgb',
+        'rgb10a2unorm',
+        'rgba16float',
+        'rgba32float',
+        'rg8unorm',
+        'rg16float',
+      ] as const)
       .beginSubcases()
-      .combine(poptions('width', [1, 2, 4, 15, 255, 256]))
-      .combine(poptions('height', [1, 2, 4, 15, 255, 256]))
+      .combineOptions('width', [1, 2, 4, 15, 255, 256])
+      .combineOptions('height', [1, 2, 4, 15, 255, 256])
   )
   .fn(async t => {
     const { width, height, orientation, dstColorFormat } = t.params;

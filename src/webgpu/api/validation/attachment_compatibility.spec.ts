@@ -4,7 +4,6 @@ Validation for attachment compatibility between render passes, bundles, and pipe
 TODO: Add sparse color attachment compatibility test when defined by specification
 `;
 
-import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { range } from '../../../common/framework/util/util.js';
 import {
@@ -148,8 +147,8 @@ g.test('render_pass_and_bundle,color_format')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('passFormat', kColorAttachmentFormats))
-      .combine(poptions('bundleFormat', kColorAttachmentFormats))
+      .combineOptions('passFormat', kColorAttachmentFormats)
+      .combineOptions('bundleFormat', kColorAttachmentFormats)
   )
   .fn(t => {
     const { passFormat, bundleFormat } = t.params;
@@ -179,8 +178,8 @@ g.test('render_pass_and_bundle,color_count')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('passCount', kColorAttachmentCounts))
-      .combine(poptions('bundleCount', kColorAttachmentCounts))
+      .combineOptions('passCount', kColorAttachmentCounts)
+      .combineOptions('bundleCount', kColorAttachmentCounts)
   )
   .fn(t => {
     const { passCount, bundleCount } = t.params;
@@ -205,8 +204,8 @@ g.test('render_pass_and_bundle,depth_format')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('passFormat', kDepthStencilAttachmentFormats))
-      .combine(poptions('bundleFormat', kDepthStencilAttachmentFormats))
+      .combineOptions('passFormat', kDepthStencilAttachmentFormats)
+      .combineOptions('bundleFormat', kDepthStencilAttachmentFormats)
   )
   .fn(async t => {
     const { passFormat, bundleFormat } = t.params;
@@ -235,8 +234,8 @@ g.test('render_pass_and_bundle,sample_count')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('renderSampleCount', kTextureSampleCounts))
-      .combine(poptions('bundleSampleCount', kTextureSampleCounts))
+      .combineOptions('renderSampleCount', kTextureSampleCounts)
+      .combineOptions('bundleSampleCount', kTextureSampleCounts)
   )
   .fn(t => {
     const { renderSampleCount, bundleSampleCount } = t.params;
@@ -264,10 +263,10 @@ Test that color attachment formats in render passes or bundles match the pipelin
   )
   .params2(u =>
     u
-      .combine(poptions('encoderType', ['render pass', 'render bundle'] as const))
+      .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
-      .combine(poptions('encoderFormat', kColorAttachmentFormats))
-      .combine(poptions('pipelineFormat', kColorAttachmentFormats))
+      .combineOptions('encoderFormat', kColorAttachmentFormats)
+      .combineOptions('pipelineFormat', kColorAttachmentFormats)
   )
   .fn(t => {
     const { encoderType, encoderFormat, pipelineFormat } = t.params;
@@ -292,10 +291,10 @@ TODO: Add sparse color attachment compatibility test when defined by specificati
   )
   .params2(u =>
     u
-      .combine(poptions('encoderType', ['render pass', 'render bundle'] as const))
+      .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
-      .combine(poptions('encoderCount', kColorAttachmentCounts))
-      .combine(poptions('pipelineCount', kColorAttachmentCounts))
+      .combineOptions('encoderCount', kColorAttachmentCounts)
+      .combineOptions('pipelineCount', kColorAttachmentCounts)
   )
   .fn(t => {
     const { encoderType, encoderCount, pipelineCount } = t.params;
@@ -320,10 +319,10 @@ Test that the depth attachment format in render passes or bundles match the pipe
   )
   .params2(u =>
     u
-      .combine(poptions('encoderType', ['render pass', 'render bundle'] as const))
+      .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
-      .combine(poptions('encoderFormat', kDepthStencilAttachmentFormats))
-      .combine(poptions('pipelineFormat', kDepthStencilAttachmentFormats))
+      .combineOptions('encoderFormat', kDepthStencilAttachmentFormats)
+      .combineOptions('pipelineFormat', kDepthStencilAttachmentFormats)
   )
   .fn(async t => {
     const { encoderType, encoderFormat, pipelineFormat } = t.params;
@@ -354,10 +353,10 @@ Test that the sample count in render passes or bundles match the pipeline sample
   )
   .params2(u =>
     u
-      .combine(poptions('encoderType', ['render pass', 'render bundle'] as const))
+      .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
-      .combine(poptions('encoderSampleCount', kTextureSampleCounts))
-      .combine(poptions('pipelineSampleCount', kTextureSampleCounts))
+      .combineOptions('encoderSampleCount', kTextureSampleCounts)
+      .combineOptions('pipelineSampleCount', kTextureSampleCounts)
   )
   .fn(t => {
     const { encoderType, encoderSampleCount, pipelineSampleCount } = t.params;

@@ -18,7 +18,6 @@ Use 2 triangles with different winding orders:
   - Some primitive topologies (triangle-list, TODO: triangle-strip)
 `;
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { GPUTest } from '../../../gpu_test.js';
 
@@ -43,19 +42,17 @@ export const g = makeTestGroup(GPUTest);
 g.test('culling')
   .params2(u =>
     u
-      .combine(poptions('frontFace', ['ccw', 'cw'] as const))
-      .combine(poptions('cullMode', ['none', 'front', 'back'] as const))
+      .combineOptions('frontFace', ['ccw', 'cw'] as const)
+      .combineOptions('cullMode', ['none', 'front', 'back'] as const)
       .beginSubcases()
-      .combine(
-        poptions('depthStencilFormat', [
-          null,
-          'depth24plus',
-          'depth32float',
-          'depth24plus-stencil8',
-        ] as const)
-      )
+      .combineOptions('depthStencilFormat', [
+        null,
+        'depth24plus',
+        'depth32float',
+        'depth24plus-stencil8',
+      ] as const)
       // TODO: test triangle-strip as well
-      .combine(poptions('primitiveTopology', ['triangle-list'] as const))
+      .combineOptions('primitiveTopology', ['triangle-list'] as const)
   )
   .fn(t => {
     const size = 4;

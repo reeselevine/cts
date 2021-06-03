@@ -1,6 +1,5 @@
 export const description = 'copyBufferToBuffer operation tests';
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { GPUTest } from '../../../gpu_test.js';
 
@@ -23,12 +22,8 @@ g.test('single')
       .combineOptions('srcOffset', [0, 4, 8, 16])
       .combineOptions('dstOffset', [0, 4, 8, 16])
       .combineOptions('copySize', [0, 4, 8, 16])
-      .expand(p =>
-        poptions('srcBufferSize', [p.srcOffset + p.copySize, p.srcOffset + p.copySize + 8])
-      )
-      .expand(p =>
-        poptions('dstBufferSize', [p.dstOffset + p.copySize, p.dstOffset + p.copySize + 8])
-      )
+      .expandOptions('srcBufferSize', p => [p.srcOffset + p.copySize, p.srcOffset + p.copySize + 8])
+      .expandOptions('dstBufferSize', p => [p.dstOffset + p.copySize, p.dstOffset + p.copySize + 8])
   )
   .fn(async t => {
     const { srcOffset, dstOffset, copySize, srcBufferSize, dstBufferSize } = t.params;

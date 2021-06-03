@@ -11,7 +11,6 @@ Test Coverage:
     - Test inserting a debug marker with empty and non-empty strings.
 `;
 
-import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { ValidationTest, kEncoderTypes } from '../../validation_test.js';
 
@@ -20,10 +19,10 @@ export const g = makeTestGroup(ValidationTest);
 g.test('debug_group_balanced')
   .params2(u =>
     u
-      .combine(poptions('encoderType', kEncoderTypes))
+      .combineOptions('encoderType', kEncoderTypes)
       .beginSubcases()
-      .combine(poptions('pushCount', [0, 1, 2]))
-      .combine(poptions('popCount', [0, 1, 2]))
+      .combineOptions('pushCount', [0, 1, 2])
+      .combineOptions('popCount', [0, 1, 2])
   )
   .fn(t => {
     const { encoder, finish } = t.createEncoder(t.params.encoderType);
@@ -43,9 +42,9 @@ g.test('debug_group_balanced')
 g.test('debug_group')
   .params2(u =>
     u
-      .combine(poptions('encoderType', kEncoderTypes))
+      .combineOptions('encoderType', kEncoderTypes)
       .beginSubcases()
-      .combine(poptions('label', ['', 'group']))
+      .combineOptions('label', ['', 'group'])
   )
   .fn(t => {
     const { encoder, finish } = t.createEncoder(t.params.encoderType);
@@ -58,9 +57,9 @@ g.test('debug_group')
 g.test('debug_marker')
   .params2(u =>
     u
-      .combine(poptions('encoderType', kEncoderTypes))
+      .combineOptions('encoderType', kEncoderTypes)
       .beginSubcases()
-      .combine(poptions('label', ['', 'marker']))
+      .combineOptions('label', ['', 'marker'])
   )
   .fn(t => {
     const maker = t.createEncoder(t.params.encoderType);

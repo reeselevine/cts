@@ -4,7 +4,7 @@ createBindGroupLayout validation tests.
 TODO: make sure tests are complete.
 `;
 
-import { poptions, kUnitCaseParamsBuilder } from '../../../common/framework/params_builder.js';
+import { kUnitCaseParamsBuilder } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import {
   kMaxBindingsPerBindGroup,
@@ -82,7 +82,7 @@ g.test('visibility')
 g.test('multisampled_validation')
   .desc('Test that multisampling is only allowed with "2d" view dimensions.')
   .params2(u =>
-    u.beginSubcases().combine(poptions('viewDimension', [undefined, ...kTextureViewDimensions]))
+    u.beginSubcases().combineOptions('viewDimension', [undefined, ...kTextureViewDimensions])
   )
   .fn(async t => {
     const { viewDimension } = t.params;
@@ -112,10 +112,10 @@ g.test('max_dynamic_buffers')
   )
   .params2(u =>
     u
-      .combine(poptions('type', kBufferBindingTypes))
+      .combineOptions('type', kBufferBindingTypes)
       .beginSubcases()
-      .combine(poptions('extraDynamicBuffers', [0, 1]))
-      .combine(poptions('staticBuffers', [0, 1]))
+      .combineOptions('extraDynamicBuffers', [0, 1])
+      .combineOptions('staticBuffers', [0, 1])
   )
   .fn(async t => {
     const { type, extraDynamicBuffers, staticBuffers } = t.params;
@@ -158,10 +158,7 @@ g.test('max_dynamic_buffers')
  *     (i.e. 'storage-buffer' <-> 'readonly-storage-buffer').
  *   - Otherwise, an arbitrary other type.
  */
-function* pickExtraBindingTypesForPerStage(
-  entry: BGLEntry,
-  extraTypeSame: boolean
-): IterableIterator<BGLEntry> {
+function* pickExtraBindingTypesForPerStage(entry: BGLEntry, extraTypeSame: boolean) {
   if (extraTypeSame) {
     const info = bindingTypeInfo(entry);
     for (const extra of allBindingEntries(false)) {
@@ -171,20 +168,20 @@ function* pickExtraBindingTypesForPerStage(
       }
     }
   } else {
-    return entry.sampler ? { texture: {} } : { sampler: {} };
+    yield entry.sampler ? { texture: {} } : { sampler: {} };
   }
 }
 
 const kMaxResourcesCases = kUnitCaseParamsBuilder
-  .combine(poptions('maxedEntry', allBindingEntries(false)))
+  .combineOptions('maxedEntry', allBindingEntries(false))
   .beginSubcases()
-  .combine(poptions('maxedVisibility', kShaderStages))
+  .combineOptions('maxedVisibility', kShaderStages)
   .filter(p => (bindingTypeInfo(p.maxedEntry).validStages & p.maxedVisibility) !== 0)
-  .expand(function* (p) {
-    yield* poptions('extraEntry', pickExtraBindingTypesForPerStage(p.maxedEntry, true));
-    yield* poptions('extraEntry', pickExtraBindingTypesForPerStage(p.maxedEntry, false));
-  })
-  .combine(poptions('extraVisibility', kShaderStages))
+  .expandOptions('extraEntry', p => [
+    ...pickExtraBindingTypesForPerStage(p.maxedEntry, true),
+    ...pickExtraBindingTypesForPerStage(p.maxedEntry, false),
+  ])
+  .combineOptions('extraVisibility', kShaderStages)
   .filter(p => (bindingTypeInfo(p.extraEntry).validStages & p.extraVisibility) !== 0);
 
 // Should never fail unless kMaxBindingsPerBindGroup is exceeded, because the validation for

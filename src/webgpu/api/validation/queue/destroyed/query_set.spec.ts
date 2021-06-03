@@ -4,7 +4,6 @@ Tests using a destroyed query set on a queue.
 TODO: Test with pipeline statistics queries on {compute, render} as well.
 `;
 
-import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { createRenderEncoderWithQuerySet } from '../../encoding/queries/common.js';
 import { ValidationTest } from '../../validation_test.js';
@@ -21,7 +20,7 @@ Tests that use a destroyed query set in occlusion query on render pass encoder.
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(poptions('querySetState', ['valid', 'destroyed'] as const))
+      .combineOptions('querySetState', ['valid', 'destroyed'] as const)
   )
   .fn(t => {
     const querySet = t.createQuerySetWithState(t.params.querySetState);
@@ -44,9 +43,9 @@ Tests that use a destroyed query set in writeTimestamp on {non-pass, compute, re
   )
   .params2(u =>
     u
-      .combine(poptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const))
+      .combineOptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const)
       .beginSubcases()
-      .combine(poptions('querySetState', ['valid', 'destroyed'] as const))
+      .combineOptions('querySetState', ['valid', 'destroyed'] as const)
   )
   .fn(async t => {
     await t.selectDeviceOrSkipTestCase('timestamp-query');
@@ -74,7 +73,7 @@ Tests that use a destroyed query set in resolveQuerySet.
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(poptions('querySetState', ['valid', 'destroyed'] as const))
+      .combineOptions('querySetState', ['valid', 'destroyed'] as const)
   )
   .fn(async t => {
     const querySet = t.createQuerySetWithState(t.params.querySetState);

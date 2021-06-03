@@ -24,7 +24,7 @@ TODO: review existing tests and merge with this plan:
 >     - check x.size == 0, y.size == mapping size
 `;
 
-import { poptions } from '../../../../common/framework/params_builder.js';
+import { kUnitCaseParamsBuilder } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { attemptGarbageCollection } from '../../../../common/framework/util/collect_garbage.js';
 import { assert, unreachable } from '../../../../common/framework/util/util.js';
@@ -92,7 +92,10 @@ class F extends ValidationTest {
 
 export const g = makeTestGroup(F);
 
-const kMapModeOptions = poptions('mapMode', [GPUConst.MapMode.READ, GPUConst.MapMode.WRITE]);
+const kMapModeOptions = kUnitCaseParamsBuilder.combineOptions('mapMode', [
+  GPUConst.MapMode.READ,
+  GPUConst.MapMode.WRITE,
+]);
 const kOffsetAlignment = 8;
 const kSizeAlignment = 4;
 
@@ -114,7 +117,7 @@ g.test('mapAsync,usage')
         // Using mapMode 0 is never valid, so there is no validUsage.
         { mapMode: 0, validUsage: null },
       ])
-      .combine(poptions('usage', kBufferUsages))
+      .combineOptions('usage', kBufferUsages)
   )
   .fn(async t => {
     const { mapMode, validUsage, usage } = t.params;
@@ -357,7 +360,7 @@ g.test('getMappedRange,state,mappedAtCreation')
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(poptions('bufferUsage', kBufferUsages))
+      .combineOptions('bufferUsage', kBufferUsages)
   )
   .fn(async t => {
     const { bufferUsage } = t.params;
@@ -806,7 +809,7 @@ g.test('unmap,state,mappedAtCreation')
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(poptions('bufferUsage', kBufferUsages))
+      .combineOptions('bufferUsage', kBufferUsages)
   )
   .fn(t => {
     const { bufferUsage } = t.params;

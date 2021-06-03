@@ -23,7 +23,6 @@ Test Plan:
 * Source buffer and destination buffer are the same buffer
 `;
 
-import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { kBufferUsages } from '../../../../capability_info.js';
 import { kMaxSafeMultipleOf8 } from '../../../../util/math.js';
@@ -81,8 +80,8 @@ g.test('copy_with_invalid_buffer').fn(async t => {
 g.test('buffer_usage')
   .subcases2(u =>
     u //
-      .combine(poptions('srcUsage', kBufferUsages))
-      .combine(poptions('dstUsage', kBufferUsages))
+      .combineOptions('srcUsage', kBufferUsages)
+      .combineOptions('dstUsage', kBufferUsages)
   )
   .fn(async t => {
     const { srcUsage, dstUsage } = t.params;

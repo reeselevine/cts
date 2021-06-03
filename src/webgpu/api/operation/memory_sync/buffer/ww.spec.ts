@@ -11,7 +11,6 @@ Wait on another fence, then call expectContents to verify the written buffer.
   - if not single pass, x= writes in {same cmdbuf, separate cmdbufs, separate submits, separate queues}
 `;
 
-import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 
 import { kAllWriteOps, BufferSyncTest } from './buffer_sync_test.js';
@@ -23,8 +22,8 @@ g.test('same_cmdbuf')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('firstWriteOp', kAllWriteOps))
-      .combine(poptions('secondWriteOp', kAllWriteOps))
+      .combineOptions('firstWriteOp', kAllWriteOps)
+      .combineOptions('secondWriteOp', kAllWriteOps)
   )
   .fn(async t => {
     const { firstWriteOp, secondWriteOp } = t.params;
@@ -43,8 +42,8 @@ g.test('separate_cmdbufs')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('firstWriteOp', kAllWriteOps))
-      .combine(poptions('secondWriteOp', kAllWriteOps))
+      .combineOptions('firstWriteOp', kAllWriteOps)
+      .combineOptions('secondWriteOp', kAllWriteOps)
   )
   .fn(async t => {
     const { firstWriteOp, secondWriteOp } = t.params;
@@ -63,8 +62,8 @@ g.test('separate_submits')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('firstWriteOp', ['write-buffer', ...kAllWriteOps] as const))
-      .combine(poptions('secondWriteOp', ['write-buffer', ...kAllWriteOps] as const))
+      .combineOptions('firstWriteOp', ['write-buffer', ...kAllWriteOps] as const)
+      .combineOptions('secondWriteOp', ['write-buffer', ...kAllWriteOps] as const)
   )
   .fn(async t => {
     const { firstWriteOp, secondWriteOp } = t.params;

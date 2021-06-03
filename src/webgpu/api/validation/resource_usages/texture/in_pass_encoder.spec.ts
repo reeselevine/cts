@@ -42,7 +42,6 @@ Test Coverage:
       dispatch call in compute.
 `;
 
-import { poptions } from '../../../../../common/framework/params_builder.js';
 import { pp } from '../../../../../common/framework/preprocessor.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { assert } from '../../../../../common/framework/util/util.js';
@@ -507,7 +506,7 @@ g.test('subresources_and_binding_types_combination_for_aspect')
   .params2(u =>
     u
       .combineOptions('compute', [false, true])
-      .combine(poptions('format', kDepthStencilFormats))
+      .combineOptions('format', kDepthStencilFormats)
       .beginSubcases()
       .combineOptions('binding0InBundle', [false, true])
       .combineOptions('binding1InBundle', [false, true])
@@ -528,8 +527,8 @@ g.test('subresources_and_binding_types_combination_for_aspect')
           _resourceSuccess: true,
         },
       ])
-      .combine(poptions('aspect0', ['all', 'depth-only', 'stencil-only'] as const))
-      .combine(poptions('aspect1', ['all', 'depth-only', 'stencil-only'] as const))
+      .combineOptions('aspect0', ['all', 'depth-only', 'stencil-only'] as const)
+      .combineOptions('aspect1', ['all', 'depth-only', 'stencil-only'] as const)
       .unless(
         p =>
           (p.aspect0 === 'stencil-only' && !kDepthStencilFormatInfo[p.format].stencil) ||
@@ -666,8 +665,8 @@ g.test('shader_stages_and_visibility')
   .params2(u =>
     u
       .combineOptions('compute', [false, true])
-      .combine(poptions('readVisibility', [0, ...kShaderStages]))
-      .combine(poptions('writeVisibility', [0, ...kShaderStages]))
+      .combineOptions('readVisibility', [0, ...kShaderStages])
+      .combineOptions('writeVisibility', [0, ...kShaderStages])
       .unless(
         p =>
           // Writeonly-storage-texture binding type is not supported in vertex stage. But it is the
@@ -733,14 +732,12 @@ g.test('replaced_binding')
     u
       .combineOptions('compute', [false, true])
       .combineOptions('callDrawOrDispatch', [false, true])
-      .combine(
-        poptions('entry', [
-          { texture: {} },
-          { texture: { multisampled: true } },
-          { storageTexture: { access: 'read-only', format: 'rgba8unorm' } },
-          { storageTexture: { access: 'write-only', format: 'rgba8unorm' } },
-        ] as const)
-      )
+      .combineOptions('entry', [
+        { texture: {} },
+        { texture: { multisampled: true } },
+        { storageTexture: { access: 'read-only', format: 'rgba8unorm' } },
+        { storageTexture: { access: 'write-only', format: 'rgba8unorm' } },
+      ] as const)
   )
   .fn(async t => {
     const { compute, callDrawOrDispatch, entry } = t.params;
@@ -803,8 +800,8 @@ g.test('replaced_binding')
 g.test('bindings_in_bundle')
   .params2(u =>
     u
-      .combine(poptions('type0', ['render-target', ...kTextureBindingTypes] as const))
-      .combine(poptions('type1', ['render-target', ...kTextureBindingTypes] as const))
+      .combineOptions('type0', ['render-target', ...kTextureBindingTypes] as const)
+      .combineOptions('type1', ['render-target', ...kTextureBindingTypes] as const)
       .beginSubcases()
       .combineOptions('binding0InBundle', [false, true])
       .combineOptions('binding1InBundle', [false, true])
@@ -890,8 +887,8 @@ g.test('unused_bindings_in_pipeline')
       .combineOptions('compute', [false, true])
       .combineOptions('useBindGroup0', [false, true])
       .combineOptions('useBindGroup1', [false, true])
-      .combine(poptions('setBindGroupsOrder', ['common', 'reversed'] as const))
-      .combine(poptions('setPipeline', ['before', 'middle', 'after', 'none'] as const))
+      .combineOptions('setBindGroupsOrder', ['common', 'reversed'] as const)
+      .combineOptions('setPipeline', ['before', 'middle', 'after', 'none'] as const)
       .combineOptions('callDrawOrDispatch', [false, true])
   )
   .fn(async t => {

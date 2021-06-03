@@ -2,7 +2,6 @@ export const description = `
 Positive and negative validation tests for variable and const.
 `;
 
-import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 
 import { ShaderValidationTest } from './shader_validation_test.js';
@@ -74,11 +73,11 @@ g.test('v_0033')
   )
   .params2(u =>
     u
-      .combine(poptions('variableOrConstant', ['var', 'const']))
-      .combine(poptions('lhsContainerType', kContainerTypes))
-      .combine(poptions('lhsScalarType', kScalarType))
-      .combine(poptions('rhsContainerType', kContainerTypes))
-      .combine(poptions('rhsScalarType', kScalarType))
+      .combineOptions('variableOrConstant', ['var', 'const'])
+      .combineOptions('lhsContainerType', kContainerTypes)
+      .combineOptions('lhsScalarType', kScalarType)
+      .combineOptions('rhsContainerType', kContainerTypes)
+      .combineOptions('rhsScalarType', kScalarType)
   )
   .fn(t => {
     const {
@@ -129,9 +128,9 @@ g.test('v_0038')
   )
   .params2(u =>
     u
-      .combine(poptions('storageClass', ['in', 'out', 'private']))
-      .combine(poptions('containerType', kContainerTypes))
-      .combine(poptions('scalarType', kScalarType))
+      .combineOptions('storageClass', ['in', 'out', 'private'])
+      .combineOptions('containerType', kContainerTypes)
+      .combineOptions('scalarType', kScalarType)
   )
   .fn(t => {
     const { storageClass, containerType, scalarType } = t.params;

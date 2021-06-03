@@ -2,7 +2,6 @@ export const description = `
 createSampler validation tests.
 `;
 
-import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 
 import { ValidationTest } from './validation_test.js';
@@ -14,8 +13,8 @@ g.test('lodMinAndMaxClamp')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('lodMinClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30]))
-      .combine(poptions('lodMaxClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30]))
+      .combineOptions('lodMinClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30])
+      .combineOptions('lodMaxClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30])
   )
   .fn(async t => {
     t.expectValidationError(() => {
@@ -32,7 +31,7 @@ g.test('maxAnisotropy')
     u
       .beginSubcases()
       .combine([
-        ...poptions('maxAnisotropy', [-1, undefined, 0, 1, 2, 4, 7, 16, 32, 33, 1024]),
+        ...u.combineOptions('maxAnisotropy', [-1, undefined, 0, 1, 2, 4, 7, 16, 32, 33, 1024]),
         { minFilter: 'nearest' as const },
         { magFilter: 'nearest' as const },
         { mipmapFilter: 'nearest' as const },

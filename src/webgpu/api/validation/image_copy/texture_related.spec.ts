@@ -1,6 +1,5 @@
 export const description = '';
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { assert } from '../../../../common/framework/util/util.js';
 import { kSizedTextureFormats, kSizedTextureFormatInfo } from '../../../capability_info.js';
@@ -20,8 +19,8 @@ g.test('valid')
   .desc(`The texture must be valid and not destroyed.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
-      .combine(poptions('textureState', ['valid', 'destroyed', 'error']))
+      .combineOptions('method', kImageCopyTypes)
+      .combineOptions('textureState', ['valid', 'destroyed', 'error'])
   )
   .fn(async t => {
     const { method, textureState } = t.params;
@@ -59,15 +58,13 @@ g.test('usage')
   .desc(`The texture must have the appropriate COPY_SRC/COPY_DST usage.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
+      .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
-      .combine(
-        poptions('usage', [
-          GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.SAMPLED,
-          GPUConst.TextureUsage.COPY_DST | GPUConst.TextureUsage.SAMPLED,
-          GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.COPY_DST,
-        ])
-      )
+      .combineOptions('usage', [
+        GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.SAMPLED,
+        GPUConst.TextureUsage.COPY_DST | GPUConst.TextureUsage.SAMPLED,
+        GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.COPY_DST,
+      ])
   )
   .fn(async t => {
     const { usage, method } = t.params;
@@ -95,9 +92,9 @@ g.test('sample_count')
   .desc(`Multisampled textures cannot be copied.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
+      .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
-      .combine(poptions('sampleCount', [1, 4]))
+      .combineOptions('sampleCount', [1, 4])
   )
   .fn(async t => {
     const { sampleCount, method } = t.params;
@@ -123,10 +120,10 @@ g.test('mip_level')
   .desc(`The mipLevel of the copy must be in range of the texture.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
+      .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
-      .combine(poptions('mipLevelCount', [3, 5]))
-      .combine(poptions('mipLevel', [3, 4]))
+      .combineOptions('mipLevelCount', [3, 5])
+      .combineOptions('mipLevel', [3, 4])
   )
   .fn(async t => {
     const { mipLevelCount, mipLevel, method } = t.params;
@@ -152,12 +149,12 @@ g.test('origin_alignment')
   .desc(`Copy origin must be aligned to block size.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
-      .combine(poptions('format', kSizedTextureFormats))
+      .combineOptions('method', kImageCopyTypes)
+      .combineOptions('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
-      .combine(poptions('coordinateToTest', ['x', 'y', 'z'] as const))
-      .expand(texelBlockAlignmentTestExpanderForValueToCoordinate)
+      .combineOptions('coordinateToTest', ['x', 'y', 'z'] as const)
+      .expandOptions('valueToCoordinate', texelBlockAlignmentTestExpanderForValueToCoordinate)
   )
   .fn(async t => {
     const { valueToCoordinate, coordinateToTest, format, method } = t.params;
@@ -193,9 +190,9 @@ g.test('1d')
   .desc(`1d texture copies must have height=depth=1.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
+      .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
-      .combine(poptions('width', [0, 1]))
+      .combineOptions('width', [0, 1])
       .combine([
         { height: 1, depthOrArrayLayers: 1 },
         { height: 1, depthOrArrayLayers: 0 },
@@ -230,12 +227,12 @@ g.test('size_alignment')
   .desc(`Copy size must be aligned to block size.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
-      .combine(poptions('format', kSizedTextureFormats))
+      .combineOptions('method', kImageCopyTypes)
+      .combineOptions('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
-      .combine(poptions('coordinateToTest', ['width', 'height', 'depthOrArrayLayers'] as const))
-      .expand(texelBlockAlignmentTestExpanderForValueToCoordinate)
+      .combineOptions('coordinateToTest', ['width', 'height', 'depthOrArrayLayers'] as const)
+      .expandOptions('valueToCoordinate', texelBlockAlignmentTestExpanderForValueToCoordinate)
   )
   .fn(async t => {
     const { valueToCoordinate, coordinateToTest, format, method } = t.params;
@@ -275,13 +272,13 @@ g.test('copy_rectangle')
   .desc(`The max corner of the copy rectangle (origin+copySize) must be inside the texture.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
+      .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
-      .combine(poptions('originValue', [7, 8]))
-      .combine(poptions('copySizeValue', [7, 8]))
-      .combine(poptions('textureSizeValue', [14, 15]))
-      .combine(poptions('mipLevel', [0, 2]))
-      .combine(poptions('coordinateToTest', [0, 1, 2] as const))
+      .combineOptions('originValue', [7, 8])
+      .combineOptions('copySizeValue', [7, 8])
+      .combineOptions('textureSizeValue', [14, 15])
+      .combineOptions('mipLevel', [0, 2])
+      .combineOptions('coordinateToTest', [0, 1, 2] as const)
   )
   .fn(async t => {
     const {

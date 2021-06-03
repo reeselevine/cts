@@ -1,7 +1,7 @@
 export const description =
   'Test out-of-memory conditions creating large mappable/mappedAtCreation buffers.';
 
-import { poptions, kUnitCaseParamsBuilder } from '../../../../common/framework/params_builder.js';
+import { kUnitCaseParamsBuilder } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { kBufferUsages } from '../../../capability_info.js';
 import { GPUTest } from '../../../gpu_test.js';
@@ -13,15 +13,13 @@ const MAX_ALIGNED_SAFE_INTEGER = Number.MAX_SAFE_INTEGER - 7;
 
 const oomAndSizeParams = kUnitCaseParamsBuilder
   .combineOptions('oom', [false, true])
-  .expand(({ oom }) => {
-    if (oom) {
-      return poptions('size', [
-        MAX_ALIGNED_SAFE_INTEGER,
-        0x2000000000, // 128 GB
-      ]);
-    } else {
-      return poptions('size', [16]);
-    }
+  .expandOptions('size', ({ oom }) => {
+    return oom
+      ? [
+          MAX_ALIGNED_SAFE_INTEGER,
+          0x2000000000, // 128 GB
+        ]
+      : [16];
   });
 
 export const g = makeTestGroup(GPUTest);

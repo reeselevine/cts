@@ -6,15 +6,7 @@ import {
   mergeParams,
   publicParamsEquals,
 } from './params_utils.js';
-import { ResolveType, UnionToIntersection } from './util/types.js';
-
-/** Conditionally chooses between two types depending on whether T is a union. */
-type CheckForUnion<T, TIfNotUnion, TIfUnion> = [T] extends [UnionToIntersection<T>]
-  ? TIfUnion
-  : TIfNotUnion;
-
-/** Conditionally chooses a type (or void) depending on whether T is a string. */
-type CheckForStringLiteralType<T, TOk> = string extends T ? void : CheckForUnion<T, void, TOk>;
+import { ResolveType } from './util/types.js';
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 function typeAssert<T extends 'pass'>() {}
@@ -60,19 +52,6 @@ function typeAssert<T extends 'pass'>() {}
     typeAssert<Test<FlattenUnionOfInterfaces<T21>, { b: string | undefined }>>();
     typeAssert<Test<FlattenUnionOfInterfaces<T26>, { a: number | undefined }>>();
   }
-}
-
-export function poptions<Name extends string, V>(
-  name: Name,
-  values: Iterable<V>
-): CheckForStringLiteralType<Name, Iterable<{ [name in Name]: V }>> {
-  const iter = makeReusableIterable(function* () {
-    for (const value of values) {
-      yield { [name]: value };
-    }
-  });
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  return iter as any;
 }
 
 /** @deprecated */
@@ -190,6 +169,8 @@ export class CaseParamsBuilder<CaseP extends {}>
   /**
    * Expands each case in `this` into zero or more cases:
    *
+   * **Note:** In most situations, `expandOptions` is a simpler and more readable alternative.
+   *
    * ```text
    *               this = [     a       ,      b     ,       c       ]
    * this.map(expander) = [   f(a)           f(b)          f(c)      ]
@@ -202,6 +183,20 @@ export class CaseParamsBuilder<CaseP extends {}>
   ): CaseParamsBuilder<Merged<CaseP, NewP>> {
     const newGenerator = expanderGenerator(this.cases, expander);
     return new CaseParamsBuilder(() => newGenerator({}));
+  }
+
+  /**
+   * Expands each case in `this` into zero or more cases.
+   */
+  expandOptions<NewPKey extends string, NewPValue>(
+    key: NewPKey,
+    expander: (_: Merged<{}, CaseP>) => Iterable<NewPValue>
+  ): CaseParamsBuilder<Merged<CaseP, { [name in NewPKey]: NewPValue }>> {
+    return this.expand(function* (p) {
+      for (const value of expander(p)) {
+        yield { [key]: value } as { [name in NewPKey]: NewPValue };
+      }
+    });
   }
 
   /**
@@ -223,11 +218,9 @@ export class CaseParamsBuilder<CaseP extends {}>
    */
   combineOptions<NewPKey extends string, NewPValue>(
     key: NewPKey,
-    values: readonly NewPValue[]
+    values: Iterable<NewPValue>
   ): CaseParamsBuilder<Merged<CaseP, { [name in NewPKey]: NewPValue }>> {
-    return this.combine(
-      values.map(value => ({ [key]: value } as { [name in NewPKey]: NewPValue }))
-    );
+    return this.expandOptions(key, () => values);
   }
 
   /**
@@ -305,6 +298,8 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
   /**
    * Expands each subcase in `this` into zero or more subcases.
    *
+   * **Note:** In most situations, `expandOptions` is a simpler and more readable alternative.
+   *
    * ```text
    *               this = [     a       ,      b     ,       c       ]
    * this.map(expander) = [   f(a)           f(b)          f(c)      ]
@@ -316,6 +311,20 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
     expander: (_: Merged<CaseP, SubcaseP>) => Iterable<NewP>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, NewP>> {
     return new SubcaseParamsBuilder(this.cases, expanderGenerator(this.subcases, expander));
+  }
+
+  /**
+   * Expands each case in `this` into zero or more cases.
+   */
+  expandOptions<NewPKey extends string, NewPValue>(
+    key: NewPKey,
+    expander: (_: Merged<CaseP, SubcaseP>) => Iterable<NewPValue>
+  ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, { [name in NewPKey]: NewPValue }>> {
+    return this.expand(function* (p) {
+      for (const value of expander(p)) {
+        yield { [key]: value } as { [name in NewPKey]: NewPValue };
+      }
+    });
   }
 
   /**
@@ -339,11 +348,9 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
    */
   combineOptions<NewPKey extends string, NewPValue>(
     key: NewPKey,
-    values: readonly NewPValue[]
+    values: Iterable<NewPValue>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, { [name in NewPKey]: NewPValue }>> {
-    return this.combine(
-      values.map(value => ({ [key]: value } as { [name in NewPKey]: NewPValue }))
-    );
+    return this.expandOptions(key, () => values);
   }
 
   /**

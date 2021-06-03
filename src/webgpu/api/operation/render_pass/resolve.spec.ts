@@ -13,7 +13,6 @@ Tests a render pass with a resolveTarget resolves correctly for many combination
     (different z from colorAttachment)
 `;
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { GPUTest } from '../../../gpu_test.js';
 
@@ -31,12 +30,12 @@ export const g = makeTestGroup(GPUTest);
 g.test('render_pass_resolve')
   .params2(u =>
     u
-      .combine(poptions('storeOperation', ['clear', 'store'] as const))
+      .combineOptions('storeOperation', ['clear', 'store'] as const)
       .beginSubcases()
-      .combine(poptions('numColorAttachments', [2, 4] as const))
-      .combine(poptions('slotsToResolve', kSlotsToResolve))
-      .combine(poptions('resolveTargetBaseMipLevel', [0, 1] as const))
-      .combine(poptions('resolveTargetBaseArrayLayer', [0, 1] as const))
+      .combineOptions('numColorAttachments', [2, 4] as const)
+      .combineOptions('slotsToResolve', kSlotsToResolve)
+      .combineOptions('resolveTargetBaseMipLevel', [0, 1] as const)
+      .combineOptions('resolveTargetBaseArrayLayer', [0, 1] as const)
   )
   .fn(t => {
     const targets: GPUColorTargetState[] = [];

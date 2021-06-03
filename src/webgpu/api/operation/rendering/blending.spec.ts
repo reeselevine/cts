@@ -7,7 +7,6 @@ TODO:
 - ?
 `;
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { assert, unreachable } from '../../../../common/framework/util/util.js';
 import { GPUTest } from '../../../gpu_test.js';
@@ -129,28 +128,23 @@ g.test('GPUBlendComponent')
   )
   .params2(u =>
     u //
-      .combine(poptions('component', ['color', 'alpha'] as const))
-      .combine(poptions('srcFactor', kBlendFactors))
-      .combine(poptions('dstFactor', kBlendFactors))
-      .combine(poptions('operation', kBlendOperations))
+      .combineOptions('component', ['color', 'alpha'] as const)
+      .combineOptions('srcFactor', kBlendFactors)
+      .combineOptions('dstFactor', kBlendFactors)
+      .combineOptions('operation', kBlendOperations)
       .beginSubcases()
-      .combine(poptions('srcColor', [{ r: 0.11, g: 0.61, b: 0.81, a: 0.44 }]))
-      .combine(
-        poptions('dstColor', [
-          { r: 0.51, g: 0.22, b: 0.71, a: 0.33 },
-          { r: 0.09, g: 0.73, b: 0.93, a: 0.81 },
-        ])
-      )
-      .expand(p => {
+      .combineOptions('srcColor', [{ r: 0.11, g: 0.61, b: 0.81, a: 0.44 }])
+      .combineOptions('dstColor', [
+        { r: 0.51, g: 0.22, b: 0.71, a: 0.33 },
+        { r: 0.09, g: 0.73, b: 0.93, a: 0.81 },
+      ])
+      .expandOptions('blendConstant', p => {
         const needsBlendConstant =
           p.srcFactor === 'one-minus-constant' ||
           p.srcFactor === 'constant' ||
           p.dstFactor === 'one-minus-constant' ||
           p.dstFactor === 'constant';
-        return poptions(
-          'blendConstant',
-          needsBlendConstant ? [{ r: 0.91, g: 0.82, b: 0.73, a: 0.64 }] : [undefined]
-        );
+        return needsBlendConstant ? [{ r: 0.91, g: 0.82, b: 0.73, a: 0.64 }] : [undefined];
       })
   )
   .fn(t => {

@@ -2,7 +2,6 @@ export const description = `
 Test indexing, index format and primitive restart.
 `;
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { GPUTest } from '../../../gpu_test.js';
 import { getTextureCopyLayout } from '../../../util/texture/layout.js';
@@ -322,7 +321,7 @@ is different from what you would get if the topology were incorrect.
   )
   .params2(u =>
     u //
-      .combine(poptions('indexFormat', ['uint16', 'uint32'] as const))
+      .combineOptions('indexFormat', ['uint16', 'uint32'] as const)
       .combine([
         {
           primitiveTopology: 'point-list',

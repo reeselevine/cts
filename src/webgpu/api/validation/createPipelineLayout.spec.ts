@@ -4,7 +4,6 @@ createPipelineLayout validation tests.
 TODO: review existing tests, write descriptions, and make sure tests are complete.
 `;
 
-import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { bufferBindingTypeInfo, kBufferBindingTypes } from '../../capability_info.js';
 
@@ -25,8 +24,8 @@ TODO(#230): Update to enforce per-stage and per-pipeline-layout limits on BGLs a
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('visibility', [0, 2, 4, 6]))
-      .combine(poptions('type', kBufferBindingTypes))
+      .combineOptions('visibility', [0, 2, 4, 6])
+      .combineOptions('type', kBufferBindingTypes)
   )
   .fn(async t => {
     const { type, visibility } = t.params;

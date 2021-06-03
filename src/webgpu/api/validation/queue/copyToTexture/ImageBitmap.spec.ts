@@ -25,7 +25,6 @@ Test Plan:
 TODO: copying into slices of 2d array textures. 1d and 3d as well if they're not invalid.
 `;
 
-import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import {
   kAllTextureFormatInfo,
@@ -72,7 +71,7 @@ interface WithDstOriginMipLevel extends WithMipLevel {
 function generateCopySizeForSrcOOB({ srcOrigin }: { srcOrigin: Required<GPUOrigin2DDict> }) {
   // OOB origin fails even with no-op copy.
   if (srcOrigin.x > kDefaultWidth || srcOrigin.y > kDefaultHeight) {
-    return poptions('copySize', [{ width: 0, height: 0, depthOrArrayLayers: 0 }]);
+    return [{ width: 0, height: 0, depthOrArrayLayers: 0 }];
   }
 
   const justFitCopySize = {
@@ -81,19 +80,19 @@ function generateCopySizeForSrcOOB({ srcOrigin }: { srcOrigin: Required<GPUOrigi
     depthOrArrayLayers: 1,
   };
 
-  return poptions('copySize', [
+  return [
     justFitCopySize, // correct size, maybe no-op copy.
     { width: justFitCopySize.width + 1, height: justFitCopySize.height, depthOrArrayLayers: 1 }, // OOB in width
     { width: justFitCopySize.width, height: justFitCopySize.height + 1, depthOrArrayLayers: 1 }, // OOB in height
     { width: justFitCopySize.width, height: justFitCopySize.height, depthOrArrayLayers: 2 }, // OOB in depthOrArrayLayers
-  ]);
+  ];
 }
 
 // Helper function to generate dst origin value based on mipLevel.
 function generateDstOriginValue({ mipLevel }: WithMipLevel) {
   const origin = computeMipMapSize(kDefaultWidth, kDefaultHeight, mipLevel);
 
-  return poptions('dstOrigin', [
+  return [
     { x: 0, y: 0, z: 0 },
     { x: origin.mipWidth - 1, y: 0, z: 0 },
     { x: 0, y: origin.mipHeight - 1, z: 0 },
@@ -103,7 +102,7 @@ function generateDstOriginValue({ mipLevel }: WithMipLevel) {
     { x: origin.mipWidth + 1, y: 0, z: 0 },
     { x: 0, y: origin.mipHeight + 1, z: 0 },
     { x: 0, y: 0, z: kDefaultDepth + 1 },
-  ]);
+  ];
 }
 
 // Helper function to generate copySize for dst OOB test
@@ -116,7 +115,7 @@ function generateCopySizeForDstOOB({ mipLevel, dstOrigin }: WithDstOriginMipLeve
     dstOrigin.y > dstMipMapSize.mipHeight ||
     dstOrigin.z > kDefaultDepth
   ) {
-    return poptions('copySize', [{ width: 0, height: 0, depthOrArrayLayers: 0 }]);
+    return [{ width: 0, height: 0, depthOrArrayLayers: 0 }];
   }
 
   const justFitCopySize = {
@@ -125,7 +124,7 @@ function generateCopySizeForDstOOB({ mipLevel, dstOrigin }: WithDstOriginMipLeve
     depthOrArrayLayers: kDefaultDepth - dstOrigin.z,
   };
 
-  return poptions('copySize', [
+  return [
     justFitCopySize,
     {
       width: justFitCopySize.width + 1,
@@ -142,7 +141,7 @@ function generateCopySizeForDstOOB({ mipLevel, dstOrigin }: WithDstOriginMipLeve
       height: justFitCopySize.height,
       depthOrArrayLayers: justFitCopySize.depthOrArrayLayers + 1,
     }, // OOB in depthOrArrayLayers
-  ]);
+  ];
 }
 
 class CopyImageBitmapToTextureTest extends ValidationTest {
@@ -180,12 +179,10 @@ g.test('source_imageBitmap,state')
     u //
       .combineOptions('closed', [false, true])
       .beginSubcases()
-      .combine(
-        poptions('copySize', [
-          { width: 0, height: 0, depthOrArrayLayers: 0 },
-          { width: 1, height: 1, depthOrArrayLayers: 1 },
-        ])
-      )
+      .combineOptions('copySize', [
+        { width: 0, height: 0, depthOrArrayLayers: 0 },
+        { width: 1, height: 1, depthOrArrayLayers: 1 },
+      ])
   )
   .fn(async t => {
     const { closed, copySize } = t.params;
@@ -210,14 +207,12 @@ g.test('source_imageBitmap,state')
 g.test('destination_texture,state')
   .params2(u =>
     u //
-      .combine(poptions('state', ['valid', 'invalid', 'destroyed'] as const))
+      .combineOptions('state', ['valid', 'invalid', 'destroyed'] as const)
       .beginSubcases()
-      .combine(
-        poptions('copySize', [
-          { width: 0, height: 0, depthOrArrayLayers: 0 },
-          { width: 1, height: 1, depthOrArrayLayers: 1 },
-        ])
-      )
+      .combineOptions('copySize', [
+        { width: 0, height: 0, depthOrArrayLayers: 0 },
+        { width: 1, height: 1, depthOrArrayLayers: 1 },
+      ])
   )
   .fn(async t => {
     const { state, copySize } = t.params;
@@ -230,14 +225,12 @@ g.test('destination_texture,state')
 g.test('destination_texture,usage')
   .params2(u =>
     u //
-      .combine(poptions('usage', kTextureUsages))
+      .combineOptions('usage', kTextureUsages)
       .beginSubcases()
-      .combine(
-        poptions('copySize', [
-          { width: 0, height: 0, depthOrArrayLayers: 0 },
-          { width: 1, height: 1, depthOrArrayLayers: 1 },
-        ])
-      )
+      .combineOptions('copySize', [
+        { width: 0, height: 0, depthOrArrayLayers: 0 },
+        { width: 1, height: 1, depthOrArrayLayers: 1 },
+      ])
   )
   .fn(async t => {
     const { usage, copySize } = t.params;
@@ -259,14 +252,12 @@ g.test('destination_texture,usage')
 g.test('destination_texture,sample_count')
   .params2(u =>
     u //
-      .combine(poptions('sampleCount', [1, 4]))
+      .combineOptions('sampleCount', [1, 4])
       .beginSubcases()
-      .combine(
-        poptions('copySize', [
-          { width: 0, height: 0, depthOrArrayLayers: 0 },
-          { width: 1, height: 1, depthOrArrayLayers: 1 },
-        ])
-      )
+      .combineOptions('copySize', [
+        { width: 0, height: 0, depthOrArrayLayers: 0 },
+        { width: 1, height: 1, depthOrArrayLayers: 1 },
+      ])
   )
   .fn(async t => {
     const { sampleCount, copySize } = t.params;
@@ -284,14 +275,12 @@ g.test('destination_texture,sample_count')
 g.test('destination_texture,mipLevel')
   .params2(u =>
     u //
-      .combine(poptions('mipLevel', [0, kDefaultMipLevelCount - 1, kDefaultMipLevelCount]))
+      .combineOptions('mipLevel', [0, kDefaultMipLevelCount - 1, kDefaultMipLevelCount])
       .beginSubcases()
-      .combine(
-        poptions('copySize', [
-          { width: 0, height: 0, depthOrArrayLayers: 0 },
-          { width: 1, height: 1, depthOrArrayLayers: 1 },
-        ])
-      )
+      .combineOptions('copySize', [
+        { width: 0, height: 0, depthOrArrayLayers: 0 },
+        { width: 1, height: 1, depthOrArrayLayers: 1 },
+      ])
   )
   .fn(async t => {
     const { mipLevel, copySize } = t.params;
@@ -314,14 +303,12 @@ g.test('destination_texture,mipLevel')
 g.test('destination_texture,format')
   .params2(u =>
     u
-      .combine(poptions('format', kAllTextureFormats))
+      .combineOptions('format', kAllTextureFormats)
       .beginSubcases()
-      .combine(
-        poptions('copySize', [
-          { width: 0, height: 0, depthOrArrayLayers: 0 },
-          { width: 1, height: 1, depthOrArrayLayers: 1 },
-        ])
-      )
+      .combineOptions('copySize', [
+        { width: 0, height: 0, depthOrArrayLayers: 0 },
+        { width: 1, height: 1, depthOrArrayLayers: 1 },
+      ])
   )
   .fn(async t => {
     const { format, copySize } = t.params;
@@ -353,17 +340,15 @@ g.test('destination_texture,format')
 g.test('OOB,source')
   .subcases2(u =>
     u
-      .combine(
-        poptions('srcOrigin', [
-          { x: 0, y: 0 }, // origin is on top-left
-          { x: kDefaultWidth - 1, y: 0 }, // x near the border
-          { x: 0, y: kDefaultHeight - 1 }, // y is near the border
-          { x: kDefaultWidth, y: kDefaultHeight }, // origin is on bottom-right
-          { x: kDefaultWidth + 1, y: 0 }, // x is too large
-          { x: 0, y: kDefaultHeight + 1 }, // y is too large
-        ])
-      )
-      .expand(generateCopySizeForSrcOOB)
+      .combineOptions('srcOrigin', [
+        { x: 0, y: 0 }, // origin is on top-left
+        { x: kDefaultWidth - 1, y: 0 }, // x near the border
+        { x: 0, y: kDefaultHeight - 1 }, // y is near the border
+        { x: kDefaultWidth, y: kDefaultHeight }, // origin is on bottom-right
+        { x: kDefaultWidth + 1, y: 0 }, // x is too large
+        { x: 0, y: kDefaultHeight + 1 }, // y is too large
+      ])
+      .expandOptions('copySize', generateCopySizeForSrcOOB)
   )
   .fn(async t => {
     const { srcOrigin, copySize } = t.params;
@@ -395,9 +380,9 @@ g.test('OOB,source')
 g.test('OOB,destination')
   .subcases2(u =>
     u
-      .combine(poptions('mipLevel', [0, 1, kDefaultMipLevelCount - 2]))
-      .expand(generateDstOriginValue)
-      .expand(generateCopySizeForDstOOB)
+      .combineOptions('mipLevel', [0, 1, kDefaultMipLevelCount - 2])
+      .expandOptions('dstOrigin', generateDstOriginValue)
+      .expandOptions('copySize', generateCopySizeForDstOOB)
   )
   .fn(async t => {
     const { mipLevel, dstOrigin, copySize } = t.params;

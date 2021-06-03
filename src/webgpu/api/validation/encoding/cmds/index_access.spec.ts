@@ -13,7 +13,6 @@ TODO: Since there are no errors here, these should be "robustness" operation tes
 valid results).
 `;
 
-import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { ValidationTest } from '../../validation_test.js';
 
@@ -153,7 +152,7 @@ g.test('out_of_bounds')
           { indexCount: 0xffffffff, firstIndex: 2 }, // max uint32 indexCount and small firstIndex
           { indexCount: 2, firstIndex: 0xffffffff }, // small indexCount and max uint32 firstIndex
         ] as const)
-        .combine(poptions('instanceCount', [1, 10000])) // normal and large instanceCount
+        .combineOptions('instanceCount', [1, 10000]) // normal and large instanceCount
   )
   .fn(t => {
     const { indirect, indexCount, firstIndex, instanceCount } = t.params;
@@ -191,7 +190,7 @@ g.test('out_of_bounds_zero_sized_index_buffer')
           { indexCount: 3, firstIndex: 0 }, // only indexCount out of bound
           { indexCount: 0, firstIndex: 0 }, // just zeros
         ] as const)
-        .combine(poptions('instanceCount', [1, 10000])) // normal and large instanceCount
+        .combineOptions('instanceCount', [1, 10000]) // normal and large instanceCount
   )
   .fn(t => {
     const { indirect, indexCount, firstIndex, instanceCount } = t.params;

@@ -12,7 +12,6 @@ TODO:
 
 import { TestCaseRecorder } from '../../../../common/framework/logging/test_case_recorder.js';
 import {
-  poptions,
   kUnitCaseParamsBuilder,
   ParamTypeOf,
 } from '../../../../common/framework/params_builder.js';
@@ -438,19 +437,17 @@ export class TextureZeroInitTest extends GPUTest {
 }
 
 const kTestParams = kUnitCaseParamsBuilder
-  .combine(
-    poptions('readMethod', [
-      ReadMethod.CopyToBuffer,
-      ReadMethod.CopyToTexture,
-      ReadMethod.Sample,
-      ReadMethod.DepthTest,
-      ReadMethod.StencilTest,
-    ])
-  )
-  .combine(poptions('format', kUncompressedTextureFormats))
-  .combine(poptions('uninitializeMethod', kUninitializeMethods))
+  .combineOptions('readMethod', [
+    ReadMethod.CopyToBuffer,
+    ReadMethod.CopyToTexture,
+    ReadMethod.Sample,
+    ReadMethod.DepthTest,
+    ReadMethod.StencilTest,
+  ])
+  .combineOptions('format', kUncompressedTextureFormats)
+  .combineOptions('uninitializeMethod', kUninitializeMethods)
   .beginSubcases()
-  .combine(poptions('aspect', kTextureAspects))
+  .combineOptions('aspect', kTextureAspects)
   .combineOptions('nonPowerOfTwo', [false, true])
   .combineOptions('canaryOnCreation', [false, true])
   .filter(({ canaryOnCreation, format }) => {
@@ -479,8 +476,8 @@ const kTestParams = kUnitCaseParamsBuilder
         (format === 'depth24plus' || format === 'depth24plus-stencil8'))
     );
   })
-  .combine(poptions('mipLevelCount', kMipLevelCounts))
-  .combine(poptions('sampleCount', kSampleCounts))
+  .combineOptions('mipLevelCount', kMipLevelCounts)
+  .combineOptions('sampleCount', kSampleCounts)
   .unless(
     ({ readMethod, sampleCount }) =>
       // We can only read from multisampled textures by sampling.

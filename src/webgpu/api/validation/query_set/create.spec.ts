@@ -2,7 +2,6 @@ export const description = `
 Tests for validation in createQuerySet.
 `;
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import { kQueryTypes, kMaxQueryCount } from '../../../capability_info.js';
 import { ValidationTest } from '../validation_test.js';
@@ -19,9 +18,9 @@ Tests that create query set with the count for all query types:
   )
   .params2(u =>
     u
-      .combine(poptions('type', kQueryTypes))
+      .combineOptions('type', kQueryTypes)
       .beginSubcases()
-      .combine(poptions('count', [0, kMaxQueryCount, kMaxQueryCount + 1]))
+      .combineOptions('count', [0, kMaxQueryCount, kMaxQueryCount + 1])
   )
   .fn(async t => {
     const { type, count } = t.params;
@@ -47,11 +46,13 @@ Tests that create query set with the GPUPipelineStatisticName for all query type
   )
   .params2(u =>
     u
-      .combine(poptions('type', kQueryTypes))
+      .combineOptions('type', kQueryTypes)
       .beginSubcases()
-      .combine(
-        poptions('pipelineStatistics', [undefined, [] as const, ['clipper-invocations'] as const])
-      )
+      .combineOptions('pipelineStatistics', [
+        undefined,
+        [] as const,
+        ['clipper-invocations'] as const,
+      ])
   )
   .fn(async t => {
     const { type, pipelineStatistics } = t.params;
@@ -80,18 +81,16 @@ Tests that create query set with the duplicate values and all values of GPUPipel
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(
-        poptions('pipelineStatistics', [
-          ['clipper-invocations', 'clipper-invocations'] as const,
-          [
-            'clipper-invocations',
-            'clipper-primitives-out',
-            'compute-shader-invocations',
-            'fragment-shader-invocations',
-            'vertex-shader-invocations',
-          ] as const,
-        ])
-      )
+      .combineOptions('pipelineStatistics', [
+        ['clipper-invocations', 'clipper-invocations'] as const,
+        [
+          'clipper-invocations',
+          'clipper-primitives-out',
+          'compute-shader-invocations',
+          'fragment-shader-invocations',
+          'vertex-shader-invocations',
+        ] as const,
+      ])
   )
   .fn(async t => {
     const type = 'pipeline-statistics';

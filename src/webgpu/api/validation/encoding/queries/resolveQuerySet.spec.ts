@@ -1,7 +1,6 @@
 export const description = `
 Validation tests for resolveQuerySet.
 `;
-import { poptions } from '../../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../../common/framework/test_group.js';
 import { GPUConst } from '../../../../constants.js';
 import { ValidationTest } from '../../validation_test.js';
@@ -89,12 +88,10 @@ Tests that resolve query set with invalid destinationBuffer:
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(
-        poptions('bufferUsage', [
-          GPUConst.BufferUsage.STORAGE,
-          GPUConst.BufferUsage.QUERY_RESOLVE, // control case
-        ] as const)
-      )
+      .combineOptions('bufferUsage', [
+        GPUConst.BufferUsage.STORAGE,
+        GPUConst.BufferUsage.QUERY_RESOLVE, // control case
+      ] as const)
   )
   .fn(async t => {
     const querySet = t.device.createQuerySet({ type: 'occlusion', count: kQueryCount });
@@ -123,7 +120,7 @@ Tests that resolve query set with invalid destinationOffset:
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(poptions('destinationOffset', [0, 6, 8, 16]))
+      .combineOptions('destinationOffset', [0, 6, 8, 16])
   )
   .fn(async t => {
     const querySet = t.device.createQuerySet({ type: 'occlusion', count: kQueryCount });

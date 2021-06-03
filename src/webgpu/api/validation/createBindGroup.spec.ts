@@ -4,7 +4,6 @@ export const description = `
   TODO: Ensure sure tests cover all createBindGroup validation rules.
 `;
 
-import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { unreachable } from '../../../common/framework/util/util.js';
 import {
@@ -31,8 +30,8 @@ g.test('binding_count_mismatch')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('layoutEntryCount', [1, 2, 3]))
-      .combine(poptions('bindGroupEntryCount', [1, 2, 3]))
+      .combineOptions('layoutEntryCount', [1, 2, 3])
+      .combineOptions('bindGroupEntryCount', [1, 2, 3])
   )
   .fn(async t => {
     const { layoutEntryCount, bindGroupEntryCount } = t.params;
@@ -71,8 +70,8 @@ g.test('binding_must_be_present_in_layout')
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(poptions('layoutBinding', [0, 1, 2]))
-      .combine(poptions('binding', [0, 1, 2]))
+      .combineOptions('layoutBinding', [0, 1, 2])
+      .combineOptions('binding', [0, 1, 2])
   )
   .fn(async t => {
     const { layoutBinding, binding } = t.params;
@@ -101,8 +100,8 @@ g.test('binding_must_contain_resource_defined_in_layout')
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(poptions('resourceType', kBindableResources))
-      .combine(poptions('entry', allBindingEntries(false)))
+      .combineOptions('resourceType', kBindableResources)
+      .combineOptions('entry', allBindingEntries(false))
   )
   .fn(t => {
     const { resourceType, entry } = t.params;
@@ -125,8 +124,8 @@ g.test('texture_binding_must_have_correct_usage')
   .params2(u =>
     u //
       .beginSubcases()
-      .combine(poptions('entry', sampledAndStorageBindingEntries(false)))
-      .combine(poptions('usage', kTextureUsages))
+      .combineOptions('entry', sampledAndStorageBindingEntries(false))
+      .combineOptions('usage', kTextureUsages)
       .unless(({ entry, usage }) => {
         const info = texBindingTypeInfo(entry);
         // Can't create the texture for this (usage=STORAGE and sampleCount=4), so skip.
@@ -352,14 +351,11 @@ g.test('minBindingSize')
   .params2(u =>
     u
       .beginSubcases()
-      .combine(poptions('minBindingSize', [undefined, 4, 256]))
-      .expand(({ minBindingSize }) =>
-        poptions(
-          'size',
-          minBindingSize !== undefined
-            ? [minBindingSize - 1, minBindingSize, minBindingSize + 1]
-            : [4, 256]
-        )
+      .combineOptions('minBindingSize', [undefined, 4, 256])
+      .expandOptions('size', ({ minBindingSize }) =>
+        minBindingSize !== undefined
+          ? [minBindingSize - 1, minBindingSize, minBindingSize + 1]
+          : [4, 256]
       )
   )
   .fn(t => {

@@ -1,6 +1,5 @@
 export const description = '';
 
-import { poptions } from '../../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../../common/framework/test_group.js';
 import {
   kUncompressedTextureFormatInfo,
@@ -27,11 +26,11 @@ export const g = makeTestGroup(ImageCopyTest);
 g.test('bound_on_rows_per_image')
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
+      .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
-      .combine(poptions('rowsPerImage', [undefined, 0, 1, 2, 1024]))
-      .combine(poptions('copyHeightInBlocks', [0, 1, 2]))
-      .combine(poptions('copyDepth', [1, 3]))
+      .combineOptions('rowsPerImage', [undefined, 0, 1, 2, 1024])
+      .combineOptions('copyHeightInBlocks', [0, 1, 2])
+      .combineOptions('copyDepth', [1, 3])
   )
   .fn(async t => {
     const { rowsPerImage, copyHeightInBlocks, copyDepth, method } = t.params;
@@ -65,7 +64,7 @@ g.test('copy_end_overflows_u64')
   .desc(`Test what happens when offset+requiredBytesInCopy overflows GPUSize64.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
+      .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
       .combine([
         { bytesPerRow: 2 ** 31, rowsPerImage: 2 ** 31, depthOrArrayLayers: 1, _success: true }, // success case
@@ -103,8 +102,8 @@ g.test('required_bytes_in_copy')
   )
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
-      .combine(poptions('format', kSizedTextureFormats))
+      .combineOptions('method', kImageCopyTypes)
+      .combineOptions('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
       .combine([
@@ -178,11 +177,11 @@ g.test('rows_per_image_alignment')
   .desc(`rowsPerImage is measured in multiples of block height, so has no alignment constraints.`)
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
-      .combine(poptions('format', kSizedTextureFormats))
+      .combineOptions('method', kImageCopyTypes)
+      .combineOptions('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
-      .expand(texelBlockAlignmentTestExpanderForRowsPerImage)
+      .expandOptions('rowsPerImage', texelBlockAlignmentTestExpanderForRowsPerImage)
   )
   .fn(async t => {
     const { rowsPerImage, format, method } = t.params;
@@ -203,11 +202,11 @@ g.test('rows_per_image_alignment')
 g.test('texel_block_alignment_on_offset')
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
-      .combine(poptions('format', kSizedTextureFormats))
+      .combineOptions('method', kImageCopyTypes)
+      .combineOptions('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
-      .expand(texelBlockAlignmentTestExpanderForOffset)
+      .expandOptions('offset', texelBlockAlignmentTestExpanderForOffset)
   )
   .fn(async t => {
     const { format, offset, method } = t.params;
@@ -227,8 +226,8 @@ g.test('texel_block_alignment_on_offset')
 g.test('bound_on_bytes_per_row')
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
-      .combine(poptions('format', kSizedTextureFormats))
+      .combineOptions('method', kImageCopyTypes)
+      .combineOptions('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
       .combine([
@@ -293,10 +292,10 @@ g.test('bound_on_bytes_per_row')
 g.test('bound_on_offset')
   .params2(u =>
     u
-      .combine(poptions('method', kImageCopyTypes))
+      .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
-      .combine(poptions('offsetInBlocks', [0, 1, 2]))
-      .combine(poptions('dataSizeInBlocks', [0, 1, 2]))
+      .combineOptions('offsetInBlocks', [0, 1, 2])
+      .combineOptions('dataSizeInBlocks', [0, 1, 2])
   )
   .fn(async t => {
     const { offsetInBlocks, dataSizeInBlocks, method } = t.params;

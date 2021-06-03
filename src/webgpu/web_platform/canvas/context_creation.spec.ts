@@ -6,7 +6,6 @@ Options are configured in configureSwapChain instead.
 `;
 
 import { Fixture } from '../../../common/framework/fixture.js';
-import { poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 
 export const g = makeTestGroup(Fixture);
@@ -21,7 +20,7 @@ g.test('return_type')
     u
       .combineOptions('offscreen', [false, true])
       .beginSubcases()
-      .combine(poptions('attributes', [undefined, {}]))
+      .combineOptions('attributes', [undefined, {}])
   )
   .fn(async t => {
     let canvas: HTMLCanvasElement | OffscreenCanvas;

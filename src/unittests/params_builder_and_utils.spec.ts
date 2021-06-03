@@ -5,7 +5,6 @@ Unit tests for parameterization helpers.
 import {
   kUnitCaseParamsBuilder,
   CaseSubcaseIterable,
-  poptions,
   ParamsBuilderBase,
 } from '../common/framework/params_builder.js';
 import { mergeParams, publicParamsEquals } from '../common/framework/params_utils.js';
@@ -196,6 +195,10 @@ g.test('unless').fn(t => {
 g.test('expand').fn(t => {
   // simple
   t.expectParams<{}, {}>(
+    u.expand(function* () {}),
+    []
+  );
+  t.expectParams<{}, {}>(
     u.expand(function* () {
       yield {};
     }),
@@ -203,7 +206,7 @@ g.test('expand').fn(t => {
   );
   t.expectParams<{ z: number | undefined; w: number | undefined }, {}>(
     u.expand(function* () {
-      yield* poptions('z', [3, 4]);
+      yield* kUnitCaseParamsBuilder.combineOptions('z', [3, 4]);
       yield { w: 5 };
     }),
     [
@@ -214,7 +217,7 @@ g.test('expand').fn(t => {
   );
   t.expectParams<{}, { z: number | undefined; w: number | undefined }>(
     u.beginSubcases().expand(function* () {
-      yield* poptions('z', [3, 4]);
+      yield* kUnitCaseParamsBuilder.combineOptions('z', [3, 4]);
       yield { w: 5 };
     }),
     [[{}, [{ z: 3 }, { z: 4 }, { w: 5 }]]]
@@ -238,7 +241,8 @@ g.test('expand').fn(t => {
       ])
       .expand(function* (p) {
         if (p.a) {
-          yield* poptions('z', [3, 4]);
+          yield { z: 3 };
+          yield { z: 4 };
         } else {
           yield { w: 5 };
         }
@@ -250,15 +254,8 @@ g.test('expand').fn(t => {
     ]
   );
   t.expectParams<
-    {
-      a: boolean;
-      x: number | undefined;
-      y: number | undefined;
-    },
-    {
-      z: number | undefined;
-      w: number | undefined;
-    }
+    { a: boolean; x: number | undefined; y: number | undefined },
+    { z: number | undefined; w: number | undefined }
   >(
     u
       .combine([
@@ -268,7 +265,8 @@ g.test('expand').fn(t => {
       .beginSubcases()
       .expand(function* (p) {
         if (p.a) {
-          yield* poptions('z', [3, 4]);
+          yield { z: 3 };
+          yield { z: 4 };
         } else {
           yield { w: 5 };
         }
@@ -276,6 +274,70 @@ g.test('expand').fn(t => {
     [
       [{ a: true, x: 1 }, [{ z: 3 }, { z: 4 }]],
       [{ a: false, y: 2 }, [{ w: 5 }]],
+    ]
+  );
+});
+
+g.test('expandOptions').fn(t => {
+  // simple
+  t.expectParams<{}, {}>(
+    u.expandOptions('x', function* () {}),
+    []
+  );
+  t.expectParams<{ z: number }, {}>(
+    u.expandOptions('z', function* () {
+      yield 3;
+      yield 4;
+    }),
+    [
+      [{ z: 3 }, undefined],
+      [{ z: 4 }, undefined],
+    ]
+  );
+  t.expectParams<{}, { z: number }>(
+    u.beginSubcases().expandOptions('z', function* () {
+      yield 3;
+      yield 4;
+    }),
+    [[{}, [{ z: 3 }, { z: 4 }]]]
+  );
+
+  // more complex
+  t.expectParams<{ a: boolean; x: number | undefined; y: number | undefined; z: number }, {}>(
+    u
+      .combine([
+        { a: true, x: 1 },
+        { a: false, y: 2 },
+      ])
+      .expandOptions('z', function* (p) {
+        if (p.a) {
+          yield 3;
+        } else {
+          yield 5;
+        }
+      }),
+    [
+      [{ a: true, x: 1, z: 3 }, undefined],
+      [{ a: false, y: 2, z: 5 }, undefined],
+    ]
+  );
+  t.expectParams<{ a: boolean; x: number | undefined; y: number | undefined }, { z: number }>(
+    u
+      .combine([
+        { a: true, x: 1 },
+        { a: false, y: 2 },
+      ])
+      .beginSubcases()
+      .expandOptions('z', function* (p) {
+        if (p.a) {
+          yield 3;
+        } else {
+          yield 5;
+        }
+      }),
+    [
+      [{ a: true, x: 1 }, [{ z: 3 }]],
+      [{ a: false, y: 2 }, [{ z: 5 }]],
     ]
   );
 });
@@ -290,7 +352,7 @@ g.test('invalid,shadowing').fn(t => {
       ])
       .expand(function* (p) {
         if (p.a) {
-          yield* poptions('x', ['3', '4']);
+          yield { x: 3 };
         } else {
           yield { w: 5 };
         }
@@ -310,7 +372,7 @@ g.test('invalid,shadowing').fn(t => {
       ])
       .expand(function* (p) {
         if (p.a) {
-          yield* poptions('x', ['3', '4']);
+          yield { x: 3 };
         } else {
           yield { w: 5 };
         }
@@ -334,7 +396,7 @@ g.test('invalid,shadowing').fn(t => {
       .beginSubcases()
       .expand(function* (p) {
         if (p.a) {
-          yield* poptions('x', ['3', '4']);
+          yield { x: 3 };
         } else {
           yield { w: 5 };
         }
