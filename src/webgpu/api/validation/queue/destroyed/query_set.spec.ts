@@ -18,7 +18,11 @@ Tests that use a destroyed query set in occlusion query on render pass encoder.
 - x= {destroyed, not destroyed (control case)}
   `
   )
-  .subcases(() => poptions('querySetState', ['valid', 'destroyed'] as const))
+  .params2(u =>
+    u //
+      .beginSubcases()
+      .combine(poptions('querySetState', ['valid', 'destroyed'] as const))
+  )
   .fn(t => {
     const querySet = t.createQuerySetWithState(t.params.querySetState);
 
@@ -67,7 +71,11 @@ Tests that use a destroyed query set in resolveQuerySet.
 - x= {destroyed, not destroyed (control case)}
   `
   )
-  .subcases(() => poptions('querySetState', ['valid', 'destroyed'] as const))
+  .params2(u =>
+    u //
+      .beginSubcases()
+      .combine(poptions('querySetState', ['valid', 'destroyed'] as const))
+  )
   .fn(async t => {
     const querySet = t.createQuerySetWithState(t.params.querySetState);
 

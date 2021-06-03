@@ -1,6 +1,6 @@
 export const description = `vertexState validation tests.`;
 
-import { params, pbool, poptions } from '../../../common/framework/params_builder.js';
+import { pbool, poptions } from '../../../common/framework/params_builder.js';
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import {
   kMaxVertexAttributes,
@@ -145,8 +145,9 @@ g.test('max_vertex_buffer_limit')
    - Tests with the last buffer having an attribute or not.
   This also happens to test that vertex buffers with no attributes are allowed and that a vertex state with no buffers is allowed.`
   )
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('count', [0, 1, kMaxVertexBuffers, kMaxVertexBuffers + 1]))
       .combine(pbool('lastEmpty'))
   )
@@ -175,8 +176,9 @@ g.test('max_vertex_attribute_limit')
    - Tests with 0, 1, limit, limits + 1 vertex attribute.
    - Tests with 0, 1, 4 attributes per buffer (with remaining attributes in the last buffer).`
   )
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('attribCount', [0, 1, kMaxVertexAttributes, kMaxVertexAttributes + 1]))
       .combine(poptions('attribsPerBuffer', [0, 1, 4]))
   )
@@ -212,8 +214,9 @@ g.test('max_vertex_buffer_array_stride_limit')
    - Test for various vertex buffer indices
    - Test for array strides 0, 4, 256, limit - 4, limit, limit + 4`
   )
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1]))
       .combine(
         poptions('arrayStride', [
@@ -242,8 +245,9 @@ g.test('vertex_buffer_array_stride_limit_alignment')
    - Test for various vertex buffer indices
    - Test for array strides 0, 1, 2, 4, limit - 4, limit - 2, limit`
   )
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1]))
       .combine(
         poptions('arrayStride', [
@@ -274,8 +278,9 @@ g.test('vertex_attribute_shaderLocation_limit')
    - Test for various amounts of attributes in that vertex buffer
    - Test for shaderLocation 0, 1, limit - 1, limit`
   )
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1]))
       .combine(poptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1]))
       .combine(pbool('testAttributeAtStart'))
@@ -313,8 +318,9 @@ g.test('vertex_attribute_shaderLocation_unique')
    - Test for the potentially conflicting attributes in various places in the buffers (with dummy attributes)
    - Test for various shaderLocations that conflict or not`
   )
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('vertexBufferIndexA', [0, 1, kMaxVertexBuffers - 1]))
       .combine(poptions('vertexBufferIndexB', [0, 1, kMaxVertexBuffers - 1]))
       .combine(pbool('testAttributeAtStartA'))
@@ -376,10 +382,19 @@ g.test('vertex_shader_input_location_limit')
     `Test that vertex shader's input's location decoration must be less than maxVertexAttributes.
    - Test for shaderLocation 0, 1, limit - 1, limit`
   )
-  .subcases(() =>
-    params().combine(
-      poptions('testLocation', [0, 1, kMaxVertexAttributes - 1, kMaxVertexAttributes, -1, 2 ** 32])
-    )
+  .params2(u =>
+    u
+      .beginSubcases()
+      .combine(
+        poptions('testLocation', [
+          0,
+          1,
+          kMaxVertexAttributes - 1,
+          kMaxVertexAttributes,
+          -1,
+          2 ** 32,
+        ])
+      )
   )
   .fn(t => {
     const { testLocation } = t.params;
@@ -414,8 +429,9 @@ g.test('vertex_shader_input_location_in_vertex_state')
        - Test for various input locations.
        - Test for the attribute in various places in the list of vertex buffer and various places inside the vertex buffer descriptor`
   )
-  .subcases(() =>
-    params()
+  .params2(u =>
+    u
+      .beginSubcases()
       .combine(poptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1]))
       .combine(poptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1]))
       .combine(pbool('testAttributeAtStart'))

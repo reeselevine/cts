@@ -24,7 +24,11 @@ Tests that set occlusion query set with all types in render pass descriptor:
 - {undefined} for occlusion query set in render pass descriptor
   `
   )
-  .subcases(() => poptions('type', [undefined, ...kQueryTypes]))
+  .params2(u =>
+    u //
+      .beginSubcases()
+      .combine(poptions('type', [undefined, ...kQueryTypes]))
+  )
   .fn(async t => {
     const type = t.params.type;
 
@@ -49,7 +53,11 @@ g.test('occlusion_query,invalid_query_set')
 Tests that begin occlusion query with a invalid query set that failed during creation.
   `
   )
-  .subcases(() => poptions('querySetState', ['valid', 'invalid'] as const))
+  .params2(u =>
+    u //
+      .beginSubcases()
+      .combine(poptions('querySetState', ['valid', 'invalid'] as const))
+  )
   .fn(t => {
     const querySet = t.createQuerySetWithState(t.params.querySetState);
 
@@ -69,7 +77,11 @@ Tests that begin occlusion query with query index:
 - queryIndex {in, out of} range for GPUQuerySet
   `
   )
-  .subcases(() => poptions('queryIndex', [0, 2]))
+  .params2(u =>
+    u //
+      .beginSubcases()
+      .combine(poptions('queryIndex', [0, 2]))
+  )
   .fn(t => {
     const querySet = createQuerySetWithType(t, 'occlusion', 2);
 
@@ -121,7 +133,11 @@ Tests that write timestamp to a invalid query set that failed during creation:
 - x= {non-pass, compute, render} enconder
   `
   )
-  .subcases(() => poptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const))
+  .params2(u =>
+    u //
+      .beginSubcases()
+      .combine(poptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const))
+  )
   .fn(async t => {
     const querySet = t.createQuerySetWithState('invalid');
 

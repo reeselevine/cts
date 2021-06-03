@@ -249,40 +249,44 @@ g.test('dynamic_offsets_match_expectations_in_pass_encoder')
 
 g.test('u32array_start_and_length')
   .desc('Tests that dynamicOffsetsData(Start|Length) apply to the given Uint32Array.')
-  .subcases(() => [
-    // dynamicOffsetsDataLength > offsets.length
-    {
-      offsets: [0] as const,
-      dynamicOffsetsDataStart: 0,
-      dynamicOffsetsDataLength: 2,
-      _success: false,
-    },
-    // dynamicOffsetsDataStart + dynamicOffsetsDataLength > offsets.length
-    {
-      offsets: [0] as const,
-      dynamicOffsetsDataStart: 1,
-      dynamicOffsetsDataLength: 1,
-      _success: false,
-    },
-    {
-      offsets: [0, 0] as const,
-      dynamicOffsetsDataStart: 1,
-      dynamicOffsetsDataLength: 1,
-      _success: true,
-    },
-    {
-      offsets: [0, 0, 0] as const,
-      dynamicOffsetsDataStart: 1,
-      dynamicOffsetsDataLength: 1,
-      _success: true,
-    },
-    {
-      offsets: [0, 0] as const,
-      dynamicOffsetsDataStart: 0,
-      dynamicOffsetsDataLength: 2,
-      _success: true,
-    },
-  ])
+  .params2(u =>
+    u //
+      .beginSubcases()
+      .combine([
+        // dynamicOffsetsDataLength > offsets.length
+        {
+          offsets: [0] as const,
+          dynamicOffsetsDataStart: 0,
+          dynamicOffsetsDataLength: 2,
+          _success: false,
+        },
+        // dynamicOffsetsDataStart + dynamicOffsetsDataLength > offsets.length
+        {
+          offsets: [0] as const,
+          dynamicOffsetsDataStart: 1,
+          dynamicOffsetsDataLength: 1,
+          _success: false,
+        },
+        {
+          offsets: [0, 0] as const,
+          dynamicOffsetsDataStart: 1,
+          dynamicOffsetsDataLength: 1,
+          _success: true,
+        },
+        {
+          offsets: [0, 0, 0] as const,
+          dynamicOffsetsDataStart: 1,
+          dynamicOffsetsDataLength: 1,
+          _success: true,
+        },
+        {
+          offsets: [0, 0] as const,
+          dynamicOffsetsDataStart: 0,
+          dynamicOffsetsDataLength: 2,
+          _success: true,
+        },
+      ])
+  )
   .fn(t => {
     const { offsets, dynamicOffsetsDataStart, dynamicOffsetsDataLength, _success } = t.params;
     const kBindingSize = 8;
