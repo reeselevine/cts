@@ -279,6 +279,15 @@ export const kUnitCaseParamsBuilder = new CaseParamsBuilder(function* () {
   yield {};
 });
 
+export type ParamTypeOf<
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  T extends CaseParamsBuilder<any> | SubcaseParamsBuilder<any, any>
+> = T extends SubcaseParamsBuilder<infer CaseP, infer SubcaseP>
+  ? Merged<CaseP, SubcaseP>
+  : T extends CaseParamsBuilder<infer CaseP>
+  ? CaseP
+  : never;
+
 /**
  * Builder for combinatorial test _subcase_ parameters.
  *

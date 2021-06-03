@@ -6,6 +6,7 @@ import {
   CaseSubcaseIterable,
   kUnitCaseParamsBuilder,
   ParamsBuilderBase,
+  SubcaseParamsBuilder,
 } from './params_builder.js';
 import { TestParams, extractPublicParams, Merged, mergeParams } from './params_utils.js';
 import { compareQueries, Ordering } from './query/compare.js';
@@ -141,8 +142,24 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F,
   ): TestBuilderWithSubcases<F, Merged<CaseP, SubcaseP>>;
   /**
    * Parameterize the test, generating multiple cases, without subcases.
+   *
+   * TODO: rename to cases2
    */
-  params2<CaseP extends {}>(cases: Iterable<CaseP>): TestBuilderWithSubcases<F, CaseP>;
+  params2<P extends {}>(cases: Iterable<P>): TestBuilderWithSubcases<F, P>;
+
+  /**
+   * Parameterize the test, generating one case with multiple subcases.
+   */
+  subcases2<P extends {}>(subcases: Iterable<P>): TestBuilderWithSubcases<F, P>;
+  /**
+   * Parameterize the test, generating one case with multiple subcases.
+   *
+   * The `unit` value passed to the `subcases` callback is an immutable constant
+   * `SubcaseParamsBuilder<{}>`, with one empty case `{}` and one empty subcase `{}`.
+   */
+  subcases2<P extends {}>(
+    subcases: (unit: SubcaseParamsBuilder<{}, {}>) => SubcaseParamsBuilder<{}, P>
+  ): TestBuilderWithSubcases<F, P>;
 }
 
 interface TestBuilderWithCases<F extends Fixture, P extends {}>
@@ -262,6 +279,15 @@ class TestBuilder {
       this.testCases = kUnitCaseParamsBuilder.combine(cases);
     }
     return this;
+  }
+
+  subcases2(
+    subcases: Iterable<{}> | ((unit: SubcaseParamsBuilder<{}, {}>) => SubcaseParamsBuilder<{}, {}>)
+  ): TestBuilder {
+    if (subcases instanceof Function) {
+      subcases = subcases(kUnitCaseParamsBuilder.beginSubcases());
+    }
+    return this.params2(subcases);
   }
 
   *iterate(): IterableIterator<RunCase> {
