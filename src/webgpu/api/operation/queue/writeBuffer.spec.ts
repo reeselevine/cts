@@ -105,7 +105,7 @@ g.test('array_types')
   .params2(u =>
     u //
       .combineOptions('arrayType', kTypedArrays)
-      .combineBoolean('useArrayBuffer')
+      .combineOptions('useArrayBuffer', [false, true])
   )
   .fn(t => {
     const { arrayType, useArrayBuffer } = t.params;

@@ -240,14 +240,6 @@ export class CaseParamsBuilder<CaseP extends {}> extends ParamsBuilderBase<CaseP
   }
 
   /**
-   * Takes the cartesian product of [ the cases in `this` ]
-   * and `[ {[name]: false}, {[name]: true} ]`.
-   */
-  combineBoolean<NewPKey extends string>(name: NewPKey) {
-    return this.combineOptions(name, [false, true]);
-  }
-
-  /**
    * Filters `this` to only cases for which `pred` returns true.
    */
   filter(pred: (_: Merged<{}, CaseP>) => boolean): CaseParamsBuilder<CaseP> {
@@ -352,14 +344,6 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
     return this.combine(
       values.map(value => ({ [key]: value } as { [name in NewPKey]: NewPValue }))
     );
-  }
-
-  /**
-   * Takes the cartesian product of [ the subcases in `this` ]
-   * and `[ {[name]: false}, {[name]: true} ]`.
-   */
-  combineBoolean<NewPKey extends string>(name: NewPKey) {
-    return this.combineOptions(name, [false, true]);
   }
 
   /**

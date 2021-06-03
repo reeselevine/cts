@@ -158,7 +158,7 @@ g.test('reverse_depth')
     Note that in real use case the depth range remapping is done by the modified projection matrix.
 (see https://developer.nvidia.com/content/depth-precision-visualized).`
   )
-  .params2(u => u.combineBoolean('reversed'))
+  .params2(u => u.combineOptions('reversed', [false, true]))
   .fn(async t => {
     const colorAttachmentFormat = 'rgba8unorm';
     const colorAttachment = t.device.createTexture({

@@ -136,7 +136,7 @@ then expectContents (which does copyBufferToBuffer + map-read) to ensure the con
   )
   .params2(u =>
     u //
-      .combineBoolean('mappable')
+      .combineOptions('mappable', [false, true])
       .beginSubcases()
       .combine(kSubcases)
   )

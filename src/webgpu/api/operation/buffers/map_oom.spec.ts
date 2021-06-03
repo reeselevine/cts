@@ -11,16 +11,18 @@ import { GPUTest } from '../../../gpu_test.js';
 // physical memory - so test cases are also needed to try to trigger "true" OOM.)
 const MAX_ALIGNED_SAFE_INTEGER = Number.MAX_SAFE_INTEGER - 7;
 
-const oomAndSizeParams = kUnitCaseParamsBuilder.combineBoolean('oom').expand(({ oom }) => {
-  if (oom) {
-    return poptions('size', [
-      MAX_ALIGNED_SAFE_INTEGER,
-      0x2000000000, // 128 GB
-    ]);
-  } else {
-    return poptions('size', [16]);
-  }
-});
+const oomAndSizeParams = kUnitCaseParamsBuilder
+  .combineOptions('oom', [false, true])
+  .expand(({ oom }) => {
+    if (oom) {
+      return poptions('size', [
+        MAX_ALIGNED_SAFE_INTEGER,
+        0x2000000000, // 128 GB
+      ]);
+    } else {
+      return poptions('size', [16]);
+    }
+  });
 
 export const g = makeTestGroup(GPUTest);
 
@@ -35,7 +37,7 @@ g.test('mapAsync')
   .params2(
     oomAndSizeParams //
       .beginSubcases()
-      .combineBoolean('write')
+      .combineOptions('write', [false, true])
   )
   .fn(async t => {
     const { oom, write, size } = t.params;

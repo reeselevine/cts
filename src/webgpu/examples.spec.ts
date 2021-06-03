@@ -215,7 +215,7 @@ Tests that a BC format passes validation iff the feature is enabled.`
   )
   .params2(u =>
     u //
-      .combineBoolean('textureCompressionBC')
+      .combineOptions('textureCompressionBC', [false, true])
   )
   .fn(async t => {
     const { textureCompressionBC } = t.params;
@@ -246,7 +246,7 @@ TODO: Test that an ETC format passes validation iff the feature is enabled.`
   )
   .params2(u =>
     u //
-      .combineBoolean('textureCompressionETC')
+      .combineOptions('textureCompressionETC', [false, true])
   )
   .fn(async t => {
     const { textureCompressionETC } = t.params;
