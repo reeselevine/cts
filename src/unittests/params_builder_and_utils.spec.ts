@@ -6,6 +6,7 @@ import {
   kUnitCaseParamsBuilder,
   CaseSubcaseIterable,
   ParamsBuilderBase,
+  builderIterateCasesWithSubcases,
 } from '../common/framework/params_builder.js';
 import { mergeParams, publicParamsEquals } from '../common/framework/params_utils.js';
 import { makeTestGroup } from '../common/framework/test_group.js';
@@ -18,7 +19,7 @@ class ParamsTest extends UnitTest {
     act: ParamsBuilderBase<CaseP, SubcaseP>,
     exp: CaseSubcaseIterable<{}, {}>
   ): void {
-    const a = Array.from(act.iterateCaseSubcase()).map(([caseP, subcases]) => [
+    const a = Array.from(builderIterateCasesWithSubcases(act)).map(([caseP, subcases]) => [
       caseP,
       subcases ? Array.from(subcases) : undefined,
     ]);
@@ -359,7 +360,7 @@ g.test('invalid,shadowing').fn(t => {
       });
     // Iterating causes e.g. mergeParams({x:1}, {x:3}), which fails.
     t.shouldThrow('Error', () => {
-      Array.from(p.iterateCaseSubcase());
+      Array.from(p.iterateCasesWithSubcases());
     });
   }
   // Existing SubcaseP is shadowed by a new SubcaseP.
@@ -378,7 +379,7 @@ g.test('invalid,shadowing').fn(t => {
         }
       });
     // Iterating cases is fine...
-    for (const [, subcases] of p.iterateCaseSubcase()) {
+    for (const [, subcases] of p.iterateCasesWithSubcases()) {
       assert(subcases !== undefined);
       // Iterating causes e.g. mergeParams({x:1}, {x:3}), which fails.
       t.shouldThrow('Error', () => {
@@ -401,7 +402,7 @@ g.test('invalid,shadowing').fn(t => {
           yield { w: 5 };
         }
       });
-    const cases = Array.from(p.iterateCaseSubcase());
+    const cases = Array.from(p.iterateCasesWithSubcases());
     // Iterating cases is fine...
     for (const [caseP, subcases] of cases) {
       assert(subcases !== undefined);

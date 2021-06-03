@@ -3,6 +3,7 @@ import { Expectation } from './logging/result.js';
 import { TestCaseRecorder } from './logging/test_case_recorder.js';
 import {
   CaseParamsBuilder,
+  builderIterateCasesWithSubcases,
   kUnitCaseParamsBuilder,
   ParamsBuilderBase,
   SubcaseParamsBuilder,
@@ -226,7 +227,7 @@ class TestBuilder {
     }
 
     const seen = new Set<string>();
-    for (const [caseParams, subcases] of this.testCases.iterateCaseSubcase()) {
+    for (const [caseParams, subcases] of builderIterateCasesWithSubcases(this.testCases)) {
       for (const subcaseParams of subcases ?? [{}]) {
         const params = mergeParams(caseParams, subcaseParams);
         // stringifyPublicParams also checks for invalid params values
@@ -273,7 +274,7 @@ class TestBuilder {
   *iterate(): IterableIterator<RunCase> {
     assert(this.testFn !== undefined, 'No test function (.fn()) for test');
     this.testCases ??= kUnitCaseParamsBuilder;
-    for (const [caseParams, subcases] of this.testCases.iterateCaseSubcase()) {
+    for (const [caseParams, subcases] of builderIterateCasesWithSubcases(this.testCases)) {
       yield new RunCaseSpecific(
         this.testPath,
         caseParams,

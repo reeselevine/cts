@@ -62,6 +62,14 @@ export type CaseSubcaseIterable<CaseP, SubcaseP> = Iterable<
   readonly [CaseP, Iterable<SubcaseP> | undefined]
 >;
 
+interface IterableParamsBuilder {
+  iterateCasesWithSubcases(): CaseSubcaseIterable<{}, {}>;
+}
+
+export function builderIterateCasesWithSubcases(builder: ParamsBuilderBase<{}, {}>) {
+  return ((builder as unknown) as IterableParamsBuilder).iterateCasesWithSubcases();
+}
+
 export abstract class ParamsBuilderBase<CaseP extends {}, SubcaseP extends {}> {
   protected readonly cases: () => Generator<CaseP>;
 
@@ -69,8 +77,10 @@ export abstract class ParamsBuilderBase<CaseP extends {}, SubcaseP extends {}> {
     this.cases = cases;
   }
 
-  // TODO: Hide this from test files
-  abstract iterateCaseSubcase(): CaseSubcaseIterable<CaseP, SubcaseP>;
+  /**
+   * Hidden from test files. Use `builderIterateCasesWithSubcases` to access this.
+   */
+  protected abstract iterateCasesWithSubcases(): CaseSubcaseIterable<CaseP, SubcaseP>;
 }
 
 /**
@@ -84,7 +94,7 @@ export abstract class ParamsBuilderBase<CaseP extends {}, SubcaseP extends {}> {
 export class CaseParamsBuilder<CaseP extends {}>
   extends ParamsBuilderBase<CaseP, {}>
   implements Iterable<CaseP> {
-  *iterateCaseSubcase(): CaseSubcaseIterable<CaseP, {}> {
+  *iterateCasesWithSubcases(): CaseSubcaseIterable<CaseP, {}> {
     for (const a of this.cases()) {
       yield [a, undefined];
     }
@@ -217,7 +227,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
     this.subcases = generator;
   }
 
-  *iterateCaseSubcase(): CaseSubcaseIterable<CaseP, SubcaseP> {
+  *iterateCasesWithSubcases(): CaseSubcaseIterable<CaseP, SubcaseP> {
     for (const caseP of this.cases()) {
       yield [caseP, makeReusableIterable(() => this.subcases(caseP))];
     }
