@@ -115,12 +115,8 @@ class TestGroup<F extends Fixture> implements TestGroupBuilder<F> {
   }
 }
 
-interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F, {}> {
+interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithParams<F, {}> {
   desc(description: string): this;
-  /** @deprecated use cases() and/or subcases() instead */
-  params<NewP extends TestParams>(specs: Iterable<NewP>): TestBuilderWithSubcases<F, NewP>;
-  /** @deprecated */
-  cases<NewP extends TestParams>(specs: Iterable<NewP>): TestBuilderWithCases<F, NewP>;
 
   /**
    * Parameterize the test, generating multiple cases, each possibly having subcases.
@@ -132,7 +128,7 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F,
   // FIXME: rename
   params2<CaseP extends {}, SubcaseP extends {}>(
     cases: (unit: CaseParamsBuilder<{}>) => ParamsBuilderBase<CaseP, SubcaseP>
-  ): TestBuilderWithSubcases<F, Merged<CaseP, SubcaseP>>;
+  ): TestBuilderWithParams<F, Merged<CaseP, SubcaseP>>;
   /**
    * Parameterize the test, generating multiple cases, each possibly having subcases.
    *
@@ -141,18 +137,19 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F,
   // FIXME: rename
   params2<CaseP extends {}, SubcaseP extends {}>(
     cases: ParamsBuilderBase<CaseP, SubcaseP>
-  ): TestBuilderWithSubcases<F, Merged<CaseP, SubcaseP>>;
+  ): TestBuilderWithParams<F, Merged<CaseP, SubcaseP>>;
+
   /**
    * Parameterize the test, generating multiple cases, without subcases.
    */
   // FIXME: rename
-  cases2<P extends {}>(cases: Iterable<P>): TestBuilderWithSubcases<F, P>;
+  cases2<P extends {}>(cases: Iterable<P>): TestBuilderWithParams<F, P>;
 
   /**
    * Parameterize the test, generating one case with multiple subcases.
    */
   // FIXME: rename
-  subcases2<P extends {}>(subcases: Iterable<P>): TestBuilderWithSubcases<F, P>;
+  subcases2<P extends {}>(subcases: Iterable<P>): TestBuilderWithParams<F, P>;
   /**
    * Parameterize the test, generating one case with multiple subcases.
    *
@@ -161,17 +158,10 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F,
    */
   subcases2<P extends {}>(
     subcases: (unit: SubcaseParamsBuilder<{}, {}>) => SubcaseParamsBuilder<{}, P>
-  ): TestBuilderWithSubcases<F, P>;
+  ): TestBuilderWithParams<F, P>;
 }
 
-interface TestBuilderWithCases<F extends Fixture, P extends {}>
-  extends TestBuilderWithSubcases<F, P> {
-  subcases<SubP extends TestParams>(
-    specs: (_: P) => Iterable<SubP>
-  ): TestBuilderWithSubcases<F, Merged<P, SubP>>;
-}
-
-interface TestBuilderWithSubcases<F extends Fixture, P extends {}> {
+interface TestBuilderWithParams<F extends Fixture, P extends {}> {
   fn(fn: TestFn<F, P>): void;
   unimplemented(): void;
 }
