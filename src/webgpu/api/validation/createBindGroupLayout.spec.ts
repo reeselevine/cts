@@ -28,12 +28,10 @@ export const g = makeTestGroup(ValidationTest);
 
 g.test('duplicate_bindings')
   .desc('Test that uniqueness of binding numbers across entries is enforced.')
-  .params2(u =>
-    u.beginSubcases().combine([
-      { bindings: [0, 1], _valid: true },
-      { bindings: [0, 0], _valid: false },
-    ])
-  )
+  .subcases2([
+    { bindings: [0, 1], _valid: true },
+    { bindings: [0, 0], _valid: false },
+  ])
   .fn(async t => {
     const { bindings, _valid } = t.params;
     const entries: Array<GPUBindGroupLayoutEntry> = [];
@@ -81,9 +79,7 @@ g.test('visibility')
 
 g.test('multisampled_validation')
   .desc('Test that multisampling is only allowed with "2d" view dimensions.')
-  .params2(u =>
-    u.beginSubcases().combineOptions('viewDimension', [undefined, ...kTextureViewDimensions])
-  )
+  .subcases2(u => u.combineOptions('viewDimension', [undefined, ...kTextureViewDimensions]))
   .fn(async t => {
     const { viewDimension } = t.params;
 

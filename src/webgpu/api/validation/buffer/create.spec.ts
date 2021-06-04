@@ -29,8 +29,11 @@ g.test('size')
 g.test('usage')
   .desc('Test combinations of (one to two?) usage flags.')
   .params2(u =>
-    u.beginSubcases().combineOptions('mappedAtCreation', [false, true]).combineOptions('usage', [
-      // TODO
-    ])
+    u //
+      .beginSubcases()
+      .combineOptions('mappedAtCreation', [false, true])
+      .combineOptions('usage', [
+        // TODO
+      ])
   )
   .unimplemented();

@@ -182,13 +182,11 @@ export const g = makeTestGroup(IndexFormatTest);
 
 g.test('index_format,uint16')
   .desc('Test rendering result of indexed draw with index format of uint16.')
-  .params2(u =>
-    u.beginSubcases().combine([
-      { indexOffset: 0, _expectedShape: kSquare },
-      { indexOffset: 6, _expectedShape: kBottomLeftTriangle },
-      { indexOffset: 18, _expectedShape: kNothing },
-    ])
-  )
+  .subcases2([
+    { indexOffset: 0, _expectedShape: kSquare },
+    { indexOffset: 6, _expectedShape: kBottomLeftTriangle },
+    { indexOffset: 18, _expectedShape: kNothing },
+  ])
   .fn(t => {
     const { indexOffset, _expectedShape } = t.params;
 
@@ -206,13 +204,11 @@ g.test('index_format,uint16')
 
 g.test('index_format,uint32')
   .desc('Test rendering result of indexed draw with index format of uint32.')
-  .params2(u =>
-    u.beginSubcases().combine([
-      { indexOffset: 0, _expectedShape: kSquare },
-      { indexOffset: 12, _expectedShape: kBottomLeftTriangle },
-      { indexOffset: 36, _expectedShape: kNothing },
-    ])
-  )
+  .subcases2([
+    { indexOffset: 0, _expectedShape: kSquare },
+    { indexOffset: 12, _expectedShape: kBottomLeftTriangle },
+    { indexOffset: 36, _expectedShape: kNothing },
+  ])
   .fn(t => {
     const { indexOffset, _expectedShape } = t.params;
 

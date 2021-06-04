@@ -160,10 +160,7 @@ g.test('texture_must_have_correct_component_type')
     - Tests a compatible format for every sample type
     - Tests an incompatible format for every sample type`
   )
-  .params2(u =>
-    u //
-      .combineOptions('sampleType', ['float', 'sint', 'uint'] as const)
-  )
+  .params2(u => u.combineOptions('sampleType', ['float', 'sint', 'uint'] as const))
   .fn(async t => {
     const { sampleType } = t.params;
 
@@ -280,35 +277,33 @@ g.test('buffer_offset_and_size_for_bind_groups_match')
     - Test for various offsets and sizes
     - TODO(#234): disallow zero-sized bindings`
   )
-  .params2(u =>
-    u.beginSubcases().combine([
-      { offset: 0, size: 512, _success: true }, // offset 0 is valid
-      { offset: 256, size: 256, _success: true }, // offset 256 (aligned) is valid
+  .subcases2([
+    { offset: 0, size: 512, _success: true }, // offset 0 is valid
+    { offset: 256, size: 256, _success: true }, // offset 256 (aligned) is valid
 
-      // Touching the end of the buffer
-      { offset: 0, size: 1024, _success: true },
-      { offset: 0, size: undefined, _success: true },
-      { offset: 256 * 3, size: 256, _success: true },
-      { offset: 256 * 3, size: undefined, _success: true },
+    // Touching the end of the buffer
+    { offset: 0, size: 1024, _success: true },
+    { offset: 0, size: undefined, _success: true },
+    { offset: 256 * 3, size: 256, _success: true },
+    { offset: 256 * 3, size: undefined, _success: true },
 
-      // Zero-sized bindings
-      { offset: 0, size: 0, _success: true },
-      { offset: 256, size: 0, _success: true },
-      { offset: 1024, size: 0, _success: true },
-      { offset: 1024, size: undefined, _success: true },
+    // Zero-sized bindings
+    { offset: 0, size: 0, _success: true },
+    { offset: 256, size: 0, _success: true },
+    { offset: 1024, size: 0, _success: true },
+    { offset: 1024, size: undefined, _success: true },
 
-      // Unaligned buffer offset is invalid
-      { offset: 1, size: 256, _success: false },
-      { offset: 1, size: undefined, _success: false },
-      { offset: 128, size: 256, _success: false },
-      { offset: 255, size: 256, _success: false },
+    // Unaligned buffer offset is invalid
+    { offset: 1, size: 256, _success: false },
+    { offset: 1, size: undefined, _success: false },
+    { offset: 128, size: 256, _success: false },
+    { offset: 255, size: 256, _success: false },
 
-      // Out-of-bounds
-      { offset: 256 * 5, size: 0, _success: false }, // offset is OOB
-      { offset: 0, size: 256 * 5, _success: false }, // size is OOB
-      { offset: 1024, size: 1, _success: false }, // offset+size is OOB
-    ])
-  )
+    // Out-of-bounds
+    { offset: 256 * 5, size: 0, _success: false }, // offset is OOB
+    { offset: 0, size: 256 * 5, _success: false }, // size is OOB
+    { offset: 1024, size: 1, _success: false }, // offset+size is OOB
+  ])
   .fn(async t => {
     const { offset, size, _success } = t.params;
 
