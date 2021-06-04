@@ -138,7 +138,9 @@ export class CaseParamsBuilder<CaseP extends {}>
   }
 
   /**
-   * Takes the cartesian product of [ the cases in `this` ] and `newParams`.
+   * Expands each item in `this` to multiple cases, one for each item in `newParams`.
+   *
+   * In other words, takes the cartesian product of [ the cases in `this` ] and `newParams`.
    *
    * ```text
    *                    this = [ {a:1}, {b:2} ]
@@ -151,7 +153,9 @@ export class CaseParamsBuilder<CaseP extends {}>
   }
 
   /**
-   * Takes the cartesian product of [ the cases in `this` ]
+   * Expands each item in `this` to multiple cases with `{ [name]: value }` for each value.
+   *
+   * In other words, takes the cartesian product of [ the cases in `this` ]
    * and `[ {[name]: value} for each value in values ]`
    */
   combine<NewPKey extends string, NewPValue>(
@@ -266,7 +270,9 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
   }
 
   /**
-   * Takes the cartesian product of [ the subcases in `this` ] and `newParams`.
+   * Expands each item in `this` to multiple subcases, one for each item in `newParams`.
+   *
+   * In other words, takes the cartesian product of [ the subcases in `this` ] and `newParams`.
    *
    * ```text
    *                    this = [ {a:1}, {b:2} ]
@@ -281,7 +287,9 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
   }
 
   /**
-   * Takes the cartesian product of [ the subcases in `this` ]
+   * Expands each item in `this` to multiple subcases with `{ [name]: value }` for each value.
+   *
+   * In other words, takes the cartesian product of [ the subcases in `this` ]
    * and `[ {[name]: value} for each value in values ]`
    */
   combine<NewPKey extends string, NewPValue>(
