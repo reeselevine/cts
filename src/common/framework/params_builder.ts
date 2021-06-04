@@ -116,6 +116,7 @@ export class CaseParamsBuilder<CaseP extends {}>
    *   flattened result = [ a1, a2, a3  ,      b1                    ]
    * ```
    */
+  // FIXME: rename to expandP?
   expand<NewP extends {}>(
     expander: (_: Merged<{}, CaseP>) => Iterable<NewP>
   ): CaseParamsBuilder<Merged<CaseP, NewP>> {
@@ -126,6 +127,7 @@ export class CaseParamsBuilder<CaseP extends {}>
   /**
    * Expands each case in `this` into zero or more cases.
    */
+  // FIXME: rename to expand?
   expandOptions<NewPKey extends string, NewPValue>(
     key: NewPKey,
     expander: (_: Merged<{}, CaseP>) => Iterable<NewPValue>
@@ -146,6 +148,7 @@ export class CaseParamsBuilder<CaseP extends {}>
    * this.combine(newParams) = [ {a:1,x:1}, {a:1,y:2}, {b:2,x:1}, {b:2,y:2} ]
    * ```
    */
+  // FIXME: rename to combineP?
   combine<NewP extends {}>(newParams: Iterable<NewP>): CaseParamsBuilder<Merged<CaseP, NewP>> {
     return this.expand(() => newParams);
   }
@@ -154,6 +157,7 @@ export class CaseParamsBuilder<CaseP extends {}>
    * Takes the cartesian product of [ the cases in `this` ]
    * and `[ {[name]: value} for each value in values ]`
    */
+  // FIXME: rename to combine?
   combineOptions<NewPKey extends string, NewPValue>(
     key: NewPKey,
     values: Iterable<NewPValue>
@@ -245,6 +249,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
    *   flattened result = [ a1, a2, a3  ,      b1                    ]
    * ```
    */
+  // FIXME: rename to expandP?
   expand<NewP extends {}>(
     expander: (_: Merged<CaseP, SubcaseP>) => Iterable<NewP>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, NewP>> {
@@ -254,6 +259,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
   /**
    * Expands each case in `this` into zero or more cases.
    */
+  // FIXME: rename to expand?
   expandOptions<NewPKey extends string, NewPValue>(
     key: NewPKey,
     expander: (_: Merged<CaseP, SubcaseP>) => Iterable<NewPValue>
@@ -274,6 +280,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
    * this.combine(newParams) = [ {a:1,x:1}, {a:1,y:2}, {b:2,x:1}, {b:2,y:2} ]
    * ```
    */
+  // FIXME: rename to combineP?
   combine<NewP extends {}>(
     newParams: Iterable<NewP>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, NewP>> {
@@ -284,6 +291,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
    * Takes the cartesian product of [ the subcases in `this` ]
    * and `[ {[name]: value} for each value in values ]`
    */
+  // FIXME: rename to combine?
   combineOptions<NewPKey extends string, NewPValue>(
     key: NewPKey,
     values: Iterable<NewPValue>

@@ -129,6 +129,7 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F,
    * `CaseParamsBuilder<{}>` representing the "unit" builder `[ {} ]`,
    * provided for convienience. The non-callback overload can be used if `unit` is not needed.
    */
+  // FIXME: rename
   params2<CaseP extends {}, SubcaseP extends {}>(
     cases: (unit: CaseParamsBuilder<{}>) => ParamsBuilderBase<CaseP, SubcaseP>
   ): TestBuilderWithSubcases<F, Merged<CaseP, SubcaseP>>;
@@ -137,19 +138,20 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F,
    *
    * Use the callback overload of this method if a "unit" builder is needed.
    */
+  // FIXME: rename
   params2<CaseP extends {}, SubcaseP extends {}>(
     cases: ParamsBuilderBase<CaseP, SubcaseP>
   ): TestBuilderWithSubcases<F, Merged<CaseP, SubcaseP>>;
   /**
    * Parameterize the test, generating multiple cases, without subcases.
-   *
-   * TODO: rename to cases2
    */
+  // FIXME: rename this one to something different?
   params2<P extends {}>(cases: Iterable<P>): TestBuilderWithSubcases<F, P>;
 
   /**
    * Parameterize the test, generating one case with multiple subcases.
    */
+  // FIXME: rename
   subcases2<P extends {}>(subcases: Iterable<P>): TestBuilderWithSubcases<F, P>;
   /**
    * Parameterize the test, generating one case with multiple subcases.
