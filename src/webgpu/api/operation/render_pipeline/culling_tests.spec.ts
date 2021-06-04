@@ -40,7 +40,7 @@ function faceColor(face: 'cw' | 'ccw', frontFace: GPUFrontFace, cullMode: GPUCul
 export const g = makeTestGroup(GPUTest);
 
 g.test('culling')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('frontFace', ['ccw', 'cw'] as const)
       .combineOptions('cullMode', ['none', 'front', 'back'] as const)

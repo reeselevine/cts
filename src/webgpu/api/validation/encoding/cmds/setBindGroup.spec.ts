@@ -97,7 +97,7 @@ export const g = makeTestGroup(F);
 
 g.test('state_and_binding_index')
   .desc('Tests that setBindGroup correctly handles {valid, invalid} bindGroups.')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('encoderType', kProgrammableEncoderTypes)
       .combineOptions('state', ['valid', 'invalid', 'destroyed'] as const)
@@ -138,7 +138,7 @@ g.test('state_and_binding_index')
 
 g.test('dynamic_offsets_passed_but_not_expected')
   .desc('Tests that setBindGroup correctly errors on unexpected dynamicOffsets.')
-  .params2(u => u.combineOptions('encoderType', kProgrammableEncoderTypes))
+  .params(u => u.combineOptions('encoderType', kProgrammableEncoderTypes))
   .fn(async t => {
     const { encoderType } = t.params;
     const bindGroup = t.createBindGroup('valid', 'buffer', encoderType, []);
@@ -154,7 +154,7 @@ g.test('dynamic_offsets_passed_but_not_expected')
 
 g.test('dynamic_offsets_match_expectations_in_pass_encoder')
   .desc('Tests that given dynamicOffsets match the specified bindGroup.')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('encoderType', kProgrammableEncoderTypes)
       .combine([
@@ -248,7 +248,7 @@ g.test('dynamic_offsets_match_expectations_in_pass_encoder')
 
 g.test('u32array_start_and_length')
   .desc('Tests that dynamicOffsetsData(Start|Length) apply to the given Uint32Array.')
-  .subcases2([
+  .paramsSubcasesOnly([
     // dynamicOffsetsDataLength > offsets.length
     {
       offsets: [0] as const,

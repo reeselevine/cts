@@ -89,7 +89,7 @@ export abstract class ParamsBuilderBase<CaseP extends {}, SubcaseP extends {}> {
  * CaseParamsBuilder is immutable. Each method call returns a new, immutable object,
  * modifying the list of cases according to the method called.
  *
- * This means, for example, that the `punit` passed into `.params2()` can be reused.
+ * This means, for example, that the `unit` passed into `.params()` can be reused.
  */
 export class CaseParamsBuilder<CaseP extends {}>
   extends ParamsBuilderBase<CaseP, {}>
@@ -198,8 +198,8 @@ export class CaseParamsBuilder<CaseP extends {}>
 /**
  * The unit CaseParamsBuilder, representing a single case with no params: `[ {} ]`.
  *
- * `punit` is passed to every .params2() call, so `punit` is only explicitly needed if
- * constructing a ParamsBuilder outside of a test builder.
+ * `punit` is passed to every `.params()`/`.paramsSubcasesOnly()` call, so `kUnitCaseParamsBuilder`
+ * is only explicitly needed if constructing a ParamsBuilder outside of a test builder.
  */
 export const kUnitCaseParamsBuilder = new CaseParamsBuilder(function* () {
   yield {};

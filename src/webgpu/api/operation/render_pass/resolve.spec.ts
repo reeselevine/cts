@@ -28,7 +28,7 @@ const kFormat: GPUTextureFormat = 'rgba8unorm';
 export const g = makeTestGroup(GPUTest);
 
 g.test('render_pass_resolve')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('storeOperation', ['clear', 'store'] as const)
       .beginSubcases()

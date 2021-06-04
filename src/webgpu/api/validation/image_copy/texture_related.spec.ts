@@ -17,7 +17,7 @@ export const g = makeTestGroup(ImageCopyTest);
 
 g.test('valid')
   .desc(`The texture must be valid and not destroyed.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .combineOptions('textureState', ['valid', 'destroyed', 'error'])
@@ -56,7 +56,7 @@ g.test('valid')
 
 g.test('usage')
   .desc(`The texture must have the appropriate COPY_SRC/COPY_DST usage.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
@@ -90,7 +90,7 @@ g.test('usage')
 
 g.test('sample_count')
   .desc(`Multisampled textures cannot be copied.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
@@ -118,7 +118,7 @@ g.test('sample_count')
 
 g.test('mip_level')
   .desc(`The mipLevel of the copy must be in range of the texture.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
@@ -147,7 +147,7 @@ g.test('mip_level')
 
 g.test('origin_alignment')
   .desc(`Copy origin must be aligned to block size.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .combineOptions('format', kSizedTextureFormats)
@@ -188,7 +188,7 @@ g.test('origin_alignment')
 
 g.test('1d')
   .desc(`1d texture copies must have height=depth=1.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
@@ -225,7 +225,7 @@ g.test('1d')
 
 g.test('size_alignment')
   .desc(`Copy size must be aligned to block size.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .combineOptions('format', kSizedTextureFormats)
@@ -270,7 +270,7 @@ g.test('size_alignment')
 
 g.test('copy_rectangle')
   .desc(`The max corner of the copy rectangle (origin+copySize) must be inside the texture.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .beginSubcases()

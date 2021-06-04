@@ -32,7 +32,7 @@ g.test('mapAsync')
   - unmap() throws an OperationError if mapping failed, and otherwise should detach the ArrayBuffer.
 `
   )
-  .params2(
+  .params(
     oomAndSizeParams //
       .beginSubcases()
       .combineOptions('write', [false, true])
@@ -87,7 +87,7 @@ an out-of-memory error if allocation fails.
   - unmap() should not throw.
   `
   )
-  .params2(
+  .params(
     oomAndSizeParams //
       .beginSubcases()
       .combineOptions('usage', kBufferUsages)
@@ -123,7 +123,7 @@ an out-of-memory error if allocation fails.
   - unmap() should detach the ArrayBuffer.
   `
   )
-  .params2(
+  .params(
     oomAndSizeParams //
       .beginSubcases()
       .combineOptions('usage', kBufferUsages)

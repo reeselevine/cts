@@ -23,7 +23,7 @@ g.test('BufferUsage,count').fn(t => {
   t.assertMemberCount(GPUBufferUsage, kBufferUsageExp);
 });
 g.test('BufferUsage,values')
-  .params2(u => u.combineOptions('key', Object.keys(kBufferUsageExp)))
+  .params(u => u.combineOptions('key', Object.keys(kBufferUsageExp)))
   .fn(t => {
     const { key } = t.params;
     t.assertMember(GPUBufferUsage, kBufferUsageExp, key);
@@ -40,7 +40,7 @@ g.test('TextureUsage,count').fn(t => {
   t.assertMemberCount(GPUTextureUsage, kTextureUsageExp);
 });
 g.test('TextureUsage,values')
-  .params2(u => u.combineOptions('key', Object.keys(kTextureUsageExp)))
+  .params(u => u.combineOptions('key', Object.keys(kTextureUsageExp)))
   .fn(t => {
     const { key } = t.params;
     t.assertMember(GPUTextureUsage, kTextureUsageExp, key);
@@ -57,7 +57,7 @@ g.test('ColorWrite,count').fn(t => {
   t.assertMemberCount(GPUColorWrite, kColorWriteExp);
 });
 g.test('ColorWrite,values')
-  .params2(u => u.combineOptions('key', Object.keys(kColorWriteExp)))
+  .params(u => u.combineOptions('key', Object.keys(kColorWriteExp)))
   .fn(t => {
     const { key } = t.params;
     t.assertMember(GPUColorWrite, kColorWriteExp, key);
@@ -72,7 +72,7 @@ g.test('ShaderStage,count').fn(t => {
   t.assertMemberCount(GPUShaderStage, kShaderStageExp);
 });
 g.test('ShaderStage,values')
-  .params2(u => u.combineOptions('key', Object.keys(kShaderStageExp)))
+  .params(u => u.combineOptions('key', Object.keys(kShaderStageExp)))
   .fn(t => {
     const { key } = t.params;
     t.assertMember(GPUShaderStage, kShaderStageExp, key);

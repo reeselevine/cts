@@ -28,7 +28,7 @@ export const g = makeTestGroup(ValidationTest);
 
 g.test('duplicate_bindings')
   .desc('Test that uniqueness of binding numbers across entries is enforced.')
-  .subcases2([
+  .paramsSubcasesOnly([
     { bindings: [0, 1], _valid: true },
     { bindings: [0, 0], _valid: false },
   ])
@@ -58,7 +58,7 @@ g.test('visibility')
     - Test each possible combination of shader stage visibilities.
     - Test each type of bind group resource.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('visibility', kShaderStageCombinations)
       .beginSubcases()
@@ -79,7 +79,9 @@ g.test('visibility')
 
 g.test('multisampled_validation')
   .desc('Test that multisampling is only allowed with "2d" view dimensions.')
-  .subcases2(u => u.combineOptions('viewDimension', [undefined, ...kTextureViewDimensions]))
+  .paramsSubcasesOnly(u =>
+    u.combineOptions('viewDimension', [undefined, ...kTextureViewDimensions])
+  )
   .fn(async t => {
     const { viewDimension } = t.params;
 
@@ -106,7 +108,7 @@ g.test('max_dynamic_buffers')
     - Test creation of a bind group layout using the maximum number of dynamic buffers + 1 fails.
     - TODO(#230): Update to enforce per-stage and per-pipeline-layout limits on BGLs as well.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('type', kBufferBindingTypes)
       .beginSubcases()
@@ -192,7 +194,7 @@ g.test('max_resources_per_stage,in_bind_group_layout')
     - Test that creation of a bind group layout using the maximum number of bindings + 1 fails.
     - TODO(#230): Update to enforce per-stage and per-pipeline-layout limits on BGLs as well.`
   )
-  .params2(kMaxResourcesCases)
+  .params(kMaxResourcesCases)
   .fn(async t => {
     const { maxedEntry, extraEntry, maxedVisibility, extraVisibility } = t.params;
     const maxedTypeInfo = bindingTypeInfo(maxedEntry);
@@ -239,7 +241,7 @@ g.test('max_resources_per_stage,in_pipeline_layout')
     - Test that creation of a pipeline using the maximum number of bindings + 1 fails.
   `
   )
-  .params2(kMaxResourcesCases)
+  .params(kMaxResourcesCases)
   .fn(async t => {
     const { maxedEntry, extraEntry, maxedVisibility, extraVisibility } = t.params;
     const maxedTypeInfo = bindingTypeInfo(maxedEntry);

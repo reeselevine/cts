@@ -20,7 +20,7 @@ TODO: This test should expect *synchronous* exceptions, not validation errors, p
 As of this writing, the spec needs to be fixed as well.
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('type', ['occlusion', 'pipeline-statistics', 'timestamp'] as const)
       .combineOptions('pipelineStatisticsQueryEnable', [false, true])

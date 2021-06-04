@@ -175,7 +175,7 @@ class CopyImageBitmapToTextureTest extends ValidationTest {
 export const g = makeTestGroup(CopyImageBitmapToTextureTest);
 
 g.test('source_imageBitmap,state')
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('closed', [false, true])
       .beginSubcases()
@@ -205,7 +205,7 @@ g.test('source_imageBitmap,state')
   });
 
 g.test('destination_texture,state')
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('state', ['valid', 'invalid', 'destroyed'] as const)
       .beginSubcases()
@@ -223,7 +223,7 @@ g.test('destination_texture,state')
   });
 
 g.test('destination_texture,usage')
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('usage', kTextureUsages)
       .beginSubcases()
@@ -250,7 +250,7 @@ g.test('destination_texture,usage')
   });
 
 g.test('destination_texture,sample_count')
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('sampleCount', [1, 4])
       .beginSubcases()
@@ -273,7 +273,7 @@ g.test('destination_texture,sample_count')
   });
 
 g.test('destination_texture,mipLevel')
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('mipLevel', [0, kDefaultMipLevelCount - 1, kDefaultMipLevelCount])
       .beginSubcases()
@@ -301,7 +301,7 @@ g.test('destination_texture,mipLevel')
   });
 
 g.test('destination_texture,format')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kAllTextureFormats)
       .beginSubcases()
@@ -338,7 +338,7 @@ g.test('destination_texture,format')
   });
 
 g.test('OOB,source')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u
       .combineOptions('srcOrigin', [
         { x: 0, y: 0 }, // origin is on top-left
@@ -378,7 +378,7 @@ g.test('OOB,source')
   });
 
 g.test('OOB,destination')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u
       .combineOptions('mipLevel', [0, 1, kDefaultMipLevelCount - 2])
       .expandOptions('dstOrigin', generateDstOriginValue)

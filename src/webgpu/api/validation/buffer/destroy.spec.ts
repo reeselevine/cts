@@ -10,7 +10,7 @@ export const g = makeTestGroup(ValidationTest);
 
 g.test('twice')
   .desc('Tests various mapping-related descripton options that could affect how state is tracked.')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('mappedAtCreation', [false, true])
       .combine([

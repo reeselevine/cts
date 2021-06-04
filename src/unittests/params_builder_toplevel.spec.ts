@@ -12,31 +12,31 @@ import { UnitTest } from './unit_test.js';
 export const g = makeTestGroup(TestGroupTest);
 
 g.test('combine_none,arg_unit')
-  .params2(u => u.combine([]))
+  .params(u => u.combine([]))
   .fn(t => {
     t.fail("this test shouldn't run");
   });
 
 g.test('combine_none,arg_ignored')
-  .params2(() => kUnitCaseParamsBuilder.combine([]))
+  .params(() => kUnitCaseParamsBuilder.combine([]))
   .fn(t => {
     t.fail("this test shouldn't run");
   });
 
 g.test('combine_none,plain_builder')
-  .params2(kUnitCaseParamsBuilder.combine([]))
+  .params(kUnitCaseParamsBuilder.combine([]))
   .fn(t => {
     t.fail("this test shouldn't run");
   });
 
 g.test('combine_none,plain_array')
-  .cases2([])
+  .paramsSimple([])
   .fn(t => {
     t.fail("this test shouldn't run");
   });
 
 g.test('combine_one,case')
-  .params2(u =>
+  .params(u =>
     u //
       .combine([{ x: 1 }])
   )
@@ -45,7 +45,7 @@ g.test('combine_one,case')
   });
 
 g.test('combine_one,subcase')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combine([{ x: 1 }])
   )
@@ -54,7 +54,7 @@ g.test('combine_one,subcase')
   });
 
 g.test('filter')
-  .params2(u =>
+  .params(u =>
     u
       .combine([
         { a: true, x: 1 }, //
@@ -67,7 +67,7 @@ g.test('filter')
   });
 
 g.test('unless')
-  .params2(u =>
+  .params(u =>
     u
       .combine([
         { a: true, x: 1 }, //
@@ -85,7 +85,7 @@ g.test('generator').fn(t0 => {
   const ran: TestParams[] = [];
 
   g.test('generator')
-    .params2(u =>
+    .params(u =>
       u.combine(
         (function* () {
           for (let x = 0; x < 3; ++x) {

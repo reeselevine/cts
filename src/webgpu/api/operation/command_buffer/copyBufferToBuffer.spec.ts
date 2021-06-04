@@ -16,7 +16,7 @@ g.test('single')
   - covers the end of the dstBuffer
   - covers neither the beginning nor the end of the dstBuffer`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('srcOffset', [0, 4, 8, 16])
       .combineOptions('dstOffset', [0, 4, 8, 16])

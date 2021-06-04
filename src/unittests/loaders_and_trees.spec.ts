@@ -63,10 +63,10 @@ const specsData: { [k: string]: SpecFile } = {
     g: (() => {
       const g = makeTestGroupForUnitTesting(UnitTest);
       g.test('wye')
-        .cases2([{}, { x: 1 }])
+        .paramsSimple([{}, { x: 1 }])
         .fn(() => {});
       g.test('zed')
-        .cases2([
+        .paramsSimple([
           { a: 1, b: 2, _c: 0 },
           { b: 3, a: 1, _c: 0 },
         ])
@@ -82,7 +82,7 @@ const specsData: { [k: string]: SpecFile } = {
         t.debug('OK');
       });
       g.test('bleh')
-        .cases2([{ a: 1 }])
+        .paramsSimple([{ a: 1 }])
         .fn(t => {
           t.debug('OK');
           t.debug('OK');

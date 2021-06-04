@@ -15,19 +15,19 @@ g.test('test,sync').fn(t => {});
 g.test('test,async').fn(async t => {});
 
 g.test('test_with_params,sync')
-  .cases2([{}])
+  .paramsSimple([{}])
   .fn(t => {
     t.debug(JSON.stringify(t.params));
   });
 
 g.test('test_with_params,async')
-  .cases2([{}])
+  .paramsSimple([{}])
   .fn(async t => {
     t.debug(JSON.stringify(t.params));
   });
 
 g.test('test_with_params,private_params')
-  .cases2([
+  .paramsSimple([
     { a: 1, b: 2, _result: 3 }, //
     { a: 4, b: -3, _result: 1 },
   ])

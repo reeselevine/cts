@@ -321,7 +321,7 @@ g.test('color_textures,non_compressed,non_array')
   - covers the mipmap level > 0
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kRegularTextureFormats)
       .beginSubcases()
@@ -368,7 +368,7 @@ g.test('color_textures,compressed,non_array')
   the content of the whole dstTexture.
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kCompressedTextureFormats)
       .beginSubcases()
@@ -432,7 +432,7 @@ g.test('color_textures,non_compressed,array')
   CopyTextureToTexture() copy, and verifying the content of the whole dstTexture.
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kRegularTextureFormats)
       .beginSubcases()
@@ -472,7 +472,7 @@ g.test('color_textures,compressed,array')
   CopyTextureToTexture() copy, and verifying the content of the whole dstTexture.
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kCompressedTextureFormats)
       .beginSubcases()
@@ -516,7 +516,7 @@ g.test('zero_sized')
   of that dimension.
   `
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('copyBoxOffset', [
         // copyExtent.width === 0

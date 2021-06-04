@@ -24,7 +24,7 @@ import {
 export const g = makeTestGroup(ImageCopyTest);
 
 g.test('bound_on_rows_per_image')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
@@ -62,7 +62,7 @@ g.test('bound_on_rows_per_image')
 
 g.test('copy_end_overflows_u64')
   .desc(`Test what happens when offset+requiredBytesInCopy overflows GPUSize64.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
@@ -100,7 +100,7 @@ g.test('required_bytes_in_copy')
   - requiredBytesInCopy - 1 should fail.
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .combineOptions('format', kSizedTextureFormats)
@@ -175,7 +175,7 @@ g.test('required_bytes_in_copy')
 
 g.test('rows_per_image_alignment')
   .desc(`rowsPerImage is measured in multiples of block height, so has no alignment constraints.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .combineOptions('format', kSizedTextureFormats)
@@ -200,7 +200,7 @@ g.test('rows_per_image_alignment')
   });
 
 g.test('texel_block_alignment_on_offset')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .combineOptions('format', kSizedTextureFormats)
@@ -224,7 +224,7 @@ g.test('texel_block_alignment_on_offset')
   });
 
 g.test('bound_on_bytes_per_row')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .combineOptions('format', kSizedTextureFormats)
@@ -290,7 +290,7 @@ g.test('bound_on_bytes_per_row')
   });
 
 g.test('bound_on_offset')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('method', kImageCopyTypes)
       .beginSubcases()

@@ -144,7 +144,7 @@ g.test('max_vertex_buffer_limit')
    - Tests with the last buffer having an attribute or not.
   This also happens to test that vertex buffers with no attributes are allowed and that a vertex state with no buffers is allowed.`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('count', [0, 1, kMaxVertexBuffers, kMaxVertexBuffers + 1])
       .combineOptions('lastEmpty', [false, true])
@@ -174,7 +174,7 @@ g.test('max_vertex_attribute_limit')
    - Tests with 0, 1, limit, limits + 1 vertex attribute.
    - Tests with 0, 1, 4 attributes per buffer (with remaining attributes in the last buffer).`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('attribCount', [0, 1, kMaxVertexAttributes, kMaxVertexAttributes + 1])
       .combineOptions('attribsPerBuffer', [0, 1, 4])
@@ -211,7 +211,7 @@ g.test('max_vertex_buffer_array_stride_limit')
    - Test for various vertex buffer indices
    - Test for array strides 0, 4, 256, limit - 4, limit, limit + 4`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('arrayStride', [
@@ -239,7 +239,7 @@ g.test('vertex_buffer_array_stride_limit_alignment')
    - Test for various vertex buffer indices
    - Test for array strides 0, 1, 2, 4, limit - 4, limit - 2, limit`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('arrayStride', [
@@ -269,7 +269,7 @@ g.test('vertex_attribute_shaderLocation_limit')
    - Test for various amounts of attributes in that vertex buffer
    - Test for shaderLocation 0, 1, limit - 1, limit`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1])
@@ -306,7 +306,7 @@ g.test('vertex_attribute_shaderLocation_unique')
    - Test for the potentially conflicting attributes in various places in the buffers (with dummy attributes)
    - Test for various shaderLocations that conflict or not`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('vertexBufferIndexA', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('vertexBufferIndexB', [0, 1, kMaxVertexBuffers - 1])
@@ -369,7 +369,7 @@ g.test('vertex_shader_input_location_limit')
     `Test that vertex shader's input's location decoration must be less than maxVertexAttributes.
    - Test for shaderLocation 0, 1, limit - 1, limit`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('testLocation', [
         0,
@@ -413,7 +413,7 @@ g.test('vertex_shader_input_location_in_vertex_state')
        - Test for various input locations.
        - Test for the attribute in various places in the list of vertex buffer and various places inside the vertex buffer descriptor`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('vertexBufferIndex', [0, 1, kMaxVertexBuffers - 1])
       .combineOptions('extraAttributeCount', [0, 1, kMaxVertexAttributes - 1])
@@ -462,7 +462,7 @@ g.test('vertex_shader_type_matches_attribute_format')
      - Test for all formats.
      - Test for all combinations of u/i/f32 with and without vectors.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kVertexFormats)
       .beginSubcases()
@@ -513,7 +513,7 @@ g.test('vertex_attribute_offset_alignment')
     - Test for various vertex buffer indices
     - Test for various amounts of attributes in that vertex buffer`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kVertexFormats)
       .combineOptions('arrayStride', [256, kMaxVertexBufferArrayStride])
@@ -569,7 +569,7 @@ g.test('vertex_attribute_contained_in_stride')
     - Test for various vertex buffer indices
     - Test for various amounts of attributes in that vertex buffer`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kVertexFormats)
       .beginSubcases()

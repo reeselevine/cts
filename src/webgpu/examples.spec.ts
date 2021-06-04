@@ -76,7 +76,7 @@ g.test('basic,async').fn(async t => {
 g.test('basic,plain_cases')
   .desc(
     `
-A test can be parameterized with a simple array of objects using .cases2([ ... ]).
+A test can be parameterized with a simple array of objects using .paramsSimple([ ... ]).
 Each such instance of the test is a "case".
 
 In this example, the following cases are generated (identified by their "query string"),
@@ -87,7 +87,7 @@ each with just one subcase:
       - { x: -10, y: -10 }
   `
   )
-  .cases2([
+  .paramsSimple([
     { x: 2, y: 2 }, //
     { x: -10, y: -10 },
   ])
@@ -109,7 +109,7 @@ In this example, the following cases are generated, each with just one subcase:
       - { x: -10, y: 18, _result: 8 }
   `
   )
-  .cases2([
+  .paramsSimple([
     { x: 2, y: 4, _result: 6 }, //
     { x: -10, y: 18, _result: 8 },
   ])
@@ -121,7 +121,7 @@ In this example, the following cases are generated, each with just one subcase:
 g.test('basic,builder_cases')
   .desc(
     `
-A "CaseParamsBuilder" or "SubcaseParamsBuilder" can be passed to .params2() instead.
+A "CaseParamsBuilder" or "SubcaseParamsBuilder" can be passed to .params() instead.
 The params builder provides facilities for generating tests combinatorially (by cartesian
 product). For convenience, the "unit" CaseParamsBuilder is passed as an argument ("u" below).
 
@@ -136,7 +136,7 @@ In this example, the following cases are generated, each with just one subcase:
       - { x: 2, y: 2 }
   `
   )
-  .params2(u =>
+  .params(u =>
     u //
       .combine([{ x: 1 }, { x: 2 }])
       .combine([{ y: 1 }, { y: 2 }])
@@ -159,7 +159,7 @@ In this example, the following cases are generated:
       - { x: 2, y: 2 }
   `
   )
-  .params2(u =>
+  .params(u =>
     u //
       .combine([{ x: 1 }, { x: 2 }])
       .beginSubcases()
@@ -178,7 +178,7 @@ In this example, the following single case is generated:
       - { x: 2, y: 2 }
   `
   )
-  .params2(u =>
+  .params(u =>
     u //
       .beginSubcases()
       .combine([{ x: 1 }, { x: 2 }])
@@ -189,7 +189,7 @@ In this example, the following single case is generated:
 g.test('basic,builder_subcases_short')
   .desc(
     `
-As a shorthand, .subcases2() can be used.
+As a shorthand, .paramsSubcasesOnly() can be used.
 
 In this example, the following single case is generated:
   - webgpu:examples:basic,cases:         runs 4 subcases, with t.params set to:
@@ -199,7 +199,7 @@ In this example, the following single case is generated:
       - { x: 2, y: 2 }
   `
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combine([{ x: 1 }, { x: 2 }])
       .combine([{ y: 1 }, { y: 2 }])
@@ -233,7 +233,7 @@ g.test('gpu,with_texture_compression,bc')
     `Example of a test using a device descriptor.
 Tests that a BC format passes validation iff the feature is enabled.`
   )
-  .params2(u => u.combineOptions('textureCompressionBC', [false, true]))
+  .params(u => u.combineOptions('textureCompressionBC', [false, true]))
   .fn(async t => {
     const { textureCompressionBC } = t.params;
 
@@ -261,7 +261,7 @@ g.test('gpu,with_texture_compression,etc')
 
 TODO: Test that an ETC format passes validation iff the feature is enabled.`
   )
-  .params2(u => u.combineOptions('textureCompressionETC', [false, true]))
+  .params(u => u.combineOptions('textureCompressionETC', [false, true]))
   .fn(async t => {
     const { textureCompressionETC } = t.params;
 

@@ -248,7 +248,7 @@ g.test('from_ImageData')
   in CPU back resource.
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('alpha', ['none', 'premultiply'] as const)
       .combineOptions('orientation', ['none', 'flipY'] as const)
@@ -324,7 +324,7 @@ g.test('from_canvas')
   texture correctly. These imageBitmaps are highly possible living in GPU back resource.
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('orientation', ['none', 'flipY'] as const)
       .combineOptions('dstColorFormat', [

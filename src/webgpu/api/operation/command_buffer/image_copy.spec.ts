@@ -646,7 +646,7 @@ bytes in copy works for every format.
     bytesPerRow == bytesInACompleteCopyImage
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combine(kMethodsToTest)
       .combineOptions('format', kWorkingTextureFormats)
@@ -742,7 +742,7 @@ works for every format with 2d and 2d-array textures.
     offset > bytesInACompleteCopyImage
 `
   )
-  .params2(
+  .params(
     u =>
       u
         .combine(kMethodsToTest)
@@ -811,7 +811,7 @@ g.test('origins_and_extents')
     `Test that copying slices of a texture works with various origin and copyExtent values
 for all formats. We pass origin and copyExtent as [number, number, number].`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combine(kMethodsToTest)
       .combineOptions('format', kWorkingTextureFormats)
@@ -950,7 +950,7 @@ g.test('mip_levels')
   - bufferSize - offset < bytesPerImage * copyExtent.depthOrArrayLayers, and copyExtent needs to be clamped for all block formats.
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combine(kMethodsToTest)
       .combineOptions('format', kWorkingTextureFormats)
@@ -1056,7 +1056,7 @@ g.test('undefined_params')
   Ensures bytesPerRow/rowsPerImage=undefined are valid and behave as expected.
   Ensures origin.x/y/z undefined default to 0.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combine(kMethodsToTest)
       .beginSubcases()

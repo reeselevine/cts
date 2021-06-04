@@ -251,7 +251,7 @@ const typeInfoMap: { [k: string]: VertexInfo } = {
 };
 
 g.test('vertexAccess')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('indexed', [false, true])
       .combineOptions('indirect', [false, true])

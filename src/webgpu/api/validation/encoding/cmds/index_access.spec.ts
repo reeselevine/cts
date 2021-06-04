@@ -136,7 +136,7 @@ g.test('out_of_bounds')
     - max uint32 firstIndex and small indexCount
     Together with normal and large instanceCount`
   )
-  .params2(
+  .params(
     u =>
       u
         .combineOptions('indirect', [false, true])
@@ -180,7 +180,7 @@ g.test('out_of_bounds_zero_sized_index_buffer')
     - both are 0s (not out of bound) but index buffer size is 0
     Together with normal and large instanceCount`
   )
-  .params2(
+  .params(
     u =>
       u
         .combineOptions('indirect', [false, true])

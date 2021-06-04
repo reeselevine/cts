@@ -45,7 +45,7 @@ Params:
   - base_vertex= {0, 9} - only for indexed draws
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('first', [0, 3] as const)
       .combineOptions('count', [0, 3, 6] as const)
@@ -336,7 +336,7 @@ g.test('vertex_attributes,basic')
   - step_mode= {undefined, vertex, instance, mixed} - where mixed only applies for vertex_buffer_count > 1
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('vertex_attribute_count', [1, 4, 8, 16])
       .combineOptions('vertex_buffer_count', [1, 4, 8])

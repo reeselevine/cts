@@ -126,7 +126,7 @@ g.test('GPUBlendComponent')
     - dstFactor= {...all GPUBlendFactors}
     - operation= {...all GPUBlendOperations}`
   )
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('component', ['color', 'alpha'] as const)
       .combineOptions('srcFactor', kBlendFactors)

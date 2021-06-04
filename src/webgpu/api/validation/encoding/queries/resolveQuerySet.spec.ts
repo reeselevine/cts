@@ -17,7 +17,7 @@ Tests that resolve query set with invalid object.
 - invalid destination buffer that failed during creation.
   `
   )
-  .subcases2([
+  .paramsSubcasesOnly([
     { querySetState: 'valid', destinationState: 'valid' }, // control case
     { querySetState: 'invalid', destinationState: 'valid' },
     { querySetState: 'valid', destinationState: 'invalid' },
@@ -47,7 +47,7 @@ Tests that resolve query set with invalid firstQuery and queryCount:
 - firstQuery and/or queryCount out of range
   `
   )
-  .subcases2([
+  .paramsSubcasesOnly([
     { firstQuery: 0, queryCount: kQueryCount }, // control case
     { firstQuery: 0, queryCount: kQueryCount + 1 },
     { firstQuery: 1, queryCount: kQueryCount },
@@ -77,7 +77,7 @@ Tests that resolve query set with invalid destinationBuffer:
 - Buffer usage {with, without} QUERY_RESOLVE
   `
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('bufferUsage', [
         GPUConst.BufferUsage.STORAGE,
@@ -108,7 +108,7 @@ Tests that resolve query set with invalid destinationOffset:
 - destinationOffset out of range
   `
   )
-  .subcases2(u => u.combineOptions('destinationOffset', [0, 6, 8, 16]))
+  .paramsSubcasesOnly(u => u.combineOptions('destinationOffset', [0, 6, 8, 16]))
   .fn(async t => {
     const querySet = t.device.createQuerySet({ type: 'occlusion', count: kQueryCount });
     const destination = t.device.createBuffer({

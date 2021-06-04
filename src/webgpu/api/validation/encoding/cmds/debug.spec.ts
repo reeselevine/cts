@@ -17,7 +17,7 @@ import { ValidationTest, kEncoderTypes } from '../../validation_test.js';
 export const g = makeTestGroup(ValidationTest);
 
 g.test('debug_group_balanced')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('encoderType', kEncoderTypes)
       .beginSubcases()
@@ -40,7 +40,7 @@ g.test('debug_group_balanced')
   });
 
 g.test('debug_group')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('encoderType', kEncoderTypes)
       .beginSubcases()
@@ -55,7 +55,7 @@ g.test('debug_group')
   });
 
 g.test('debug_marker')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('encoderType', kEncoderTypes)
       .beginSubcases()

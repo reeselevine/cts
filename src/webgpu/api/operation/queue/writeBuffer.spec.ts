@@ -102,7 +102,7 @@ const kTestData = range<number>(16, i => i);
 
 g.test('array_types')
   .desc('Tests that writeBuffer correctly handles different TypedArrays and ArrayBuffer.')
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('arrayType', kTypedArrays)
       .combineOptions('useArrayBuffer', [false, true])
@@ -133,7 +133,7 @@ Tests that writeBuffer currently handles different offsets and writes. This incl
 - Multiple overlapping writes with decreasing sizes
     `
   )
-  .subcases2([
+  .paramsSubcasesOnly([
     {
       // Concatenate 2 Uint32Arrays
       writes: [

@@ -17,15 +17,15 @@ g.test('f')
 g.test('f,g').fn(() => {});
 
 g.test('f,g,h')
-  .cases2([{}, { x: 0 }, { x: 0, y: 0 }])
+  .paramsSimple([{}, { x: 0 }, { x: 0, y: 0 }])
   .fn(() => {});
 
 g.test('case_depth_2_in_single_child_test')
-  .cases2([{ x: 0, y: 0 }])
+  .paramsSimple([{ x: 0, y: 0 }])
   .fn(() => {});
 
 g.test('deep_case_tree')
-  .params2(u =>
+  .params(u =>
     u.combineOptions('x', [1, 2]).combineOptions('y', [1, 2]).combineOptions('z', [1, 2])
   )
   .fn(() => {});

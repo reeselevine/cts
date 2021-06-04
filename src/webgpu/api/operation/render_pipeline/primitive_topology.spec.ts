@@ -444,7 +444,7 @@ g.test('basic')
     - primitiveRestart= { true, false } - always false for non-strip topologies
   `
   )
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('topology', topologies)
       .combineOptions('indirect', [false, true])
@@ -471,7 +471,7 @@ g.test('unaligned_vertex_count')
                    One smaller for line-list. One or two smaller for triangle-list.
     `
   )
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('topology', ['line-list', 'triangle-list'] as const)
       .combineOptions('indirect', [false, true])

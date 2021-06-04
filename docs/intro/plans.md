@@ -31,7 +31,7 @@ Tries to trigger [some conditional path].
 - Unaligned values (should fail) // <- (only validation tests need to intentionally hit invalid cases)
 - Extreme values`
   )
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('mode', ['mode1', 'mode2'])
       .beginSubcases()

@@ -22,7 +22,7 @@ Generally, see:
 
 - TODO: Index existing helpers.
 - [`CaseParamsBuilder` and `SubcaseParamsBuilder`](../src/common/framework/params_builder.ts)
-    are objects that iterate over params. These are used in `.params2()`.
+    are objects that iterate over params. These are used in `.params()`/`.paramsSubcasesOnly()`.
     See `examples.spec.ts` for basic examples of how this behaves.
     - `CaseParamsBuilder`
         - `xs.combine(ys)`: cartesian product of the `CaseParamsBuilder` `xs` with the iterable `ys`.

@@ -32,7 +32,7 @@ Tests that begin/end occlusion queries mismatch on render pass:
 - begin n queries, then end m queries, for various n and m.
   `
   )
-  .subcases2([
+  .paramsSubcasesOnly([
     { begin: 0, end: 1 },
     { begin: 1, end: 0 },
     { begin: 1, end: 1 }, // control case
@@ -65,7 +65,7 @@ Tests the invalid nesting of begin/end occlusion queries:
 - begin index 0, begin index 1, end, end
   `
   )
-  .subcases2([
+  .paramsSubcasesOnly([
     { calls: [0, 'end', 1, 'end'], _valid: true }, // control case
     { calls: [0, 0, 'end', 'end'], _valid: false },
     { calls: [0, 1, 'end', 'end'], _valid: false },
@@ -96,7 +96,7 @@ Tests that two disjoint occlusion queries cannot be begun with same query index 
 - call on {same (invalid), different (control case)} render pass
   `
   )
-  .subcases2(u => u.combineOptions('isOnSameRenderPass', [false, true]))
+  .paramsSubcasesOnly(u => u.combineOptions('isOnSameRenderPass', [false, true]))
   .fn(async t => {
     const querySet = createQuerySetWithType(t, 'occlusion', 1);
 
@@ -129,7 +129,7 @@ Tests that whether it's allowed to nest various types of queries:
 - call {occlusion, pipeline-statistics, timestamp} query in same type or other type.
   `
   )
-  .subcases2([
+  .paramsSubcasesOnly([
     { begin: 'occlusion', nest: 'timestamp', end: 'occlusion', _valid: true },
     { begin: 'occlusion', nest: 'occlusion', end: 'occlusion', _valid: false },
     { begin: 'occlusion', nest: 'pipeline-statistics', end: 'occlusion', _valid: true },

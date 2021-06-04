@@ -50,7 +50,7 @@ g.test('set_pipeline')
 setPipeline should generate an error iff using an 'invalid' pipeline.
 `
   )
-  .params2(u => u.beginSubcases().combineOptions('state', ['valid', 'invalid'] as const))
+  .params(u => u.beginSubcases().combineOptions('state', ['valid', 'invalid'] as const))
   .fn(t => {
     const pipeline = t.createComputePipeline(t.params.state);
     const { encoder, finish } = t.createEncoder('compute pass');
@@ -69,7 +69,7 @@ Test 'direct' and 'indirect' dispatch with various sizes.
     - invalid, TODO: workSizes {x,y,z} just under and above limit, once limit is established.
 `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dispatchType', ['direct', 'indirect'] as const)
       .beginSubcases()
@@ -107,7 +107,7 @@ TODO: test specifically which call the validation error occurs in.
       (Should be finish() for invalid, but submit() for destroyed.)
 `
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('state', ['valid', 'invalid', 'destroyed'] as const)
       .combineOptions('offset', [

@@ -16,7 +16,7 @@ g.test('return_type')
 
     TODO: Test OffscreenCanvas made from transferControlToOffscreen.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('offscreen', [false, true])
       .beginSubcases()

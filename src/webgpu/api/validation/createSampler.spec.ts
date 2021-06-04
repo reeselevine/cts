@@ -10,7 +10,7 @@ export const g = makeTestGroup(ValidationTest);
 
 g.test('lodMinAndMaxClamp')
   .desc('test different combinations of min and max clamp values')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('lodMinClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30])
       .combineOptions('lodMaxClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30])
@@ -26,7 +26,7 @@ g.test('lodMinAndMaxClamp')
 
 g.test('maxAnisotropy')
   .desc('test different maxAnisotropy values and combinations with min/mag/mipmapFilter')
-  .params2(u =>
+  .params(u =>
     u //
       .beginSubcases()
       .combine([

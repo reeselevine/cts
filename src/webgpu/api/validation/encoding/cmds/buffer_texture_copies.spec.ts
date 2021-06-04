@@ -54,7 +54,7 @@ g.test('depth_stencil_format,copy_usage_and_aspect')
   and copyTextureToBuffer. See https://gpuweb.github.io/gpuweb/#depth-formats for more details.
 `
   )
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('format', kDepthStencilFormats)
       .beginSubcases()
@@ -100,7 +100,7 @@ g.test('depth_stencil_format,copy_buffer_size')
   required buffer size.
 `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kDepthStencilFormats)
       .combineOptions('aspect', ['depth-only', 'stencil-only'] as const)
@@ -181,7 +181,7 @@ g.test('depth_stencil_format,copy_buffer_offset')
     copyBufferToTexture() and copyTextureToBuffer().
     `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kDepthStencilFormats)
       .combineOptions('aspect', ['depth-only', 'stencil-only'] as const)

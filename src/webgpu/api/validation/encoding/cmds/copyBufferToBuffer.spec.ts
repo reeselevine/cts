@@ -78,7 +78,7 @@ g.test('copy_with_invalid_buffer').fn(async t => {
 });
 
 g.test('buffer_usage')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('srcUsage', kBufferUsages)
       .combineOptions('dstUsage', kBufferUsages)
@@ -108,7 +108,7 @@ g.test('buffer_usage')
   });
 
 g.test('copy_size_alignment')
-  .subcases2([
+  .paramsSubcasesOnly([
     { copySize: 0, _isSuccess: true },
     { copySize: 2, _isSuccess: false },
     { copySize: 4, _isSuccess: true },
@@ -138,7 +138,7 @@ g.test('copy_size_alignment')
   });
 
 g.test('copy_offset_alignment')
-  .subcases2([
+  .paramsSubcasesOnly([
     { srcOffset: 0, dstOffset: 0, _isSuccess: true },
     { srcOffset: 2, dstOffset: 0, _isSuccess: false },
     { srcOffset: 4, dstOffset: 0, _isSuccess: true },
@@ -173,7 +173,7 @@ g.test('copy_offset_alignment')
   });
 
 g.test('copy_overflow')
-  .subcases2([
+  .paramsSubcasesOnly([
     { srcOffset: 0, dstOffset: 0, copySize: kMaxSafeMultipleOf8 },
     { srcOffset: 16, dstOffset: 0, copySize: kMaxSafeMultipleOf8 },
     { srcOffset: 0, dstOffset: 16, copySize: kMaxSafeMultipleOf8 },
@@ -210,7 +210,7 @@ g.test('copy_overflow')
   });
 
 g.test('copy_out_of_bounds')
-  .subcases2([
+  .paramsSubcasesOnly([
     { srcOffset: 0, dstOffset: 0, copySize: 32, _isSuccess: true },
     { srcOffset: 0, dstOffset: 0, copySize: 36 },
     { srcOffset: 36, dstOffset: 0, copySize: 4 },
@@ -245,7 +245,7 @@ g.test('copy_out_of_bounds')
   });
 
 g.test('copy_within_same_buffer')
-  .subcases2([
+  .paramsSubcasesOnly([
     { srcOffset: 0, dstOffset: 8, copySize: 4 },
     { srcOffset: 8, dstOffset: 0, copySize: 4 },
     { srcOffset: 0, dstOffset: 4, copySize: 8 },

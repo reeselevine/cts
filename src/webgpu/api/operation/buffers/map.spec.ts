@@ -69,7 +69,7 @@ g.test('mapAsync,write')
     `Use map-write to write to various ranges of variously-sized buffers, then expectContents
 (which does copyBufferToBuffer + map-read) to ensure the contents were written.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('mapAsyncRegionLeft', mapRegionBoundModes)
       .combineOptions('mapAsyncRegionRight', mapRegionBoundModes)
@@ -96,7 +96,7 @@ g.test('mapAsync,read')
     `Use mappedAtCreation to initialize various ranges of variously-sized buffers, then
 map-read and check the read-back result.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('mapAsyncRegionLeft', mapRegionBoundModes)
       .combineOptions('mapAsyncRegionRight', mapRegionBoundModes)
@@ -134,7 +134,7 @@ g.test('mappedAtCreation')
 with or without the MAP_WRITE usage (since this could affect the mappedAtCreation upload path),
 then expectContents (which does copyBufferToBuffer + map-read) to ensure the contents were written.`
   )
-  .params2(u =>
+  .params(u =>
     u //
       .combineOptions('mappable', [false, true])
       .beginSubcases()

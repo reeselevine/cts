@@ -144,7 +144,7 @@ const kColorAttachmentFormats = kRegularTextureFormats.filter(format => {
 
 g.test('render_pass_and_bundle,color_format')
   .desc('Test that color attachment formats in render passes and bundles must match.')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('passFormat', kColorAttachmentFormats)
       .combineOptions('bundleFormat', kColorAttachmentFormats)
@@ -174,7 +174,7 @@ g.test('render_pass_and_bundle,color_count')
   TODO: Add sparse color attachment compatibility test when defined by specification
   `
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('passCount', kColorAttachmentCounts)
       .combineOptions('bundleCount', kColorAttachmentCounts)
@@ -199,7 +199,7 @@ g.test('render_pass_and_bundle,color_count')
 
 g.test('render_pass_and_bundle,depth_format')
   .desc('Test that the depth attachment format in render passes and bundles must match.')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('passFormat', kDepthStencilAttachmentFormats)
       .combineOptions('bundleFormat', kDepthStencilAttachmentFormats)
@@ -228,7 +228,7 @@ g.test('render_pass_and_bundle,depth_format')
 
 g.test('render_pass_and_bundle,sample_count')
   .desc('Test that the sample count in render passes and bundles must match.')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('renderSampleCount', kTextureSampleCounts)
       .combineOptions('bundleSampleCount', kTextureSampleCounts)
@@ -257,7 +257,7 @@ g.test('render_pass_or_bundle_and_pipeline,color_format')
 Test that color attachment formats in render passes or bundles match the pipeline color format.
 `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
@@ -285,7 +285,7 @@ count.
 TODO: Add sparse color attachment compatibility test when defined by specification
 `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
@@ -313,7 +313,7 @@ g.test('render_pass_or_bundle_and_pipeline,depth_format')
 Test that the depth attachment format in render passes or bundles match the pipeline depth format.
 `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
@@ -347,7 +347,7 @@ g.test('render_pass_or_bundle_and_pipeline,sample_count')
 Test that the sample count in render passes or bundles match the pipeline sample count.
 `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()

@@ -25,7 +25,7 @@ g.test('zero_size')
     `Test texture creation with zero or nonzero size of
     width, height, depthOrArrayLayers and mipLevelCount for every dimension, and representative formats.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dimension', [undefined, ...kTextureDimensions])
       .beginSubcases()
@@ -89,7 +89,7 @@ g.test('dimension_type_and_format_compatibility')
   .desc(
     `Test every dimension type on every format. Note that compressed formats and depth/stencil formats are not valid for 1D/3D dimension types.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dimension', [undefined, ...kTextureDimensions])
       .beginSubcases()
@@ -117,7 +117,7 @@ g.test('mipLevelCount,format')
     `Test texture creation with no mipmap chain, partial mipmap chain, full mipmap chain, out-of-bounds mipmap chain
     for every format with different texture dimension types.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dimension', [undefined, ...kTextureDimensions])
       .beginSubcases()
@@ -156,7 +156,7 @@ g.test('mipLevelCount,bound_check')
     `Test mip level count bound check upon different texture size and different texture dimension types.
     The cases below test: 1) there must be no mip levels after a 1 level (1D texture), or 1x1 level (2D texture), or 1x1x1 level (3D texture), 2) array layers are not mip-mapped, 3) power-of-two, non-power-of-two, and non-square sizes.`
   )
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('format', ['rgba8unorm', 'bc1-rgba-unorm'] as const)
       .combine([
@@ -227,7 +227,7 @@ g.test('sampleCount,various_sampleCount_with_all_formats')
   .desc(
     `Test texture creation with various (valid or invalid) sample count and all formats. Note that 1D and 3D textures can't support multisample.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dimension', [undefined, '2d'] as const)
       .beginSubcases()
@@ -260,7 +260,7 @@ g.test('sampleCount,valid_sampleCount_with_other_parameter_varies')
      Texture can be single sample (sampleCount is 1) or multi-sample (sampleCount is 4).
      Multisample texture requires that 1) its dimension is 2d or undefined, 2) its format supports multisample, 3) its mipLevelCount and arrayLayerCount are 1, 4) its usage doesn't include STORAGE.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dimension', [undefined, ...kTextureDimensions])
       .beginSubcases()
@@ -321,7 +321,7 @@ g.test('texture_size,default_value_and_smallest_size,uncompressed_format')
     `Test default values for height and depthOrArrayLayers for every dimension type and every uncompressed format.
 	  It also tests smallest size (lower bound) for every dimension type and every uncompressed format, while other texture_size tests are testing the upper bound.`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dimension', [undefined, ...kTextureDimensions])
       .beginSubcases()
@@ -349,7 +349,7 @@ g.test('texture_size,default_value_and_smallest_size,compressed_format')
     `Test default values for height and depthOrArrayLayers for every dimension type and every compressed format.
 	  It also tests smallest size (lower bound) for every dimension type and every compressed format, while other texture_size tests are testing the upper bound.`
   )
-  .params2(u =>
+  .params(u =>
     u
       // Compressed formats are invalid for 1D and 3D.
       .combineOptions('dimension', [undefined, '2d'] as const)
@@ -386,7 +386,7 @@ g.test('texture_size,default_value_and_smallest_size,compressed_format')
 
 g.test('texture_size,1d_texture')
   .desc(`Test texture size requirement for 1D texture`)
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       // Compressed textures are invalid for 1D.
       .combineOptions('format', kUncompressedTextureFormats)
@@ -419,7 +419,7 @@ g.test('texture_size,1d_texture')
 
 g.test('texture_size,2d_texture,uncompressed_format')
   .desc(`Test texture size requirement for 2D texture with uncompressed format.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dimension', [undefined, '2d'] as const)
       .combineOptions('format', kUncompressedTextureFormats)
@@ -461,7 +461,7 @@ g.test('texture_size,2d_texture,uncompressed_format')
 
 g.test('texture_size,2d_texture,compressed_format')
   .desc(`Test texture size requirement for 2D texture with compressed format.`)
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dimension', [undefined, '2d'] as const)
       .combineOptions('format', kCompressedTextureFormats)
@@ -533,7 +533,7 @@ g.test('texture_size,2d_texture,compressed_format')
 
 g.test('texture_size,3d_texture,uncompressed_format')
   .desc(`Test texture size requirement for 3D texture with uncompressed format.`)
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('format', kUncompressedTextureFormats)
       .combineOptions('size', [
@@ -574,7 +574,7 @@ g.test('texture_size,3d_texture,uncompressed_format')
 
 g.test('texture_size,3d_texture,compressed_format')
   .desc(`Test texture size requirement for 3D texture with compressed format.`)
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('format', kCompressedTextureFormats)
       .expandOptions('size', p => {
@@ -651,7 +651,7 @@ g.test('texture_usage')
   .desc(
     `Test texture usage (single usage or combined usages) for every texture format and every dimension type`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('dimension', [undefined, ...kTextureDimensions])
       .beginSubcases()

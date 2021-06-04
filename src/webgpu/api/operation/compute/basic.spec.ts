@@ -71,7 +71,7 @@ TODO: add query for the maximum dispatch size and test closer to those limits.
 Test reasonably-sized large dispatches (see also stress tests).
 `
   )
-  .params2(u =>
+  .params(u =>
     u
       // Reasonably-sized powers of two, and some stranger larger sizes.
       .combineOptions('dispatchSize', [256, 512, 1024, 2048, 315, 628, 1053, 2179] as const)

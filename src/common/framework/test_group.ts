@@ -125,8 +125,7 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithParams<F
    * `CaseParamsBuilder<{}>` representing the "unit" builder `[ {} ]`,
    * provided for convienience. The non-callback overload can be used if `unit` is not needed.
    */
-  // FIXME: rename
-  params2<CaseP extends {}, SubcaseP extends {}>(
+  params<CaseP extends {}, SubcaseP extends {}>(
     cases: (unit: CaseParamsBuilder<{}>) => ParamsBuilderBase<CaseP, SubcaseP>
   ): TestBuilderWithParams<F, Merged<CaseP, SubcaseP>>;
   /**
@@ -134,29 +133,26 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithParams<F
    *
    * Use the callback overload of this method if a "unit" builder is needed.
    */
-  // FIXME: rename
-  params2<CaseP extends {}, SubcaseP extends {}>(
+  params<CaseP extends {}, SubcaseP extends {}>(
     cases: ParamsBuilderBase<CaseP, SubcaseP>
   ): TestBuilderWithParams<F, Merged<CaseP, SubcaseP>>;
 
   /**
    * Parameterize the test, generating multiple cases, without subcases.
    */
-  // FIXME: rename
-  cases2<P extends {}>(cases: Iterable<P>): TestBuilderWithParams<F, P>;
+  paramsSimple<P extends {}>(cases: Iterable<P>): TestBuilderWithParams<F, P>;
 
   /**
    * Parameterize the test, generating one case with multiple subcases.
    */
-  // FIXME: rename
-  subcases2<P extends {}>(subcases: Iterable<P>): TestBuilderWithParams<F, P>;
+  paramsSubcasesOnly<P extends {}>(subcases: Iterable<P>): TestBuilderWithParams<F, P>;
   /**
    * Parameterize the test, generating one case with multiple subcases.
    *
    * The `unit` value passed to the `subcases` callback is an immutable constant
    * `SubcaseParamsBuilder<{}>`, with one empty case `{}` and one empty subcase `{}`.
    */
-  subcases2<P extends {}>(
+  paramsSubcasesOnly<P extends {}>(
     subcases: (unit: SubcaseParamsBuilder<{}, {}>) => SubcaseParamsBuilder<{}, P>
   ): TestBuilderWithParams<F, P>;
 }
@@ -236,7 +232,7 @@ class TestBuilder {
     }
   }
 
-  params2(
+  params(
     cases: ((unit: CaseParamsBuilder<{}>) => ParamsBuilderBase<{}, {}>) | ParamsBuilderBase<{}, {}>
   ): TestBuilder {
     assert(this.testCases === undefined, 'test case is already parameterized');
@@ -248,19 +244,19 @@ class TestBuilder {
     return this;
   }
 
-  cases2(cases: Iterable<{}>): TestBuilder {
+  paramsSimple(cases: Iterable<{}>): TestBuilder {
     assert(this.testCases === undefined, 'test case is already parameterized');
     this.testCases = kUnitCaseParamsBuilder.combine(cases);
     return this;
   }
 
-  subcases2(
+  paramsSubcasesOnly(
     subcases: Iterable<{}> | ((unit: SubcaseParamsBuilder<{}, {}>) => SubcaseParamsBuilder<{}, {}>)
   ): TestBuilder {
     if (subcases instanceof Function) {
-      return this.params2(subcases(kUnitCaseParamsBuilder.beginSubcases()));
+      return this.params(subcases(kUnitCaseParamsBuilder.beginSubcases()));
     } else {
-      return this.params2(kUnitCaseParamsBuilder.beginSubcases().combine(subcases));
+      return this.params(kUnitCaseParamsBuilder.beginSubcases().combine(subcases));
     }
   }
 

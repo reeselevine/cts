@@ -111,7 +111,7 @@ g.test('copy_with_invalid_texture').fn(async t => {
 });
 
 g.test('mipmap_level')
-  .subcases2([
+  .paramsSubcasesOnly([
     { srcLevelCount: 1, dstLevelCount: 1, srcCopyLevel: 0, dstCopyLevel: 0 },
     { srcLevelCount: 1, dstLevelCount: 1, srcCopyLevel: 1, dstCopyLevel: 0 },
     { srcLevelCount: 1, dstLevelCount: 1, srcCopyLevel: 0, dstCopyLevel: 1 },
@@ -148,7 +148,7 @@ g.test('mipmap_level')
   });
 
 g.test('texture_usage')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('srcUsage', kTextureUsages)
       .combineOptions('dstUsage', kTextureUsages)
@@ -179,7 +179,7 @@ g.test('texture_usage')
   });
 
 g.test('sample_count')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('srcSampleCount', [1, 4])
       .combineOptions('dstSampleCount', [1, 4])
@@ -210,7 +210,7 @@ g.test('sample_count')
   });
 
 g.test('multisampled_copy_restrictions')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('srcCopyOrigin', [
         { x: 0, y: 0, z: 0 },
@@ -258,7 +258,7 @@ g.test('multisampled_copy_restrictions')
   });
 
 g.test('texture_format_equality')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('srcFormat', kAllTextureFormats)
       .combineOptions('dstFormat', kAllTextureFormats)
@@ -293,7 +293,7 @@ g.test('texture_format_equality')
   });
 
 g.test('depth_stencil_copy_restrictions')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kDepthStencilFormats)
       .beginSubcases()
@@ -376,7 +376,7 @@ g.test('depth_stencil_copy_restrictions')
   });
 
 g.test('copy_ranges')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('copyBoxOffsets', [
         { x: 0, y: 0, z: 0, width: 0, height: 0, depthOrArrayLayers: -2 },
@@ -466,7 +466,7 @@ g.test('copy_ranges')
   });
 
 g.test('copy_within_same_texture')
-  .subcases2(u =>
+  .paramsSubcasesOnly(u =>
     u //
       .combineOptions('srcCopyOriginZ', [0, 2, 4])
       .combineOptions('dstCopyOriginZ', [0, 2, 4])
@@ -503,7 +503,7 @@ Test the validations on the member 'aspect' of GPUImageCopyTexture in CopyTextur
 - for all the stencil-only formats: the texture copy aspects must be either 'all' or 'stencil-only'.
 `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', ['rgba8unorm', ...kDepthStencilFormats] as const)
       .beginSubcases()
@@ -555,7 +555,7 @@ Test the validations on the member 'aspect' of GPUImageCopyTexture in CopyTextur
   });
 
 g.test('copy_ranges_with_compressed_texture_formats')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('format', kCompressedTextureFormats)
       .beginSubcases()

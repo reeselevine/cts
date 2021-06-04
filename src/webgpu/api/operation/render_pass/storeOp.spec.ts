@@ -57,7 +57,7 @@ export const g = makeTestGroup(GPUTest);
 // Tests a render pass with both a color and depth stencil attachment to ensure store operations are
 // set independently.
 g.test('render_pass_store_op,color_attachment_with_depth_stencil_attachment')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('colorStoreOperation', kStoreOps)
       .combineOptions('depthStencilStoreOperation', kStoreOps)
@@ -139,7 +139,7 @@ g.test('render_pass_store_op,color_attachment_with_depth_stencil_attachment')
 // Tests that render pass color attachment store operations work correctly for all renderable color
 // formats, mip levels and array layers.
 g.test('render_pass_store_op,color_attachment_only')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('colorFormat', kEncodableTextureFormats)
       // Filter out any non-renderable formats
@@ -204,7 +204,7 @@ g.test('render_pass_store_op,color_attachment_only')
 
 // Test with multiple color attachments to ensure each attachment's storeOp is set independently.
 g.test('render_pass_store_op,multiple_color_attachments')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('storeOperation1', kStoreOps)
       .combineOptions('storeOperation2', kStoreOps)
@@ -272,7 +272,7 @@ formats, mip levels and array layers.
 TODO: Also test unsized depth/stencil formats
   `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('depthStencilFormat', kSizedDepthStencilFormats) // TODO
       .combineOptions('storeOperation', kStoreOps)

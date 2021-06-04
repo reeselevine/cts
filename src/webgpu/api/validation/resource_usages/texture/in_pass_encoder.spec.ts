@@ -230,7 +230,7 @@ const SLICE_COUNT = 2;
 
 // For all tests below, we test compute pass if 'compute' is true, and test render pass otherwise.
 g.test('subresources_and_binding_types_combination_for_color')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('compute', [false, true])
       .combine([
@@ -503,7 +503,7 @@ g.test('subresources_and_binding_types_combination_for_color')
   });
 
 g.test('subresources_and_binding_types_combination_for_aspect')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('compute', [false, true])
       .combineOptions('format', kDepthStencilFormats)
@@ -662,7 +662,7 @@ g.test('subresources_and_binding_types_combination_for_aspect')
   });
 
 g.test('shader_stages_and_visibility')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('compute', [false, true])
       .combineOptions('readVisibility', [0, ...kShaderStages])
@@ -728,7 +728,7 @@ g.test('shader_stages_and_visibility')
 // call site upon the same index in the same render pass. However, replaced bindings in compute
 // should not be validated.
 g.test('replaced_binding')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('compute', [false, true])
       .combineOptions('callDrawOrDispatch', [false, true])
@@ -798,7 +798,7 @@ g.test('replaced_binding')
   });
 
 g.test('bindings_in_bundle')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('type0', ['render-target', ...kTextureBindingTypes] as const)
       .combineOptions('type1', ['render-target', ...kTextureBindingTypes] as const)
@@ -882,7 +882,7 @@ g.test('bindings_in_bundle')
   });
 
 g.test('unused_bindings_in_pipeline')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('compute', [false, true])
       .combineOptions('useBindGroup0', [false, true])
@@ -985,7 +985,7 @@ g.test('unused_bindings_in_pipeline')
   });
 
 g.test('validation_scope,no_draw_or_dispatch')
-  .params2(u => u.combineOptions('compute', [false, true]))
+  .params(u => u.combineOptions('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
 
@@ -1003,7 +1003,7 @@ g.test('validation_scope,no_draw_or_dispatch')
   });
 
 g.test('validation_scope,same_draw_or_dispatch')
-  .params2(u => u.combineOptions('compute', [false, true]))
+  .params(u => u.combineOptions('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
 
@@ -1020,7 +1020,7 @@ g.test('validation_scope,same_draw_or_dispatch')
   });
 
 g.test('validation_scope,different_draws_or_dispatches')
-  .params2(u => u.combineOptions('compute', [false, true]))
+  .params(u => u.combineOptions('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
     const { bindGroup0, bindGroup1, encoder, pass, pipeline } = t.testValidationScope(compute);
@@ -1041,7 +1041,7 @@ g.test('validation_scope,different_draws_or_dispatches')
   });
 
 g.test('validation_scope,different_passes')
-  .params2(u => u.combineOptions('compute', [false, true]))
+  .params(u => u.combineOptions('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
     const { bindGroup0, bindGroup1, encoder, pass, pipeline } = t.testValidationScope(compute);

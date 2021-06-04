@@ -10,7 +10,7 @@ import { UnitTest } from './unit_test.js';
 export const g = makeTestGroup(UnitTest);
 
 g.test('stacks')
-  .cases2([
+  .paramsSimple([
     {
       case: 'node_fail',
       _expectedLines: 3,

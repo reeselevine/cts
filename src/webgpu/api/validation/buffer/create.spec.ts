@@ -12,7 +12,7 @@ export const g = makeTestGroup(ValidationTest);
 assert(kBufferSizeAlignment === 4);
 g.test('size')
   .desc('Test buffer size alignment.')
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('mappedAtCreation', [false, true])
       .beginSubcases()
@@ -28,7 +28,7 @@ g.test('size')
 
 g.test('usage')
   .desc('Test combinations of (one to two?) usage flags.')
-  .params2(u =>
+  .params(u =>
     u //
       .beginSubcases()
       .combineOptions('mappedAtCreation', [false, true])

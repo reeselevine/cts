@@ -71,7 +71,7 @@ g.test('v_0033')
   TODO: add test for: structs - arrays of vectors and matrices - arrays of different length
 `
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('variableOrConstant', ['var', 'const'])
       .combineOptions('lhsContainerType', kContainerTypes)
@@ -126,7 +126,7 @@ g.test('v_0038')
   becomes invalid and nothing else is wrong.
   TODO: add test for: struct - struct with bool component - struct with runtime array`
   )
-  .params2(u =>
+  .params(u =>
     u
       .combineOptions('storageClass', ['in', 'out', 'private'])
       .combineOptions('containerType', kContainerTypes)

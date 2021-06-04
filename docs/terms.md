@@ -141,8 +141,8 @@ It may represent multiple _test cases_, each of which runs the same Test Functio
 Parameters.
 
 A test is named using `TestGroup.test()`, which returns a `TestBuilder`.
-`TestBuilder.params2()` can optionally be used to parametrically generate instances
-(cases and subcases) of the test.
+`TestBuilder.params()`/`.paramsSimple()`/`.paramsSubcasesOnly()`
+can optionally be used to parametrically generate instances (cases and subcases) of the test.
 Finally, `TestBuilder.fn()` provides the Test Function
 (or, a test can be marked unimplemented with `TestBuilder.unimplemented()`).
 
@@ -160,7 +160,8 @@ A single case of a test. It is identified by a `TestCaseID`: a test name, and it
 Each case appears as an individual item (tree leaf) in `/standalone/`,
 and as an individual "step" in WPT.
 
-If `TestBuilder.params2()` is not used, there is exactly one case, with parameters `{}`.
+If `TestBuilder.params()`/`.paramsSimple()`/`.paramsSubcasesOnly()` are not used,
+there is exactly one case with one subcase, with parameters `{}`.
 
 **Type:** During test run time, a case is encapsulated as a `RunCase`.
 
