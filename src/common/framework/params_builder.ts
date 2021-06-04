@@ -143,9 +143,9 @@ export class CaseParamsBuilder<CaseP extends {}>
    * In other words, takes the cartesian product of [ the cases in `this` ] and `newParams`.
    *
    * ```text
-   *                    this = [ {a:1}, {b:2} ]
-   *               newParams = [ {x:1}, {y:2} ]
-   * this.combine(newParams) = [ {a:1,x:1}, {a:1,y:2}, {b:2,x:1}, {b:2,y:2} ]
+   *                     this = [ {a:1}, {b:2} ]
+   *                newParams = [ {x:1}, {y:2} ]
+   * this.combineP(newParams) = [ {a:1,x:1}, {a:1,y:2}, {b:2,x:1}, {b:2,y:2} ]
    * ```
    */
   combineP<NewP extends {}>(newParams: Iterable<NewP>): CaseParamsBuilder<Merged<CaseP, NewP>> {
@@ -275,9 +275,9 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
    * In other words, takes the cartesian product of [ the subcases in `this` ] and `newParams`.
    *
    * ```text
-   *                    this = [ {a:1}, {b:2} ]
-   *               newParams = [ {x:1}, {y:2} ]
-   * this.combine(newParams) = [ {a:1,x:1}, {a:1,y:2}, {b:2,x:1}, {b:2,y:2} ]
+   *                     this = [ {a:1}, {b:2} ]
+   *                newParams = [ {x:1}, {y:2} ]
+   * this.combineP(newParams) = [ {a:1,x:1}, {a:1,y:2}, {b:2,x:1}, {b:2,y:2} ]
    * ```
    */
   combineP<NewP extends {}>(

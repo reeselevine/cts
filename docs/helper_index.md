@@ -25,11 +25,16 @@ Generally, see:
     are objects that iterate over params. These are used in `.params()`/`.paramsSubcasesOnly()`.
     See `examples.spec.ts` for basic examples of how this behaves.
     - `CaseParamsBuilder`
-        - `xs.combine(ys)`: cartesian product of the `CaseParamsBuilder` `xs` with the iterable `ys`.
-        - `xs.expand(x => ys)`: like `.combine`, but each `ys` can depend on the value of `x`.
-        - `xs.combine('key', [1, 2, 3])`: combines over `{ key: 1 }, { key: 2 }, { key: 3 }`.
-        - `xs.filter(x => boolean)`: filters the current items according to a predicate.
-        - `xs.unless(x => boolean)`: same as `.filter`, but inverted.
+        - `xs.expandP(x => ys)`: Expands each item in `xs` into multiple items,
+          each extended with an item of `y`.
+        - `xs.combineP(ys)`: like `.expandP()` but `ys` doesn't depend on the value of `x`.
+          In other words, the cartesian product of `xs` with `ys`.
+        - `xs.combine('key', [1, 2, 3])`: common case of `.combineP()`;
+          combines over `{ key: 1 }, { key: 2 }, { key: 3 }`.
+        - `xs.expand('key', x => ys)`: common case of `.expandP()`;
+          expands each `x` over `{ key: y[0] }, { key: y[1] }, ...`.
+        - `xs.filter(x => boolean)` and `xs.unless(x => boolean)`:
+          filter the current items according to a predicate.
         - `xs.beginSubcases()`: finalizes the "cases" of the builder, returning a `SubcaseParamsBuilder`.
     - `SubcaseParamsBuilder` has the same methods, except for `.beginSubcases()`.
         They generate more subcases, rather than more cases.
