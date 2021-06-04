@@ -28,7 +28,7 @@ Params:
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('indirectOffset', [
+      .combine('indirectOffset', [
         0,
         Uint32Array.BYTES_PER_ELEMENT,
         1 * kDrawIndirectParametersSize,

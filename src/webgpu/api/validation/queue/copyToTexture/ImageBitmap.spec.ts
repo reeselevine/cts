@@ -177,9 +177,9 @@ export const g = makeTestGroup(CopyImageBitmapToTextureTest);
 g.test('source_imageBitmap,state')
   .params(u =>
     u //
-      .combineOptions('closed', [false, true])
+      .combine('closed', [false, true])
       .beginSubcases()
-      .combineOptions('copySize', [
+      .combine('copySize', [
         { width: 0, height: 0, depthOrArrayLayers: 0 },
         { width: 1, height: 1, depthOrArrayLayers: 1 },
       ])
@@ -207,9 +207,9 @@ g.test('source_imageBitmap,state')
 g.test('destination_texture,state')
   .params(u =>
     u //
-      .combineOptions('state', ['valid', 'invalid', 'destroyed'] as const)
+      .combine('state', ['valid', 'invalid', 'destroyed'] as const)
       .beginSubcases()
-      .combineOptions('copySize', [
+      .combine('copySize', [
         { width: 0, height: 0, depthOrArrayLayers: 0 },
         { width: 1, height: 1, depthOrArrayLayers: 1 },
       ])
@@ -225,9 +225,9 @@ g.test('destination_texture,state')
 g.test('destination_texture,usage')
   .params(u =>
     u //
-      .combineOptions('usage', kTextureUsages)
+      .combine('usage', kTextureUsages)
       .beginSubcases()
-      .combineOptions('copySize', [
+      .combine('copySize', [
         { width: 0, height: 0, depthOrArrayLayers: 0 },
         { width: 1, height: 1, depthOrArrayLayers: 1 },
       ])
@@ -252,9 +252,9 @@ g.test('destination_texture,usage')
 g.test('destination_texture,sample_count')
   .params(u =>
     u //
-      .combineOptions('sampleCount', [1, 4])
+      .combine('sampleCount', [1, 4])
       .beginSubcases()
-      .combineOptions('copySize', [
+      .combine('copySize', [
         { width: 0, height: 0, depthOrArrayLayers: 0 },
         { width: 1, height: 1, depthOrArrayLayers: 1 },
       ])
@@ -275,9 +275,9 @@ g.test('destination_texture,sample_count')
 g.test('destination_texture,mipLevel')
   .params(u =>
     u //
-      .combineOptions('mipLevel', [0, kDefaultMipLevelCount - 1, kDefaultMipLevelCount])
+      .combine('mipLevel', [0, kDefaultMipLevelCount - 1, kDefaultMipLevelCount])
       .beginSubcases()
-      .combineOptions('copySize', [
+      .combine('copySize', [
         { width: 0, height: 0, depthOrArrayLayers: 0 },
         { width: 1, height: 1, depthOrArrayLayers: 1 },
       ])
@@ -303,9 +303,9 @@ g.test('destination_texture,mipLevel')
 g.test('destination_texture,format')
   .params(u =>
     u
-      .combineOptions('format', kAllTextureFormats)
+      .combine('format', kAllTextureFormats)
       .beginSubcases()
-      .combineOptions('copySize', [
+      .combine('copySize', [
         { width: 0, height: 0, depthOrArrayLayers: 0 },
         { width: 1, height: 1, depthOrArrayLayers: 1 },
       ])
@@ -340,7 +340,7 @@ g.test('destination_texture,format')
 g.test('OOB,source')
   .paramsSubcasesOnly(u =>
     u
-      .combineOptions('srcOrigin', [
+      .combine('srcOrigin', [
         { x: 0, y: 0 }, // origin is on top-left
         { x: kDefaultWidth - 1, y: 0 }, // x near the border
         { x: 0, y: kDefaultHeight - 1 }, // y is near the border
@@ -380,7 +380,7 @@ g.test('OOB,source')
 g.test('OOB,destination')
   .paramsSubcasesOnly(u =>
     u
-      .combineOptions('mipLevel', [0, 1, kDefaultMipLevelCount - 2])
+      .combine('mipLevel', [0, 1, kDefaultMipLevelCount - 2])
       .expand('dstOrigin', generateDstOriginValue)
       .expand('copySize', generateCopySizeForDstOOB)
   )

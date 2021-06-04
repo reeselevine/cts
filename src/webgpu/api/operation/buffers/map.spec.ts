@@ -71,8 +71,8 @@ g.test('mapAsync,write')
   )
   .params(u =>
     u
-      .combineOptions('mapAsyncRegionLeft', mapRegionBoundModes)
-      .combineOptions('mapAsyncRegionRight', mapRegionBoundModes)
+      .combine('mapAsyncRegionLeft', mapRegionBoundModes)
+      .combine('mapAsyncRegionRight', mapRegionBoundModes)
       .beginSubcases()
       .combineP(kSubcases)
   )
@@ -98,8 +98,8 @@ map-read and check the read-back result.`
   )
   .params(u =>
     u
-      .combineOptions('mapAsyncRegionLeft', mapRegionBoundModes)
-      .combineOptions('mapAsyncRegionRight', mapRegionBoundModes)
+      .combine('mapAsyncRegionLeft', mapRegionBoundModes)
+      .combine('mapAsyncRegionRight', mapRegionBoundModes)
       .beginSubcases()
       .combineP(kSubcases)
   )
@@ -136,7 +136,7 @@ then expectContents (which does copyBufferToBuffer + map-read) to ensure the con
   )
   .params(u =>
     u //
-      .combineOptions('mappable', [false, true])
+      .combine('mappable', [false, true])
       .beginSubcases()
       .combineP(kSubcases)
   )

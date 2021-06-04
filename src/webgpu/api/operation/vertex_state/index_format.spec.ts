@@ -317,7 +317,7 @@ is different from what you would get if the topology were incorrect.
   )
   .params(u =>
     u //
-      .combineOptions('indexFormat', ['uint16', 'uint32'] as const)
+      .combine('indexFormat', ['uint16', 'uint32'] as const)
       .combineP([
         {
           primitiveTopology: 'point-list',

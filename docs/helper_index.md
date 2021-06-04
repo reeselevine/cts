@@ -27,7 +27,7 @@ Generally, see:
     - `CaseParamsBuilder`
         - `xs.combine(ys)`: cartesian product of the `CaseParamsBuilder` `xs` with the iterable `ys`.
         - `xs.expand(x => ys)`: like `.combine`, but each `ys` can depend on the value of `x`.
-        - `xs.combineOptions('key', [1, 2, 3])`: combines over `{ key: 1 }, { key: 2 }, { key: 3 }`.
+        - `xs.combine('key', [1, 2, 3])`: combines over `{ key: 1 }, { key: 2 }, { key: 3 }`.
         - `xs.filter(x => boolean)`: filters the current items according to a predicate.
         - `xs.unless(x => boolean)`: same as `.filter`, but inverted.
         - `xs.beginSubcases()`: finalizes the "cases" of the builder, returning a `SubcaseParamsBuilder`.

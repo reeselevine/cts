@@ -60,9 +60,9 @@ g.test('visibility')
   )
   .params(u =>
     u
-      .combineOptions('visibility', kShaderStageCombinations)
+      .combine('visibility', kShaderStageCombinations)
       .beginSubcases()
-      .combineOptions('entry', allBindingEntries(false))
+      .combine('entry', allBindingEntries(false))
   )
   .fn(async t => {
     const { visibility, entry } = t.params;
@@ -80,7 +80,8 @@ g.test('visibility')
 g.test('multisampled_validation')
   .desc('Test that multisampling is only allowed with "2d" view dimensions.')
   .paramsSubcasesOnly(u =>
-    u.combineOptions('viewDimension', [undefined, ...kTextureViewDimensions])
+    u //
+      .combine('viewDimension', [undefined, ...kTextureViewDimensions])
   )
   .fn(async t => {
     const { viewDimension } = t.params;
@@ -110,10 +111,10 @@ g.test('max_dynamic_buffers')
   )
   .params(u =>
     u
-      .combineOptions('type', kBufferBindingTypes)
+      .combine('type', kBufferBindingTypes)
       .beginSubcases()
-      .combineOptions('extraDynamicBuffers', [0, 1])
-      .combineOptions('staticBuffers', [0, 1])
+      .combine('extraDynamicBuffers', [0, 1])
+      .combine('staticBuffers', [0, 1])
   )
   .fn(async t => {
     const { type, extraDynamicBuffers, staticBuffers } = t.params;
@@ -171,15 +172,15 @@ function* pickExtraBindingTypesForPerStage(entry: BGLEntry, extraTypeSame: boole
 }
 
 const kMaxResourcesCases = kUnitCaseParamsBuilder
-  .combineOptions('maxedEntry', allBindingEntries(false))
+  .combine('maxedEntry', allBindingEntries(false))
   .beginSubcases()
-  .combineOptions('maxedVisibility', kShaderStages)
+  .combine('maxedVisibility', kShaderStages)
   .filter(p => (bindingTypeInfo(p.maxedEntry).validStages & p.maxedVisibility) !== 0)
   .expand('extraEntry', p => [
     ...pickExtraBindingTypesForPerStage(p.maxedEntry, true),
     ...pickExtraBindingTypesForPerStage(p.maxedEntry, false),
   ])
-  .combineOptions('extraVisibility', kShaderStages)
+  .combine('extraVisibility', kShaderStages)
   .filter(p => (bindingTypeInfo(p.extraEntry).validStages & p.extraVisibility) !== 0);
 
 // Should never fail unless kMaxBindingsPerBindGroup is exceeded, because the validation for

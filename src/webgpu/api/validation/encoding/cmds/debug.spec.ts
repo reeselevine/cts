@@ -19,10 +19,10 @@ export const g = makeTestGroup(ValidationTest);
 g.test('debug_group_balanced')
   .params(u =>
     u
-      .combineOptions('encoderType', kEncoderTypes)
+      .combine('encoderType', kEncoderTypes)
       .beginSubcases()
-      .combineOptions('pushCount', [0, 1, 2])
-      .combineOptions('popCount', [0, 1, 2])
+      .combine('pushCount', [0, 1, 2])
+      .combine('popCount', [0, 1, 2])
   )
   .fn(t => {
     const { encoder, finish } = t.createEncoder(t.params.encoderType);
@@ -41,10 +41,10 @@ g.test('debug_group_balanced')
 
 g.test('debug_group')
   .params(u =>
-    u
-      .combineOptions('encoderType', kEncoderTypes)
+    u //
+      .combine('encoderType', kEncoderTypes)
       .beginSubcases()
-      .combineOptions('label', ['', 'group'])
+      .combine('label', ['', 'group'])
   )
   .fn(t => {
     const { encoder, finish } = t.createEncoder(t.params.encoderType);
@@ -56,10 +56,10 @@ g.test('debug_group')
 
 g.test('debug_marker')
   .params(u =>
-    u
-      .combineOptions('encoderType', kEncoderTypes)
+    u //
+      .combine('encoderType', kEncoderTypes)
       .beginSubcases()
-      .combineOptions('label', ['', 'marker'])
+      .combine('label', ['', 'marker'])
   )
   .fn(t => {
     const maker = t.createEncoder(t.params.encoderType);

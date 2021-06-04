@@ -437,19 +437,19 @@ export class TextureZeroInitTest extends GPUTest {
 }
 
 const kTestParams = kUnitCaseParamsBuilder
-  .combineOptions('readMethod', [
+  .combine('readMethod', [
     ReadMethod.CopyToBuffer,
     ReadMethod.CopyToTexture,
     ReadMethod.Sample,
     ReadMethod.DepthTest,
     ReadMethod.StencilTest,
   ])
-  .combineOptions('format', kUncompressedTextureFormats)
-  .combineOptions('uninitializeMethod', kUninitializeMethods)
+  .combine('format', kUncompressedTextureFormats)
+  .combine('uninitializeMethod', kUninitializeMethods)
   .beginSubcases()
-  .combineOptions('aspect', kTextureAspects)
-  .combineOptions('nonPowerOfTwo', [false, true])
-  .combineOptions('canaryOnCreation', [false, true])
+  .combine('aspect', kTextureAspects)
+  .combine('nonPowerOfTwo', [false, true])
+  .combine('canaryOnCreation', [false, true])
   .filter(({ canaryOnCreation, format }) => {
     // We can only initialize the texture if it's encodable or renderable.
     const canInitialize =
@@ -476,8 +476,8 @@ const kTestParams = kUnitCaseParamsBuilder
         (format === 'depth24plus' || format === 'depth24plus-stencil8'))
     );
   })
-  .combineOptions('mipLevelCount', kMipLevelCounts)
-  .combineOptions('sampleCount', kSampleCounts)
+  .combine('mipLevelCount', kMipLevelCounts)
+  .combine('sampleCount', kSampleCounts)
   .unless(
     ({ readMethod, sampleCount }) =>
       // We can only read from multisampled textures by sampling.

@@ -79,7 +79,7 @@ Tests that resolve query set with invalid destinationBuffer:
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('bufferUsage', [
+      .combine('bufferUsage', [
         GPUConst.BufferUsage.STORAGE,
         GPUConst.BufferUsage.QUERY_RESOLVE, // control case
       ] as const)
@@ -108,7 +108,7 @@ Tests that resolve query set with invalid destinationOffset:
 - destinationOffset out of range
   `
   )
-  .paramsSubcasesOnly(u => u.combineOptions('destinationOffset', [0, 6, 8, 16]))
+  .paramsSubcasesOnly(u => u.combine('destinationOffset', [0, 6, 8, 16]))
   .fn(async t => {
     const querySet = t.device.createQuerySet({ type: 'occlusion', count: kQueryCount });
     const destination = t.device.createBuffer({

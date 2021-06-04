@@ -74,12 +74,12 @@ Test reasonably-sized large dispatches (see also stress tests).
   .params(u =>
     u
       // Reasonably-sized powers of two, and some stranger larger sizes.
-      .combineOptions('dispatchSize', [256, 512, 1024, 2048, 315, 628, 1053, 2179] as const)
+      .combine('dispatchSize', [256, 512, 1024, 2048, 315, 628, 1053, 2179] as const)
       // Test some reasonable workgroup sizes.
-      .combineOptions('workgroupSize', [1, 2, 4, 8, 16, 32, 64] as const)
+      .combine('workgroupSize', [1, 2, 4, 8, 16, 32, 64] as const)
       .beginSubcases()
       // 0 == x axis; 1 == y axis; 2 == z axis.
-      .combineOptions('largeDimension', [0, 1, 2] as const)
+      .combine('largeDimension', [0, 1, 2] as const)
   )
   .fn(async t => {
     // The output storage buffer is filled with this value.

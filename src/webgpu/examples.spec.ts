@@ -233,7 +233,7 @@ g.test('gpu,with_texture_compression,bc')
     `Example of a test using a device descriptor.
 Tests that a BC format passes validation iff the feature is enabled.`
   )
-  .params(u => u.combineOptions('textureCompressionBC', [false, true]))
+  .params(u => u.combine('textureCompressionBC', [false, true]))
   .fn(async t => {
     const { textureCompressionBC } = t.params;
 
@@ -261,7 +261,7 @@ g.test('gpu,with_texture_compression,etc')
 
 TODO: Test that an ETC format passes validation iff the feature is enabled.`
   )
-  .params(u => u.combineOptions('textureCompressionETC', [false, true]))
+  .params(u => u.combine('textureCompressionETC', [false, true]))
   .fn(async t => {
     const { textureCompressionETC } = t.params;
 

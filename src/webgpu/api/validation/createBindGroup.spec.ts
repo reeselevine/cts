@@ -29,8 +29,8 @@ g.test('binding_count_mismatch')
   .desc('Test that the number of entries must match the number of entries in the BindGroupLayout.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('layoutEntryCount', [1, 2, 3])
-      .combineOptions('bindGroupEntryCount', [1, 2, 3])
+      .combine('layoutEntryCount', [1, 2, 3])
+      .combine('bindGroupEntryCount', [1, 2, 3])
   )
   .fn(async t => {
     const { layoutEntryCount, bindGroupEntryCount } = t.params;
@@ -68,8 +68,8 @@ g.test('binding_must_be_present_in_layout')
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('layoutBinding', [0, 1, 2])
-      .combineOptions('binding', [0, 1, 2])
+      .combine('layoutBinding', [0, 1, 2])
+      .combine('binding', [0, 1, 2])
   )
   .fn(async t => {
     const { layoutBinding, binding } = t.params;
@@ -97,8 +97,8 @@ g.test('binding_must_contain_resource_defined_in_layout')
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('resourceType', kBindableResources)
-      .combineOptions('entry', allBindingEntries(false))
+      .combine('resourceType', kBindableResources)
+      .combine('entry', allBindingEntries(false))
   )
   .fn(t => {
     const { resourceType, entry } = t.params;
@@ -120,8 +120,8 @@ g.test('texture_binding_must_have_correct_usage')
   .desc('Tests that texture bindings must have the correct usage.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('entry', sampledAndStorageBindingEntries(false))
-      .combineOptions('usage', kTextureUsages)
+      .combine('entry', sampledAndStorageBindingEntries(false))
+      .combine('usage', kTextureUsages)
       .unless(({ entry, usage }) => {
         const info = texBindingTypeInfo(entry);
         // Can't create the texture for this (usage=STORAGE and sampleCount=4), so skip.
@@ -160,7 +160,7 @@ g.test('texture_must_have_correct_component_type')
     - Tests a compatible format for every sample type
     - Tests an incompatible format for every sample type`
   )
-  .params(u => u.combineOptions('sampleType', ['float', 'sint', 'uint'] as const))
+  .params(u => u.combine('sampleType', ['float', 'sint', 'uint'] as const))
   .fn(async t => {
     const { sampleType } = t.params;
 
@@ -236,9 +236,9 @@ g.test('texture_must_have_correct_dimension')
   )
   .params(u =>
     u
-      .combineOptions('viewDimension', kTextureViewDimensions)
+      .combine('viewDimension', kTextureViewDimensions)
       .beginSubcases()
-      .combineOptions('dimension', kTextureViewDimensions)
+      .combine('dimension', kTextureViewDimensions)
   )
   .fn(async t => {
     const { viewDimension, dimension } = t.params;
@@ -341,7 +341,7 @@ g.test('minBindingSize')
   .desc('Tests that minBindingSize is correctly enforced.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('minBindingSize', [undefined, 4, 256])
+      .combine('minBindingSize', [undefined, 4, 256])
       .expand('size', ({ minBindingSize }) =>
         minBindingSize !== undefined
           ? [minBindingSize - 1, minBindingSize, minBindingSize + 1]

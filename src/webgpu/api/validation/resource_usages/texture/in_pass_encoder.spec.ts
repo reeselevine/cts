@@ -232,7 +232,7 @@ const SLICE_COUNT = 2;
 g.test('subresources_and_binding_types_combination_for_color')
   .params(u =>
     u
-      .combineOptions('compute', [false, true])
+      .combine('compute', [false, true])
       .combineP([
         { _usageOK: true, type0: 'sampled-texture', type1: 'sampled-texture' },
         { _usageOK: true, type0: 'sampled-texture', type1: 'readonly-storage-texture' },
@@ -247,8 +247,8 @@ g.test('subresources_and_binding_types_combination_for_color')
         { _usageOK: false, type0: 'render-target', type1: 'render-target' },
       ] as const)
       .beginSubcases()
-      .combineOptions('binding0InBundle', [false, true])
-      .combineOptions('binding1InBundle', [false, true])
+      .combine('binding0InBundle', [false, true])
+      .combine('binding1InBundle', [false, true])
       .unless(
         p =>
           // We can't set 'render-target' in bundle, so we need to exclude it from bundle.
@@ -505,11 +505,11 @@ g.test('subresources_and_binding_types_combination_for_color')
 g.test('subresources_and_binding_types_combination_for_aspect')
   .params(u =>
     u
-      .combineOptions('compute', [false, true])
-      .combineOptions('format', kDepthStencilFormats)
+      .combine('compute', [false, true])
+      .combine('format', kDepthStencilFormats)
       .beginSubcases()
-      .combineOptions('binding0InBundle', [false, true])
-      .combineOptions('binding1InBundle', [false, true])
+      .combine('binding0InBundle', [false, true])
+      .combine('binding1InBundle', [false, true])
       .combineP([
         {
           baseLevel: BASE_LEVEL,
@@ -527,8 +527,8 @@ g.test('subresources_and_binding_types_combination_for_aspect')
           _resourceSuccess: true,
         },
       ])
-      .combineOptions('aspect0', ['all', 'depth-only', 'stencil-only'] as const)
-      .combineOptions('aspect1', ['all', 'depth-only', 'stencil-only'] as const)
+      .combine('aspect0', ['all', 'depth-only', 'stencil-only'] as const)
+      .combine('aspect1', ['all', 'depth-only', 'stencil-only'] as const)
       .unless(
         p =>
           (p.aspect0 === 'stencil-only' && !kDepthStencilFormatInfo[p.format].stencil) ||
@@ -664,9 +664,9 @@ g.test('subresources_and_binding_types_combination_for_aspect')
 g.test('shader_stages_and_visibility')
   .params(u =>
     u
-      .combineOptions('compute', [false, true])
-      .combineOptions('readVisibility', [0, ...kShaderStages])
-      .combineOptions('writeVisibility', [0, ...kShaderStages])
+      .combine('compute', [false, true])
+      .combine('readVisibility', [0, ...kShaderStages])
+      .combine('writeVisibility', [0, ...kShaderStages])
       .unless(
         p =>
           // Writeonly-storage-texture binding type is not supported in vertex stage. But it is the
@@ -730,9 +730,9 @@ g.test('shader_stages_and_visibility')
 g.test('replaced_binding')
   .params(u =>
     u
-      .combineOptions('compute', [false, true])
-      .combineOptions('callDrawOrDispatch', [false, true])
-      .combineOptions('entry', [
+      .combine('compute', [false, true])
+      .combine('callDrawOrDispatch', [false, true])
+      .combine('entry', [
         { texture: {} },
         { texture: { multisampled: true } },
         { storageTexture: { access: 'read-only', format: 'rgba8unorm' } },
@@ -800,11 +800,11 @@ g.test('replaced_binding')
 g.test('bindings_in_bundle')
   .params(u =>
     u
-      .combineOptions('type0', ['render-target', ...kTextureBindingTypes] as const)
-      .combineOptions('type1', ['render-target', ...kTextureBindingTypes] as const)
+      .combine('type0', ['render-target', ...kTextureBindingTypes] as const)
+      .combine('type1', ['render-target', ...kTextureBindingTypes] as const)
       .beginSubcases()
-      .combineOptions('binding0InBundle', [false, true])
-      .combineOptions('binding1InBundle', [false, true])
+      .combine('binding0InBundle', [false, true])
+      .combine('binding1InBundle', [false, true])
       .unless(
         p =>
           // We can't set 'render-target' in bundle, so we need to exclude it from bundle.
@@ -884,12 +884,12 @@ g.test('bindings_in_bundle')
 g.test('unused_bindings_in_pipeline')
   .params(u =>
     u
-      .combineOptions('compute', [false, true])
-      .combineOptions('useBindGroup0', [false, true])
-      .combineOptions('useBindGroup1', [false, true])
-      .combineOptions('setBindGroupsOrder', ['common', 'reversed'] as const)
-      .combineOptions('setPipeline', ['before', 'middle', 'after', 'none'] as const)
-      .combineOptions('callDrawOrDispatch', [false, true])
+      .combine('compute', [false, true])
+      .combine('useBindGroup0', [false, true])
+      .combine('useBindGroup1', [false, true])
+      .combine('setBindGroupsOrder', ['common', 'reversed'] as const)
+      .combine('setPipeline', ['before', 'middle', 'after', 'none'] as const)
+      .combine('callDrawOrDispatch', [false, true])
   )
   .fn(async t => {
     const {
@@ -985,7 +985,7 @@ g.test('unused_bindings_in_pipeline')
   });
 
 g.test('validation_scope,no_draw_or_dispatch')
-  .params(u => u.combineOptions('compute', [false, true]))
+  .params(u => u.combine('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
 
@@ -1003,7 +1003,7 @@ g.test('validation_scope,no_draw_or_dispatch')
   });
 
 g.test('validation_scope,same_draw_or_dispatch')
-  .params(u => u.combineOptions('compute', [false, true]))
+  .params(u => u.combine('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
 
@@ -1020,7 +1020,7 @@ g.test('validation_scope,same_draw_or_dispatch')
   });
 
 g.test('validation_scope,different_draws_or_dispatches')
-  .params(u => u.combineOptions('compute', [false, true]))
+  .params(u => u.combine('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
     const { bindGroup0, bindGroup1, encoder, pass, pipeline } = t.testValidationScope(compute);
@@ -1041,7 +1041,7 @@ g.test('validation_scope,different_draws_or_dispatches')
   });
 
 g.test('validation_scope,different_passes')
-  .params(u => u.combineOptions('compute', [false, true]))
+  .params(u => u.combine('compute', [false, true]))
   .fn(async t => {
     const { compute } = t.params;
     const { bindGroup0, bindGroup1, encoder, pass, pipeline } = t.testValidationScope(compute);

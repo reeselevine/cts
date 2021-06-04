@@ -37,40 +37,23 @@ export const g = makeTestGroup(ParamsTest);
 
 const u = kUnitCaseParamsBuilder;
 
-g.test('combineOptions').fn(t => {
-  t.expectParams<{ hello: number }, {}>(u.combineOptions('hello', [1, 2, 3]), [
+g.test('combine').fn(t => {
+  t.expectParams<{ hello: number }, {}>(u.combine('hello', [1, 2, 3]), [
     [{ hello: 1 }, undefined],
     [{ hello: 2 }, undefined],
     [{ hello: 3 }, undefined],
   ]);
-  t.expectParams<{ hello: 1 | 2 | 3 }, {}>(u.combineOptions('hello', [1, 2, 3] as const), [
+  t.expectParams<{ hello: 1 | 2 | 3 }, {}>(u.combine('hello', [1, 2, 3] as const), [
     [{ hello: 1 }, undefined],
     [{ hello: 2 }, undefined],
     [{ hello: 3 }, undefined],
   ]);
-  t.expectParams<{}, { hello: number }>(u.beginSubcases().combineOptions('hello', [1, 2, 3]), [
-    [
-      {},
-      [
-        { hello: 1 }, //
-        { hello: 2 },
-        { hello: 3 },
-      ],
-    ],
+  t.expectParams<{}, { hello: number }>(u.beginSubcases().combine('hello', [1, 2, 3]), [
+    [{}, [{ hello: 1 }, { hello: 2 }, { hello: 3 }]],
   ]);
-  t.expectParams<{}, { hello: 1 | 2 | 3 }>(
-    u.beginSubcases().combineOptions('hello', [1, 2, 3] as const),
-    [
-      [
-        {},
-        [
-          { hello: 1 }, //
-          { hello: 2 },
-          { hello: 3 },
-        ],
-      ],
-    ]
-  );
+  t.expectParams<{}, { hello: 1 | 2 | 3 }>(u.beginSubcases().combine('hello', [1, 2, 3] as const), [
+    [{}, [{ hello: 1 }, { hello: 2 }, { hello: 3 }]],
+  ]);
 });
 
 g.test('empty').fn(t => {
@@ -94,8 +77,8 @@ g.test('combine,zeroes_and_ones').fn(t => {
 g.test('combine,mixed').fn(t => {
   t.expectParams<{ x: number; y: string; p: number | undefined; q: number | undefined }, {}>(
     u
-      .combineOptions('x', [1, 2])
-      .combineOptions('y', ['a', 'b'])
+      .combine('x', [1, 2])
+      .combine('y', ['a', 'b'])
       .combineP([{ p: 4 }, { q: 5 }])
       .combineP([{}]),
     [
@@ -207,7 +190,7 @@ g.test('expand').fn(t => {
   );
   t.expectParams<{ z: number | undefined; w: number | undefined }, {}>(
     u.expandP(function* () {
-      yield* kUnitCaseParamsBuilder.combineOptions('z', [3, 4]);
+      yield* kUnitCaseParamsBuilder.combine('z', [3, 4]);
       yield { w: 5 };
     }),
     [
@@ -218,7 +201,7 @@ g.test('expand').fn(t => {
   );
   t.expectParams<{}, { z: number | undefined; w: number | undefined }>(
     u.beginSubcases().expandP(function* () {
-      yield* kUnitCaseParamsBuilder.combineOptions('z', [3, 4]);
+      yield* kUnitCaseParamsBuilder.combine('z', [3, 4]);
       yield { w: 5 };
     }),
     [[{}, [{ z: 3 }, { z: 4 }, { w: 5 }]]]

@@ -23,7 +23,7 @@ Tests that set occlusion query set with all types in render pass descriptor:
 - {undefined} for occlusion query set in render pass descriptor
   `
   )
-  .paramsSubcasesOnly(u => u.combineOptions('type', [undefined, ...kQueryTypes]))
+  .paramsSubcasesOnly(u => u.combine('type', [undefined, ...kQueryTypes]))
   .fn(async t => {
     const type = t.params.type;
 
@@ -48,7 +48,7 @@ g.test('occlusion_query,invalid_query_set')
 Tests that begin occlusion query with a invalid query set that failed during creation.
   `
   )
-  .paramsSubcasesOnly(u => u.combineOptions('querySetState', ['valid', 'invalid'] as const))
+  .paramsSubcasesOnly(u => u.combine('querySetState', ['valid', 'invalid'] as const))
   .fn(t => {
     const querySet = t.createQuerySetWithState(t.params.querySetState);
 
@@ -68,7 +68,7 @@ Tests that begin occlusion query with query index:
 - queryIndex {in, out of} range for GPUQuerySet
   `
   )
-  .paramsSubcasesOnly(u => u.combineOptions('queryIndex', [0, 2]))
+  .paramsSubcasesOnly(u => u.combine('queryIndex', [0, 2]))
   .fn(t => {
     const querySet = createQuerySetWithType(t, 'occlusion', 2);
 
@@ -92,8 +92,8 @@ Tests that write timestamp to all types of query set on all possible encoders:
   )
   .params(u =>
     u
-      .combineOptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const)
-      .combineOptions('type', kQueryTypes)
+      .combine('encoderType', ['non-pass', 'compute pass', 'render pass'] as const)
+      .combine('type', kQueryTypes)
       .beginSubcases()
       .expand('queryIndex', p => (p.type === 'timestamp' ? [0, 2] : [0]))
   )
@@ -121,7 +121,7 @@ Tests that write timestamp to a invalid query set that failed during creation:
   `
   )
   .paramsSubcasesOnly(u =>
-    u.combineOptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const)
+    u.combine('encoderType', ['non-pass', 'compute pass', 'render pass'] as const)
   )
   .fn(async t => {
     const querySet = t.createQuerySetWithState('invalid');

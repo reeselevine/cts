@@ -21,8 +21,8 @@ g.test('same_cmdbuf')
   .desc('Test write-after-write operations in the same command buffer.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('firstWriteOp', kAllWriteOps)
-      .combineOptions('secondWriteOp', kAllWriteOps)
+      .combine('firstWriteOp', kAllWriteOps)
+      .combine('secondWriteOp', kAllWriteOps)
   )
   .fn(async t => {
     const { firstWriteOp, secondWriteOp } = t.params;
@@ -40,8 +40,8 @@ g.test('separate_cmdbufs')
   .desc('Test write-after-write operations in separate command buffers via the same submit.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('firstWriteOp', kAllWriteOps)
-      .combineOptions('secondWriteOp', kAllWriteOps)
+      .combine('firstWriteOp', kAllWriteOps)
+      .combine('secondWriteOp', kAllWriteOps)
   )
   .fn(async t => {
     const { firstWriteOp, secondWriteOp } = t.params;
@@ -59,8 +59,8 @@ g.test('separate_submits')
   .desc('Test write-after-write operations via separate submits in the same queue.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('firstWriteOp', ['write-buffer', ...kAllWriteOps] as const)
-      .combineOptions('secondWriteOp', ['write-buffer', ...kAllWriteOps] as const)
+      .combine('firstWriteOp', ['write-buffer', ...kAllWriteOps] as const)
+      .combine('secondWriteOp', ['write-buffer', ...kAllWriteOps] as const)
   )
   .fn(async t => {
     const { firstWriteOp, secondWriteOp } = t.params;
@@ -84,8 +84,8 @@ g.test('two_draws_in_the_same_render_pass')
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('firstDrawUseBundle', [false, true])
-      .combineOptions('secondDrawUseBundle', [false, true])
+      .combine('firstDrawUseBundle', [false, true])
+      .combine('secondDrawUseBundle', [false, true])
   )
   .fn(async t => {
     const { firstDrawUseBundle, secondDrawUseBundle } = t.params;

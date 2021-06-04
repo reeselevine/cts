@@ -96,7 +96,7 @@ Tests that two disjoint occlusion queries cannot be begun with same query index 
 - call on {same (invalid), different (control case)} render pass
   `
   )
-  .paramsSubcasesOnly(u => u.combineOptions('isOnSameRenderPass', [false, true]))
+  .paramsSubcasesOnly(u => u.combine('isOnSameRenderPass', [false, true]))
   .fn(async t => {
     const querySet = createQuerySetWithType(t, 'occlusion', 1);
 

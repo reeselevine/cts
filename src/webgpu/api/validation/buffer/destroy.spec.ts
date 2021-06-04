@@ -12,7 +12,7 @@ g.test('twice')
   .desc('Tests various mapping-related descripton options that could affect how state is tracked.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('mappedAtCreation', [false, true])
+      .combine('mappedAtCreation', [false, true])
       .combineP([
         { size: 4, usage: GPUConst.BufferUsage.COPY_SRC },
         { size: 4, usage: GPUConst.BufferUsage.MAP_WRITE | GPUConst.BufferUsage.COPY_SRC },

@@ -18,9 +18,9 @@ export const g = makeTestGroup(ImageCopyTest);
 g.test('valid')
   .desc(`The texture must be valid and not destroyed.`)
   .params(u =>
-    u
-      .combineOptions('method', kImageCopyTypes)
-      .combineOptions('textureState', ['valid', 'destroyed', 'error'])
+    u //
+      .combine('method', kImageCopyTypes)
+      .combine('textureState', ['valid', 'destroyed', 'error'])
   )
   .fn(async t => {
     const { method, textureState } = t.params;
@@ -58,9 +58,9 @@ g.test('usage')
   .desc(`The texture must have the appropriate COPY_SRC/COPY_DST usage.`)
   .params(u =>
     u
-      .combineOptions('method', kImageCopyTypes)
+      .combine('method', kImageCopyTypes)
       .beginSubcases()
-      .combineOptions('usage', [
+      .combine('usage', [
         GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.SAMPLED,
         GPUConst.TextureUsage.COPY_DST | GPUConst.TextureUsage.SAMPLED,
         GPUConst.TextureUsage.COPY_SRC | GPUConst.TextureUsage.COPY_DST,
@@ -91,10 +91,10 @@ g.test('usage')
 g.test('sample_count')
   .desc(`Multisampled textures cannot be copied.`)
   .params(u =>
-    u
-      .combineOptions('method', kImageCopyTypes)
+    u //
+      .combine('method', kImageCopyTypes)
       .beginSubcases()
-      .combineOptions('sampleCount', [1, 4])
+      .combine('sampleCount', [1, 4])
   )
   .fn(async t => {
     const { sampleCount, method } = t.params;
@@ -120,10 +120,10 @@ g.test('mip_level')
   .desc(`The mipLevel of the copy must be in range of the texture.`)
   .params(u =>
     u
-      .combineOptions('method', kImageCopyTypes)
+      .combine('method', kImageCopyTypes)
       .beginSubcases()
-      .combineOptions('mipLevelCount', [3, 5])
-      .combineOptions('mipLevel', [3, 4])
+      .combine('mipLevelCount', [3, 5])
+      .combine('mipLevel', [3, 4])
   )
   .fn(async t => {
     const { mipLevelCount, mipLevel, method } = t.params;
@@ -149,11 +149,11 @@ g.test('origin_alignment')
   .desc(`Copy origin must be aligned to block size.`)
   .params(u =>
     u
-      .combineOptions('method', kImageCopyTypes)
-      .combineOptions('format', kSizedTextureFormats)
+      .combine('method', kImageCopyTypes)
+      .combine('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
-      .combineOptions('coordinateToTest', ['x', 'y', 'z'] as const)
+      .combine('coordinateToTest', ['x', 'y', 'z'] as const)
       .expand('valueToCoordinate', texelBlockAlignmentTestExpanderForValueToCoordinate)
   )
   .fn(async t => {
@@ -190,9 +190,9 @@ g.test('1d')
   .desc(`1d texture copies must have height=depth=1.`)
   .params(u =>
     u
-      .combineOptions('method', kImageCopyTypes)
+      .combine('method', kImageCopyTypes)
       .beginSubcases()
-      .combineOptions('width', [0, 1])
+      .combine('width', [0, 1])
       .combineP([
         { height: 1, depthOrArrayLayers: 1 },
         { height: 1, depthOrArrayLayers: 0 },
@@ -227,11 +227,11 @@ g.test('size_alignment')
   .desc(`Copy size must be aligned to block size.`)
   .params(u =>
     u
-      .combineOptions('method', kImageCopyTypes)
-      .combineOptions('format', kSizedTextureFormats)
+      .combine('method', kImageCopyTypes)
+      .combine('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
-      .combineOptions('coordinateToTest', ['width', 'height', 'depthOrArrayLayers'] as const)
+      .combine('coordinateToTest', ['width', 'height', 'depthOrArrayLayers'] as const)
       .expand('valueToCoordinate', texelBlockAlignmentTestExpanderForValueToCoordinate)
   )
   .fn(async t => {
@@ -272,13 +272,13 @@ g.test('copy_rectangle')
   .desc(`The max corner of the copy rectangle (origin+copySize) must be inside the texture.`)
   .params(u =>
     u
-      .combineOptions('method', kImageCopyTypes)
+      .combine('method', kImageCopyTypes)
       .beginSubcases()
-      .combineOptions('originValue', [7, 8])
-      .combineOptions('copySizeValue', [7, 8])
-      .combineOptions('textureSizeValue', [14, 15])
-      .combineOptions('mipLevel', [0, 2])
-      .combineOptions('coordinateToTest', [0, 1, 2] as const)
+      .combine('originValue', [7, 8])
+      .combine('copySizeValue', [7, 8])
+      .combine('textureSizeValue', [14, 15])
+      .combine('mipLevel', [0, 2])
+      .combine('coordinateToTest', [0, 1, 2] as const)
   )
   .fn(async t => {
     const {

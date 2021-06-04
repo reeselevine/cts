@@ -50,7 +50,7 @@ g.test('set_pipeline')
 setPipeline should generate an error iff using an 'invalid' pipeline.
 `
   )
-  .params(u => u.beginSubcases().combineOptions('state', ['valid', 'invalid'] as const))
+  .params(u => u.beginSubcases().combine('state', ['valid', 'invalid'] as const))
   .fn(t => {
     const pipeline = t.createComputePipeline(t.params.state);
     const { encoder, finish } = t.createEncoder('compute pass');
@@ -71,9 +71,9 @@ Test 'direct' and 'indirect' dispatch with various sizes.
   )
   .params(u =>
     u
-      .combineOptions('dispatchType', ['direct', 'indirect'] as const)
+      .combine('dispatchType', ['direct', 'indirect'] as const)
       .beginSubcases()
-      .combineOptions('workSizes', [
+      .combine('workSizes', [
         [0, 0, 0],
         [1, 1, 1],
       ] as const)
@@ -109,8 +109,8 @@ TODO: test specifically which call the validation error occurs in.
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('state', ['valid', 'invalid', 'destroyed'] as const)
-      .combineOptions('offset', [
+      .combine('state', ['valid', 'invalid', 'destroyed'] as const)
+      .combine('offset', [
         // valid (for 'valid' buffers)
         0,
         Uint32Array.BYTES_PER_ELEMENT,

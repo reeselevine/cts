@@ -253,19 +253,19 @@ const typeInfoMap: { [k: string]: VertexInfo } = {
 g.test('vertexAccess')
   .params(u =>
     u
-      .combineOptions('indexed', [false, true])
-      .combineOptions('indirect', [false, true])
+      .combine('indexed', [false, true])
+      .combine('indirect', [false, true])
       .expand('drawCallTestParameter', p =>
         p.indexed
           ? (['indexCount', 'instanceCount', 'firstIndex', 'baseVertex', 'firstInstance'] as const)
           : (['vertexCount', 'instanceCount', 'firstVertex', 'firstInstance'] as const)
       )
       .beginSubcases()
-      .combineOptions('type', Object.keys(typeInfoMap))
-      .combineOptions('additionalBuffers', [0, 4])
-      .combineOptions('partialLastNumber', [false, true])
-      .combineOptions('offsetVertexBuffer', [false, true])
-      .combineOptions('errorScale', [1, 4, 10 ** 2, 10 ** 4, 10 ** 6])
+      .combine('type', Object.keys(typeInfoMap))
+      .combine('additionalBuffers', [0, 4])
+      .combine('partialLastNumber', [false, true])
+      .combine('offsetVertexBuffer', [false, true])
+      .combine('errorScale', [1, 4, 10 ** 2, 10 ** 4, 10 ** 6])
   )
   .fn(async t => {
     const p = t.params;

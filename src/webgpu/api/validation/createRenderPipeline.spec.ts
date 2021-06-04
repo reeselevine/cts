@@ -130,7 +130,7 @@ g.test('at_least_one_color_state_is_required').fn(async t => {
 });
 
 g.test('color_formats_must_be_renderable')
-  .params(u => u.combineOptions('format', kAllTextureFormats))
+  .params(u => u.combine('format', kAllTextureFormats))
   .fn(async t => {
     const format: GPUTextureFormat = t.params.format;
     const info = kAllTextureFormatInfo[format];

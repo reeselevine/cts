@@ -12,7 +12,7 @@ import { GPUTest } from '../../../gpu_test.js';
 const MAX_ALIGNED_SAFE_INTEGER = Number.MAX_SAFE_INTEGER - 7;
 
 const oomAndSizeParams = kUnitCaseParamsBuilder
-  .combineOptions('oom', [false, true])
+  .combine('oom', [false, true])
   .expand('size', ({ oom }) => {
     return oom
       ? [
@@ -35,7 +35,7 @@ g.test('mapAsync')
   .params(
     oomAndSizeParams //
       .beginSubcases()
-      .combineOptions('write', [false, true])
+      .combine('write', [false, true])
   )
   .fn(async t => {
     const { oom, write, size } = t.params;
@@ -90,7 +90,7 @@ an out-of-memory error if allocation fails.
   .params(
     oomAndSizeParams //
       .beginSubcases()
-      .combineOptions('usage', kBufferUsages)
+      .combine('usage', kBufferUsages)
   )
   .fn(async t => {
     const { oom, usage, size } = t.params;
@@ -126,7 +126,7 @@ an out-of-memory error if allocation fails.
   .params(
     oomAndSizeParams //
       .beginSubcases()
-      .combineOptions('usage', kBufferUsages)
+      .combine('usage', kBufferUsages)
   )
   .fn(async t => {
     const { usage, size } = t.params;

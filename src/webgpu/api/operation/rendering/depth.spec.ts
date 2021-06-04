@@ -29,7 +29,7 @@ g.test('depth_compare_func')
   )
   .params(u =>
     u
-      .combineOptions(
+      .combine(
         'format',
         kDepthStencilFormats.filter(format => format !== 'stencil8')
       )
@@ -155,7 +155,7 @@ g.test('reverse_depth')
     Note that in real use case the depth range remapping is done by the modified projection matrix.
 (see https://developer.nvidia.com/content/depth-precision-visualized).`
   )
-  .params(u => u.combineOptions('reversed', [false, true]))
+  .params(u => u.combine('reversed', [false, true]))
   .fn(async t => {
     const colorAttachmentFormat = 'rgba8unorm';
     const colorAttachment = t.device.createTexture({

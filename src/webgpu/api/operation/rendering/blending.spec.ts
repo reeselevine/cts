@@ -128,13 +128,13 @@ g.test('GPUBlendComponent')
   )
   .params(u =>
     u //
-      .combineOptions('component', ['color', 'alpha'] as const)
-      .combineOptions('srcFactor', kBlendFactors)
-      .combineOptions('dstFactor', kBlendFactors)
-      .combineOptions('operation', kBlendOperations)
+      .combine('component', ['color', 'alpha'] as const)
+      .combine('srcFactor', kBlendFactors)
+      .combine('dstFactor', kBlendFactors)
+      .combine('operation', kBlendOperations)
       .beginSubcases()
-      .combineOptions('srcColor', [{ r: 0.11, g: 0.61, b: 0.81, a: 0.44 }])
-      .combineOptions('dstColor', [
+      .combine('srcColor', [{ r: 0.11, g: 0.61, b: 0.81, a: 0.44 }])
+      .combine('dstColor', [
         { r: 0.51, g: 0.22, b: 0.71, a: 0.33 },
         { r: 0.09, g: 0.73, b: 0.93, a: 0.81 },
       ])

@@ -154,8 +154,7 @@ export class CaseParamsBuilder<CaseP extends {}>
    * Takes the cartesian product of [ the cases in `this` ]
    * and `[ {[name]: value} for each value in values ]`
    */
-  // FIXME: rename to combine?
-  combineOptions<NewPKey extends string, NewPValue>(
+  combine<NewPKey extends string, NewPValue>(
     key: NewPKey,
     values: Iterable<NewPValue>
   ): CaseParamsBuilder<Merged<CaseP, { [name in NewPKey]: NewPValue }>> {
@@ -285,8 +284,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
    * Takes the cartesian product of [ the subcases in `this` ]
    * and `[ {[name]: value} for each value in values ]`
    */
-  // FIXME: rename to combine?
-  combineOptions<NewPKey extends string, NewPValue>(
+  combine<NewPKey extends string, NewPValue>(
     key: NewPKey,
     values: Iterable<NewPValue>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, { [name in NewPKey]: NewPValue }>> {

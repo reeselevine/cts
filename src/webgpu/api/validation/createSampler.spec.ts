@@ -12,8 +12,8 @@ g.test('lodMinAndMaxClamp')
   .desc('test different combinations of min and max clamp values')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('lodMinClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30])
-      .combineOptions('lodMaxClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30])
+      .combine('lodMinClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30])
+      .combine('lodMaxClamp', [-4e-30, -1, 0, 0.5, 1, 10, 4e30])
   )
   .fn(async t => {
     t.expectValidationError(() => {
@@ -30,7 +30,7 @@ g.test('maxAnisotropy')
     u //
       .beginSubcases()
       .combineP([
-        ...u.combineOptions('maxAnisotropy', [-1, undefined, 0, 1, 2, 4, 7, 16, 32, 33, 1024]),
+        ...u.combine('maxAnisotropy', [-1, undefined, 0, 1, 2, 4, 7, 16, 32, 33, 1024]),
         { minFilter: 'nearest' as const },
         { magFilter: 'nearest' as const },
         { mipmapFilter: 'nearest' as const },

@@ -33,9 +33,9 @@ Tries to trigger [some conditional path].
   )
   .params(u =>
     u //
-      .combineOptions('mode', ['mode1', 'mode2'])
+      .combine('mode', ['mode1', 'mode2'])
       .beginSubcases()
-      .combineOptions('arg', [
+      .combine('arg', [
         // Valid  // <- Comment params as you see fit.
         4,
         8,

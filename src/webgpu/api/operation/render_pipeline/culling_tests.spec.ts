@@ -42,17 +42,17 @@ export const g = makeTestGroup(GPUTest);
 g.test('culling')
   .params(u =>
     u
-      .combineOptions('frontFace', ['ccw', 'cw'] as const)
-      .combineOptions('cullMode', ['none', 'front', 'back'] as const)
+      .combine('frontFace', ['ccw', 'cw'] as const)
+      .combine('cullMode', ['none', 'front', 'back'] as const)
       .beginSubcases()
-      .combineOptions('depthStencilFormat', [
+      .combine('depthStencilFormat', [
         null,
         'depth24plus',
         'depth32float',
         'depth24plus-stencil8',
       ] as const)
       // TODO: test triangle-strip as well
-      .combineOptions('primitiveTopology', ['triangle-list'] as const)
+      .combine('primitiveTopology', ['triangle-list'] as const)
   )
   .fn(t => {
     const size = 4;

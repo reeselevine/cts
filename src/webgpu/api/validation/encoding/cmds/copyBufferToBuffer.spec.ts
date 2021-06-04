@@ -80,8 +80,8 @@ g.test('copy_with_invalid_buffer').fn(async t => {
 g.test('buffer_usage')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('srcUsage', kBufferUsages)
-      .combineOptions('dstUsage', kBufferUsages)
+      .combine('srcUsage', kBufferUsages)
+      .combine('dstUsage', kBufferUsages)
   )
   .fn(async t => {
     const { srcUsage, dstUsage } = t.params;

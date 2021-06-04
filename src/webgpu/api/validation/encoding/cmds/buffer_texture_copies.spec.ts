@@ -56,9 +56,9 @@ g.test('depth_stencil_format,copy_usage_and_aspect')
   )
   .params(u =>
     u //
-      .combineOptions('format', kDepthStencilFormats)
+      .combine('format', kDepthStencilFormats)
       .beginSubcases()
-      .combineOptions('aspect', ['all', 'depth-only', 'stencil-only'] as const)
+      .combine('aspect', ['all', 'depth-only', 'stencil-only'] as const)
   )
   .fn(async t => {
     const { format, aspect } = t.params;
@@ -102,14 +102,14 @@ g.test('depth_stencil_format,copy_buffer_size')
   )
   .params(u =>
     u
-      .combineOptions('format', kDepthStencilFormats)
-      .combineOptions('aspect', ['depth-only', 'stencil-only'] as const)
-      .combineOptions('copyType', ['CopyB2T', 'CopyT2B'] as const)
+      .combine('format', kDepthStencilFormats)
+      .combine('aspect', ['depth-only', 'stencil-only'] as const)
+      .combine('copyType', ['CopyB2T', 'CopyT2B'] as const)
       .filter(param =>
         depthStencilBufferTextureCopySupported(param.copyType, param.format, param.aspect)
       )
       .beginSubcases()
-      .combineOptions('copySize', [
+      .combine('copySize', [
         { width: 8, height: 1, depthOrArrayLayers: 1 },
         { width: 4, height: 4, depthOrArrayLayers: 1 },
         { width: 4, height: 4, depthOrArrayLayers: 3 },
@@ -183,14 +183,14 @@ g.test('depth_stencil_format,copy_buffer_offset')
   )
   .params(u =>
     u
-      .combineOptions('format', kDepthStencilFormats)
-      .combineOptions('aspect', ['depth-only', 'stencil-only'] as const)
-      .combineOptions('copyType', ['CopyB2T', 'CopyT2B'] as const)
+      .combine('format', kDepthStencilFormats)
+      .combine('aspect', ['depth-only', 'stencil-only'] as const)
+      .combine('copyType', ['CopyB2T', 'CopyT2B'] as const)
       .filter(param =>
         depthStencilBufferTextureCopySupported(param.copyType, param.format, param.aspect)
       )
       .beginSubcases()
-      .combineOptions('offset', [1, 2, 4, 6, 8])
+      .combine('offset', [1, 2, 4, 6, 8])
   )
   .fn(async t => {
     const { format, aspect, copyType, offset } = t.params;

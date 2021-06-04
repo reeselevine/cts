@@ -23,8 +23,8 @@ TODO(#230): Update to enforce per-stage and per-pipeline-layout limits on BGLs a
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('visibility', [0, 2, 4, 6])
-      .combineOptions('type', kBufferBindingTypes)
+      .combine('visibility', [0, 2, 4, 6])
+      .combine('type', kBufferBindingTypes)
   )
   .fn(async t => {
     const { type, visibility } = t.params;

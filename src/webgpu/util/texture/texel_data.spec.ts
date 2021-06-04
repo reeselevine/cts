@@ -137,7 +137,7 @@ function makeParam(
 g.test('unorm_texel_data_in_shader')
   .params(u =>
     u
-      .combineOptions('format', kEncodableTextureFormats)
+      .combine('format', kEncodableTextureFormats)
       .filter(({ format }) => {
         return (
           kEncodableTextureFormatInfo[format].copyDst &&
@@ -169,7 +169,7 @@ g.test('unorm_texel_data_in_shader')
 g.test('snorm_texel_data_in_shader')
   .params(u =>
     u
-      .combineOptions('format', kEncodableTextureFormats)
+      .combine('format', kEncodableTextureFormats)
       .filter(({ format }) => {
         return (
           kEncodableTextureFormatInfo[format].copyDst &&
@@ -204,7 +204,7 @@ g.test('snorm_texel_data_in_shader')
 g.test('uint_texel_data_in_shader')
   .params(u =>
     u
-      .combineOptions('format', kEncodableTextureFormats)
+      .combine('format', kEncodableTextureFormats)
       .filter(({ format }) => {
         return (
           kEncodableTextureFormatInfo[format].copyDst &&
@@ -236,7 +236,7 @@ g.test('uint_texel_data_in_shader')
 g.test('sint_texel_data_in_shader')
   .params(u =>
     u
-      .combineOptions('format', kEncodableTextureFormats)
+      .combine('format', kEncodableTextureFormats)
       .filter(({ format }) => {
         return (
           kEncodableTextureFormatInfo[format].copyDst &&
@@ -270,7 +270,7 @@ g.test('sint_texel_data_in_shader')
 g.test('float_texel_data_in_shader')
   .params(u =>
     u
-      .combineOptions('format', kEncodableTextureFormats)
+      .combine('format', kEncodableTextureFormats)
       .filter(({ format }) => {
         return (
           kEncodableTextureFormatInfo[format].copyDst &&
@@ -306,7 +306,7 @@ g.test('float_texel_data_in_shader')
 g.test('ufloat_texel_data_in_shader')
   .params(u =>
     u
-      .combineOptions('format', kEncodableTextureFormats)
+      .combine('format', kEncodableTextureFormats)
       .filter(({ format }) => {
         return (
           kEncodableTextureFormatInfo[format].copyDst &&

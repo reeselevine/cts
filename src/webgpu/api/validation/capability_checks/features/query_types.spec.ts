@@ -22,9 +22,9 @@ As of this writing, the spec needs to be fixed as well.
   )
   .params(u =>
     u
-      .combineOptions('type', ['occlusion', 'pipeline-statistics', 'timestamp'] as const)
-      .combineOptions('pipelineStatisticsQueryEnable', [false, true])
-      .combineOptions('timestampQueryEnable', [false, true])
+      .combine('type', ['occlusion', 'pipeline-statistics', 'timestamp'] as const)
+      .combine('pipelineStatisticsQueryEnable', [false, true])
+      .combine('timestampQueryEnable', [false, true])
   )
   .fn(async t => {
     const { type, pipelineStatisticsQueryEnable, timestampQueryEnable } = t.params;

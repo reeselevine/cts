@@ -73,11 +73,11 @@ g.test('v_0033')
   )
   .params(u =>
     u
-      .combineOptions('variableOrConstant', ['var', 'const'])
-      .combineOptions('lhsContainerType', kContainerTypes)
-      .combineOptions('lhsScalarType', kScalarType)
-      .combineOptions('rhsContainerType', kContainerTypes)
-      .combineOptions('rhsScalarType', kScalarType)
+      .combine('variableOrConstant', ['var', 'const'])
+      .combine('lhsContainerType', kContainerTypes)
+      .combine('lhsScalarType', kScalarType)
+      .combine('rhsContainerType', kContainerTypes)
+      .combine('rhsScalarType', kScalarType)
   )
   .fn(t => {
     const {
@@ -128,9 +128,9 @@ g.test('v_0038')
   )
   .params(u =>
     u
-      .combineOptions('storageClass', ['in', 'out', 'private'])
-      .combineOptions('containerType', kContainerTypes)
-      .combineOptions('scalarType', kScalarType)
+      .combine('storageClass', ['in', 'out', 'private'])
+      .combine('containerType', kContainerTypes)
+      .combine('scalarType', kScalarType)
   )
   .fn(t => {
     const { storageClass, containerType, scalarType } = t.params;

@@ -14,9 +14,9 @@ g.test('size')
   .desc('Test buffer size alignment.')
   .params(u =>
     u
-      .combineOptions('mappedAtCreation', [false, true])
+      .combine('mappedAtCreation', [false, true])
       .beginSubcases()
-      .combineOptions('size', [
+      .combine('size', [
         0,
         kBufferSizeAlignment * 0.5,
         kBufferSizeAlignment,
@@ -31,8 +31,8 @@ g.test('usage')
   .params(u =>
     u //
       .beginSubcases()
-      .combineOptions('mappedAtCreation', [false, true])
-      .combineOptions('usage', [
+      .combine('mappedAtCreation', [false, true])
+      .combine('usage', [
         // TODO
       ])
   )

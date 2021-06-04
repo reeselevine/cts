@@ -649,7 +649,7 @@ bytes in copy works for every format.
   .params(u =>
     u
       .combineP(kMethodsToTest)
-      .combineOptions('format', kWorkingTextureFormats)
+      .combine('format', kWorkingTextureFormats)
       .filter(formatCanBeTested)
       .beginSubcases()
       .combineP([
@@ -746,7 +746,7 @@ works for every format with 2d and 2d-array textures.
     u =>
       u
         .combineP(kMethodsToTest)
-        .combineOptions('format', kWorkingTextureFormats)
+        .combine('format', kWorkingTextureFormats)
         .filter(formatCanBeTested)
         .beginSubcases()
         .combineP([
@@ -762,7 +762,7 @@ works for every format with 2d and 2d-array textures.
           { offsetInBlocks: 0, dataPaddingInBytes: 1 }, // dataPaddingInBytes > 0
           { offsetInBlocks: 1, dataPaddingInBytes: 8 }, // offset > 0 and dataPaddingInBytes > 0
         ])
-        .combineOptions('copyDepth', [1, 2]) // 2d and 2d-array textures
+        .combine('copyDepth', [1, 2]) // 2d and 2d-array textures
   )
   .fn(async t => {
     const {
@@ -814,18 +814,18 @@ for all formats. We pass origin and copyExtent as [number, number, number].`
   .params(u =>
     u
       .combineP(kMethodsToTest)
-      .combineOptions('format', kWorkingTextureFormats)
+      .combine('format', kWorkingTextureFormats)
       .filter(formatCanBeTested)
       .beginSubcases()
-      .combineOptions('originValueInBlocks', [0, 7, 8])
-      .combineOptions('copySizeValueInBlocks', [0, 7, 8])
-      .combineOptions('textureSizePaddingValueInBlocks', [0, 7, 8])
+      .combine('originValueInBlocks', [0, 7, 8])
+      .combine('copySizeValueInBlocks', [0, 7, 8])
+      .combine('textureSizePaddingValueInBlocks', [0, 7, 8])
       .unless(
         p =>
           // we can't create an empty texture
           p.copySizeValueInBlocks + p.originValueInBlocks + p.textureSizePaddingValueInBlocks === 0
       )
-      .combineOptions('coordinateToTest', [0, 1, 2] as const)
+      .combine('coordinateToTest', [0, 1, 2] as const)
   )
   .fn(async t => {
     const {
@@ -953,7 +953,7 @@ g.test('mip_levels')
   .params(u =>
     u
       .combineP(kMethodsToTest)
-      .combineOptions('format', kWorkingTextureFormats)
+      .combine('format', kWorkingTextureFormats)
       .filter(formatCanBeTested)
       .beginSubcases()
       .combineP([

@@ -99,9 +99,9 @@ g.test('state_and_binding_index')
   .desc('Tests that setBindGroup correctly handles {valid, invalid} bindGroups.')
   .params(u =>
     u
-      .combineOptions('encoderType', kProgrammableEncoderTypes)
-      .combineOptions('state', ['valid', 'invalid', 'destroyed'] as const)
-      .combineOptions('resourceType', ['buffer', 'texture'] as const)
+      .combine('encoderType', kProgrammableEncoderTypes)
+      .combine('state', ['valid', 'invalid', 'destroyed'] as const)
+      .combine('resourceType', ['buffer', 'texture'] as const)
   )
   .fn(async t => {
     const { encoderType, state, resourceType } = t.params;
@@ -138,7 +138,7 @@ g.test('state_and_binding_index')
 
 g.test('dynamic_offsets_passed_but_not_expected')
   .desc('Tests that setBindGroup correctly errors on unexpected dynamicOffsets.')
-  .params(u => u.combineOptions('encoderType', kProgrammableEncoderTypes))
+  .params(u => u.combine('encoderType', kProgrammableEncoderTypes))
   .fn(async t => {
     const { encoderType } = t.params;
     const bindGroup = t.createBindGroup('valid', 'buffer', encoderType, []);
@@ -156,7 +156,7 @@ g.test('dynamic_offsets_match_expectations_in_pass_encoder')
   .desc('Tests that given dynamicOffsets match the specified bindGroup.')
   .params(u =>
     u
-      .combineOptions('encoderType', kProgrammableEncoderTypes)
+      .combine('encoderType', kProgrammableEncoderTypes)
       .combineP([
         { dynamicOffsets: [256, 0], _success: true }, // Dynamic offsets aligned
         { dynamicOffsets: [1, 2], _success: false }, // Dynamic offsets not aligned
@@ -176,7 +176,7 @@ g.test('dynamic_offsets_match_expectations_in_pass_encoder')
         { dynamicOffsets: [0, 1024], _success: false },
         { dynamicOffsets: [0, 0xffffffff], _success: false },
       ])
-      .combineOptions('useU32array', [false, true])
+      .combine('useU32array', [false, true])
   )
   .fn(async t => {
     const kBindingSize = 9;

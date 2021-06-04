@@ -250,9 +250,9 @@ g.test('from_ImageData')
   )
   .params(u =>
     u
-      .combineOptions('alpha', ['none', 'premultiply'] as const)
-      .combineOptions('orientation', ['none', 'flipY'] as const)
-      .combineOptions('dstColorFormat', [
+      .combine('alpha', ['none', 'premultiply'] as const)
+      .combine('orientation', ['none', 'flipY'] as const)
+      .combine('dstColorFormat', [
         'rgba8unorm',
         'bgra8unorm',
         'rgba8unorm-srgb',
@@ -264,8 +264,8 @@ g.test('from_ImageData')
         'rg16float',
       ] as const)
       .beginSubcases()
-      .combineOptions('width', [1, 2, 4, 15, 255, 256])
-      .combineOptions('height', [1, 2, 4, 15, 255, 256])
+      .combine('width', [1, 2, 4, 15, 255, 256])
+      .combine('height', [1, 2, 4, 15, 255, 256])
   )
   .fn(async t => {
     const { width, height, alpha, orientation, dstColorFormat } = t.params;
@@ -326,8 +326,8 @@ g.test('from_canvas')
   )
   .params(u =>
     u
-      .combineOptions('orientation', ['none', 'flipY'] as const)
-      .combineOptions('dstColorFormat', [
+      .combine('orientation', ['none', 'flipY'] as const)
+      .combine('dstColorFormat', [
         'rgba8unorm',
         'bgra8unorm',
         'rgba8unorm-srgb',
@@ -339,8 +339,8 @@ g.test('from_canvas')
         'rg16float',
       ] as const)
       .beginSubcases()
-      .combineOptions('width', [1, 2, 4, 15, 255, 256])
-      .combineOptions('height', [1, 2, 4, 15, 255, 256])
+      .combine('width', [1, 2, 4, 15, 255, 256])
+      .combine('height', [1, 2, 4, 15, 255, 256])
   )
   .fn(async t => {
     const { width, height, orientation, dstColorFormat } = t.params;

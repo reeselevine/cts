@@ -30,12 +30,12 @@ export const g = makeTestGroup(GPUTest);
 g.test('render_pass_resolve')
   .params(u =>
     u
-      .combineOptions('storeOperation', ['clear', 'store'] as const)
+      .combine('storeOperation', ['clear', 'store'] as const)
       .beginSubcases()
-      .combineOptions('numColorAttachments', [2, 4] as const)
-      .combineOptions('slotsToResolve', kSlotsToResolve)
-      .combineOptions('resolveTargetBaseMipLevel', [0, 1] as const)
-      .combineOptions('resolveTargetBaseArrayLayer', [0, 1] as const)
+      .combine('numColorAttachments', [2, 4] as const)
+      .combine('slotsToResolve', kSlotsToResolve)
+      .combine('resolveTargetBaseMipLevel', [0, 1] as const)
+      .combine('resolveTargetBaseArrayLayer', [0, 1] as const)
   )
   .fn(t => {
     const targets: GPUColorTargetState[] = [];

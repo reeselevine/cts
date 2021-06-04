@@ -323,9 +323,9 @@ g.test('color_textures,non_compressed,non_array')
   )
   .params(u =>
     u
-      .combineOptions('format', kRegularTextureFormats)
+      .combine('format', kRegularTextureFormats)
       .beginSubcases()
-      .combineOptions('textureSize', [
+      .combine('textureSize', [
         {
           srcTextureSize: { width: 32, height: 32, depthOrArrayLayers: 1 },
           dstTextureSize: { width: 32, height: 32, depthOrArrayLayers: 1 },
@@ -343,9 +343,9 @@ g.test('color_textures,non_compressed,non_array')
           dstTextureSize: { width: 63, height: 61, depthOrArrayLayers: 1 },
         },
       ])
-      .combineOptions('copyBoxOffsets', kCopyBoxOffsetsForWholeDepth)
-      .combineOptions('srcCopyLevel', [0, 3])
-      .combineOptions('dstCopyLevel', [0, 3])
+      .combine('copyBoxOffsets', kCopyBoxOffsetsForWholeDepth)
+      .combine('srcCopyLevel', [0, 3])
+      .combine('dstCopyLevel', [0, 3])
   )
   .fn(async t => {
     const { textureSize, format, copyBoxOffsets, srcCopyLevel, dstCopyLevel } = t.params;
@@ -370,9 +370,9 @@ g.test('color_textures,compressed,non_array')
   )
   .params(u =>
     u
-      .combineOptions('format', kCompressedTextureFormats)
+      .combine('format', kCompressedTextureFormats)
       .beginSubcases()
-      .combineOptions('textureSize', [
+      .combine('textureSize', [
         // The heights and widths are all power of 2
         {
           srcTextureSize: { width: 64, height: 32, depthOrArrayLayers: 1 },
@@ -406,9 +406,9 @@ g.test('color_textures,compressed,non_array')
           dstTextureSize: { width: 60, height: 52, depthOrArrayLayers: 1 },
         },
       ])
-      .combineOptions('copyBoxOffsets', kCopyBoxOffsetsForWholeDepth)
-      .combineOptions('srcCopyLevel', [0, 2])
-      .combineOptions('dstCopyLevel', [0, 2])
+      .combine('copyBoxOffsets', kCopyBoxOffsetsForWholeDepth)
+      .combine('srcCopyLevel', [0, 2])
+      .combine('dstCopyLevel', [0, 2])
   )
   .fn(async t => {
     const { textureSize, format, copyBoxOffsets, srcCopyLevel, dstCopyLevel } = t.params;
@@ -434,9 +434,9 @@ g.test('color_textures,non_compressed,array')
   )
   .params(u =>
     u
-      .combineOptions('format', kRegularTextureFormats)
+      .combine('format', kRegularTextureFormats)
       .beginSubcases()
-      .combineOptions('textureSize', [
+      .combine('textureSize', [
         {
           srcTextureSize: { width: 64, height: 32, depthOrArrayLayers: 5 },
           dstTextureSize: { width: 64, height: 32, depthOrArrayLayers: 5 },
@@ -447,9 +447,9 @@ g.test('color_textures,non_compressed,array')
         },
       ])
 
-      .combineOptions('copyBoxOffsets', kCopyBoxOffsetsFor2DArrayTextures)
-      .combineOptions('srcCopyLevel', [0, 3])
-      .combineOptions('dstCopyLevel', [0, 3])
+      .combine('copyBoxOffsets', kCopyBoxOffsetsFor2DArrayTextures)
+      .combine('srcCopyLevel', [0, 3])
+      .combine('dstCopyLevel', [0, 3])
   )
   .fn(async t => {
     const { textureSize, format, copyBoxOffsets, srcCopyLevel, dstCopyLevel } = t.params;
@@ -474,9 +474,9 @@ g.test('color_textures,compressed,array')
   )
   .params(u =>
     u
-      .combineOptions('format', kCompressedTextureFormats)
+      .combine('format', kCompressedTextureFormats)
       .beginSubcases()
-      .combineOptions('textureSize', [
+      .combine('textureSize', [
         // The heights and widths are all power of 2
         {
           srcTextureSize: { width: 8, height: 8, depthOrArrayLayers: 5 },
@@ -489,9 +489,9 @@ g.test('color_textures,compressed,array')
         },
       ])
 
-      .combineOptions('copyBoxOffsets', kCopyBoxOffsetsFor2DArrayTextures)
-      .combineOptions('srcCopyLevel', [0, 2])
-      .combineOptions('dstCopyLevel', [0, 2])
+      .combine('copyBoxOffsets', kCopyBoxOffsetsFor2DArrayTextures)
+      .combine('srcCopyLevel', [0, 2])
+      .combine('dstCopyLevel', [0, 2])
   )
   .fn(async t => {
     const { textureSize, format, copyBoxOffsets, srcCopyLevel, dstCopyLevel } = t.params;
@@ -518,7 +518,7 @@ g.test('zero_sized')
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('copyBoxOffset', [
+      .combine('copyBoxOffset', [
         // copyExtent.width === 0
         {
           srcOffset: { x: 0, y: 0, z: 0 },
@@ -574,8 +574,8 @@ g.test('zero_sized')
           copyExtent: { width: 0, height: 0, depthOrArrayLayers: 0 },
         },
       ])
-      .combineOptions('srcCopyLevel', [0, 3])
-      .combineOptions('dstCopyLevel', [0, 3])
+      .combine('srcCopyLevel', [0, 3])
+      .combine('dstCopyLevel', [0, 3])
   )
   .fn(async t => {
     const { copyBoxOffset, srcCopyLevel, dstCopyLevel } = t.params;

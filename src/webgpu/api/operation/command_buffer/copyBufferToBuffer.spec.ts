@@ -18,9 +18,9 @@ g.test('single')
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('srcOffset', [0, 4, 8, 16])
-      .combineOptions('dstOffset', [0, 4, 8, 16])
-      .combineOptions('copySize', [0, 4, 8, 16])
+      .combine('srcOffset', [0, 4, 8, 16])
+      .combine('dstOffset', [0, 4, 8, 16])
+      .combine('copySize', [0, 4, 8, 16])
       .expand('srcBufferSize', p => [p.srcOffset + p.copySize, p.srcOffset + p.copySize + 8])
       .expand('dstBufferSize', p => [p.dstOffset + p.copySize, p.dstOffset + p.copySize + 8])
   )

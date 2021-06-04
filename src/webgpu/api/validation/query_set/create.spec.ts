@@ -18,9 +18,9 @@ Tests that create query set with the count for all query types:
   )
   .params(u =>
     u
-      .combineOptions('type', kQueryTypes)
+      .combine('type', kQueryTypes)
       .beginSubcases()
-      .combineOptions('count', [0, kMaxQueryCount, kMaxQueryCount + 1])
+      .combine('count', [0, kMaxQueryCount, kMaxQueryCount + 1])
   )
   .fn(async t => {
     const { type, count } = t.params;
@@ -46,13 +46,9 @@ Tests that create query set with the GPUPipelineStatisticName for all query type
   )
   .params(u =>
     u
-      .combineOptions('type', kQueryTypes)
+      .combine('type', kQueryTypes)
       .beginSubcases()
-      .combineOptions('pipelineStatistics', [
-        undefined,
-        [] as const,
-        ['clipper-invocations'] as const,
-      ])
+      .combine('pipelineStatistics', [undefined, [] as const, ['clipper-invocations'] as const])
   )
   .fn(async t => {
     const { type, pipelineStatistics } = t.params;
@@ -80,7 +76,7 @@ Tests that create query set with the duplicate values and all values of GPUPipel
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('pipelineStatistics', [
+      .combine('pipelineStatistics', [
         ['clipper-invocations', 'clipper-invocations'] as const,
         [
           'clipper-invocations',

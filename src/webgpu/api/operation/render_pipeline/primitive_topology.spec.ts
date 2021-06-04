@@ -446,9 +446,9 @@ g.test('basic')
   )
   .params(u =>
     u //
-      .combineOptions('topology', topologies)
-      .combineOptions('indirect', [false, true])
-      .combineOptions('primitiveRestart', [false, true])
+      .combine('topology', topologies)
+      .combine('indirect', [false, true])
+      .combine('primitiveRestart', [false, true])
       .unless(
         p => p.primitiveRestart && p.topology !== 'line-strip' && p.topology !== 'triangle-strip'
       )
@@ -473,8 +473,8 @@ g.test('unaligned_vertex_count')
   )
   .params(u =>
     u //
-      .combineOptions('topology', ['line-list', 'triangle-list'] as const)
-      .combineOptions('indirect', [false, true])
+      .combine('topology', ['line-list', 'triangle-list'] as const)
+      .combine('indirect', [false, true])
       .expand('drawCount', function* (p) {
         switch (p.topology) {
           case 'line-list':

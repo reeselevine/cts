@@ -139,7 +139,7 @@ g.test('out_of_bounds')
   .params(
     u =>
       u
-        .combineOptions('indirect', [false, true])
+        .combine('indirect', [false, true])
         .beginSubcases()
         .combineP([
           { indexCount: 6, firstIndex: 1 }, // indexCount + firstIndex out of bound
@@ -152,7 +152,7 @@ g.test('out_of_bounds')
           { indexCount: 0xffffffff, firstIndex: 2 }, // max uint32 indexCount and small firstIndex
           { indexCount: 2, firstIndex: 0xffffffff }, // small indexCount and max uint32 firstIndex
         ] as const)
-        .combineOptions('instanceCount', [1, 10000]) // normal and large instanceCount
+        .combine('instanceCount', [1, 10000]) // normal and large instanceCount
   )
   .fn(t => {
     const { indirect, indexCount, firstIndex, instanceCount } = t.params;
@@ -183,14 +183,14 @@ g.test('out_of_bounds_zero_sized_index_buffer')
   .params(
     u =>
       u
-        .combineOptions('indirect', [false, true])
+        .combine('indirect', [false, true])
         .combineP([
           { indexCount: 3, firstIndex: 1 }, // indexCount + firstIndex out of bound
           { indexCount: 0, firstIndex: 1 }, // indexCount is 0 but firstIndex out of bound
           { indexCount: 3, firstIndex: 0 }, // only indexCount out of bound
           { indexCount: 0, firstIndex: 0 }, // just zeros
         ] as const)
-        .combineOptions('instanceCount', [1, 10000]) // normal and large instanceCount
+        .combine('instanceCount', [1, 10000]) // normal and large instanceCount
   )
   .fn(t => {
     const { indirect, indexCount, firstIndex, instanceCount } = t.params;

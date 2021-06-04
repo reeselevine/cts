@@ -17,7 +17,7 @@ Tests that use a destroyed query set in occlusion query on render pass encoder.
 - x= {destroyed, not destroyed (control case)}
   `
   )
-  .paramsSubcasesOnly(u => u.combineOptions('querySetState', ['valid', 'destroyed'] as const))
+  .paramsSubcasesOnly(u => u.combine('querySetState', ['valid', 'destroyed'] as const))
   .fn(t => {
     const querySet = t.createQuerySetWithState(t.params.querySetState);
 
@@ -39,9 +39,9 @@ Tests that use a destroyed query set in writeTimestamp on {non-pass, compute, re
   )
   .params(u =>
     u
-      .combineOptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const)
+      .combine('encoderType', ['non-pass', 'compute pass', 'render pass'] as const)
       .beginSubcases()
-      .combineOptions('querySetState', ['valid', 'destroyed'] as const)
+      .combine('querySetState', ['valid', 'destroyed'] as const)
   )
   .fn(async t => {
     await t.selectDeviceOrSkipTestCase('timestamp-query');
@@ -66,7 +66,7 @@ Tests that use a destroyed query set in resolveQuerySet.
 - x= {destroyed, not destroyed (control case)}
   `
   )
-  .paramsSubcasesOnly(u => u.combineOptions('querySetState', ['valid', 'destroyed'] as const))
+  .paramsSubcasesOnly(u => u.combine('querySetState', ['valid', 'destroyed'] as const))
   .fn(async t => {
     const querySet = t.createQuerySetWithState(t.params.querySetState);
 

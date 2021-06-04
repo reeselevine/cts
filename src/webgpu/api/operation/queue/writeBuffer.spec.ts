@@ -104,8 +104,8 @@ g.test('array_types')
   .desc('Tests that writeBuffer correctly handles different TypedArrays and ArrayBuffer.')
   .params(u =>
     u //
-      .combineOptions('arrayType', kTypedArrays)
-      .combineOptions('useArrayBuffer', [false, true])
+      .combine('arrayType', kTypedArrays)
+      .combine('useArrayBuffer', [false, true])
   )
   .fn(t => {
     const { arrayType, useArrayBuffer } = t.params;

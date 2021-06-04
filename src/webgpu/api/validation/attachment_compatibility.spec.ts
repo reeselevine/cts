@@ -146,8 +146,8 @@ g.test('render_pass_and_bundle,color_format')
   .desc('Test that color attachment formats in render passes and bundles must match.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('passFormat', kColorAttachmentFormats)
-      .combineOptions('bundleFormat', kColorAttachmentFormats)
+      .combine('passFormat', kColorAttachmentFormats)
+      .combine('bundleFormat', kColorAttachmentFormats)
   )
   .fn(t => {
     const { passFormat, bundleFormat } = t.params;
@@ -176,8 +176,8 @@ g.test('render_pass_and_bundle,color_count')
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('passCount', kColorAttachmentCounts)
-      .combineOptions('bundleCount', kColorAttachmentCounts)
+      .combine('passCount', kColorAttachmentCounts)
+      .combine('bundleCount', kColorAttachmentCounts)
   )
   .fn(t => {
     const { passCount, bundleCount } = t.params;
@@ -201,8 +201,8 @@ g.test('render_pass_and_bundle,depth_format')
   .desc('Test that the depth attachment format in render passes and bundles must match.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('passFormat', kDepthStencilAttachmentFormats)
-      .combineOptions('bundleFormat', kDepthStencilAttachmentFormats)
+      .combine('passFormat', kDepthStencilAttachmentFormats)
+      .combine('bundleFormat', kDepthStencilAttachmentFormats)
   )
   .fn(async t => {
     const { passFormat, bundleFormat } = t.params;
@@ -230,8 +230,8 @@ g.test('render_pass_and_bundle,sample_count')
   .desc('Test that the sample count in render passes and bundles must match.')
   .paramsSubcasesOnly(u =>
     u //
-      .combineOptions('renderSampleCount', kTextureSampleCounts)
-      .combineOptions('bundleSampleCount', kTextureSampleCounts)
+      .combine('renderSampleCount', kTextureSampleCounts)
+      .combine('bundleSampleCount', kTextureSampleCounts)
   )
   .fn(t => {
     const { renderSampleCount, bundleSampleCount } = t.params;
@@ -259,10 +259,10 @@ Test that color attachment formats in render passes or bundles match the pipelin
   )
   .params(u =>
     u
-      .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
+      .combine('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
-      .combineOptions('encoderFormat', kColorAttachmentFormats)
-      .combineOptions('pipelineFormat', kColorAttachmentFormats)
+      .combine('encoderFormat', kColorAttachmentFormats)
+      .combine('pipelineFormat', kColorAttachmentFormats)
   )
   .fn(t => {
     const { encoderType, encoderFormat, pipelineFormat } = t.params;
@@ -287,10 +287,10 @@ TODO: Add sparse color attachment compatibility test when defined by specificati
   )
   .params(u =>
     u
-      .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
+      .combine('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
-      .combineOptions('encoderCount', kColorAttachmentCounts)
-      .combineOptions('pipelineCount', kColorAttachmentCounts)
+      .combine('encoderCount', kColorAttachmentCounts)
+      .combine('pipelineCount', kColorAttachmentCounts)
   )
   .fn(t => {
     const { encoderType, encoderCount, pipelineCount } = t.params;
@@ -315,10 +315,10 @@ Test that the depth attachment format in render passes or bundles match the pipe
   )
   .params(u =>
     u
-      .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
+      .combine('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
-      .combineOptions('encoderFormat', kDepthStencilAttachmentFormats)
-      .combineOptions('pipelineFormat', kDepthStencilAttachmentFormats)
+      .combine('encoderFormat', kDepthStencilAttachmentFormats)
+      .combine('pipelineFormat', kDepthStencilAttachmentFormats)
   )
   .fn(async t => {
     const { encoderType, encoderFormat, pipelineFormat } = t.params;
@@ -349,10 +349,10 @@ Test that the sample count in render passes or bundles match the pipeline sample
   )
   .params(u =>
     u
-      .combineOptions('encoderType', ['render pass', 'render bundle'] as const)
+      .combine('encoderType', ['render pass', 'render bundle'] as const)
       .beginSubcases()
-      .combineOptions('encoderSampleCount', kTextureSampleCounts)
-      .combineOptions('pipelineSampleCount', kTextureSampleCounts)
+      .combine('encoderSampleCount', kTextureSampleCounts)
+      .combine('pipelineSampleCount', kTextureSampleCounts)
   )
   .fn(t => {
     const { encoderType, encoderSampleCount, pipelineSampleCount } = t.params;
