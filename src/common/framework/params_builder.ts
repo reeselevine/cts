@@ -233,7 +233,10 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
 
   *iterateCasesWithSubcases(): CaseSubcaseIterable<CaseP, SubcaseP> {
     for (const caseP of this.cases()) {
-      yield [caseP, makeReusableIterable(() => this.subcases(caseP))];
+      const subcases = Array.from(this.subcases(caseP));
+      if (subcases.length) {
+        yield [caseP, subcases];
+      }
     }
   }
 
