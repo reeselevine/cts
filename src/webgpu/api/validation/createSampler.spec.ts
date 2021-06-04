@@ -26,8 +26,9 @@ g.test('lodMinAndMaxClamp')
 
 g.test('maxAnisotropy')
   .desc('test different maxAnisotropy values and combinations with min/mag/mipmapFilter')
-  .subcases2(u =>
+  .params2(u =>
     u //
+      .beginSubcases()
       .combine([
         ...u.combineOptions('maxAnisotropy', [-1, undefined, 0, 1, 2, 4, 7, 16, 32, 33, 1024]),
         { minFilter: 'nearest' as const },

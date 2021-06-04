@@ -76,7 +76,7 @@ g.test('basic,async').fn(async t => {
 g.test('basic,plain_cases')
   .desc(
     `
-A test can be parameterized with a simple array of objects using .params2([ ... ]).
+A test can be parameterized with a simple array of objects using .cases2([ ... ]).
 Each such instance of the test is a "case".
 
 In this example, the following cases are generated (identified by their "query string"),
@@ -87,7 +87,7 @@ each with just one subcase:
       - { x: -10, y: -10 }
   `
   )
-  .params2([
+  .cases2([
     { x: 2, y: 2 }, //
     { x: -10, y: -10 },
   ])
@@ -109,7 +109,7 @@ In this example, the following cases are generated, each with just one subcase:
       - { x: -10, y: 18, _result: 8 }
   `
   )
-  .params2([
+  .cases2([
     { x: 2, y: 4, _result: 6 }, //
     { x: -10, y: 18, _result: 8 },
   ])

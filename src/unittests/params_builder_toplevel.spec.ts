@@ -30,7 +30,7 @@ g.test('combine_none,plain_builder')
   });
 
 g.test('combine_none,plain_array')
-  .params2([])
+  .cases2([])
   .fn(t => {
     t.fail("this test shouldn't run");
   });

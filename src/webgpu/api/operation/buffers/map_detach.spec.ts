@@ -20,7 +20,7 @@ class F extends GPUTest {
 export const g = makeTestGroup(F);
 
 g.test('mapAsync,write')
-  .params2([
+  .cases2([
     { unmap: true, destroy: false }, //
     { unmap: false, destroy: true },
     { unmap: true, destroy: true },
@@ -33,7 +33,7 @@ g.test('mapAsync,write')
   });
 
 g.test('mapAsync,read')
-  .params2([
+  .cases2([
     { unmap: true, destroy: false }, //
     { unmap: false, destroy: true },
     { unmap: true, destroy: true },
@@ -46,7 +46,7 @@ g.test('mapAsync,read')
   });
 
 g.test('create_mapped')
-  .params2([
+  .cases2([
     { unmap: true, destroy: false },
     { unmap: false, destroy: true },
     { unmap: true, destroy: true },

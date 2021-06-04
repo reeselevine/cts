@@ -145,8 +145,8 @@ interface TestBuilderWithName<F extends Fixture> extends TestBuilderWithCases<F,
   /**
    * Parameterize the test, generating multiple cases, without subcases.
    */
-  // FIXME: rename this one to something different?
-  params2<P extends {}>(cases: Iterable<P>): TestBuilderWithSubcases<F, P>;
+  // FIXME: rename
+  cases2<P extends {}>(cases: Iterable<P>): TestBuilderWithSubcases<F, P>;
 
   /**
    * Parameterize the test, generating one case with multiple subcases.
@@ -247,19 +247,20 @@ class TestBuilder {
   }
 
   params2(
-    cases:
-      | ((unit: CaseParamsBuilder<{}>) => ParamsBuilderBase<{}, {}>)
-      | ParamsBuilderBase<{}, {}>
-      | Iterable<{}>
+    cases: ((unit: CaseParamsBuilder<{}>) => ParamsBuilderBase<{}, {}>) | ParamsBuilderBase<{}, {}>
   ): TestBuilder {
     assert(this.testCases === undefined, 'test case is already parameterized');
     if (cases instanceof Function) {
       this.testCases = cases(kUnitCaseParamsBuilder);
-    } else if (cases instanceof ParamsBuilderBase) {
-      this.testCases = cases;
     } else {
-      this.testCases = kUnitCaseParamsBuilder.combine(cases);
+      this.testCases = cases;
     }
+    return this;
+  }
+
+  cases2(cases: Iterable<{}>): TestBuilder {
+    assert(this.testCases === undefined, 'test case is already parameterized');
+    this.testCases = kUnitCaseParamsBuilder.combine(cases);
     return this;
   }
 
