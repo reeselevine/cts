@@ -246,7 +246,7 @@ class TestBuilder {
 
   paramsSimple(cases: Iterable<{}>): TestBuilder {
     assert(this.testCases === undefined, 'test case is already parameterized');
-    this.testCases = kUnitCaseParamsBuilder.combine(cases);
+    this.testCases = kUnitCaseParamsBuilder.combineP(cases);
     return this;
   }
 
@@ -256,7 +256,7 @@ class TestBuilder {
     if (subcases instanceof Function) {
       return this.params(subcases(kUnitCaseParamsBuilder.beginSubcases()));
     } else {
-      return this.params(kUnitCaseParamsBuilder.beginSubcases().combine(subcases));
+      return this.params(kUnitCaseParamsBuilder.beginSubcases().combineP(subcases));
     }
   }
 

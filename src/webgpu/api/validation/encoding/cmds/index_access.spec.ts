@@ -141,7 +141,7 @@ g.test('out_of_bounds')
       u
         .combineOptions('indirect', [false, true])
         .beginSubcases()
-        .combine([
+        .combineP([
           { indexCount: 6, firstIndex: 1 }, // indexCount + firstIndex out of bound
           { indexCount: 0, firstIndex: 6 }, // indexCount is 0 but firstIndex out of bound
           { indexCount: 6, firstIndex: 6 }, // only firstIndex out of bound
@@ -184,7 +184,7 @@ g.test('out_of_bounds_zero_sized_index_buffer')
     u =>
       u
         .combineOptions('indirect', [false, true])
-        .combine([
+        .combineP([
           { indexCount: 3, firstIndex: 1 }, // indexCount + firstIndex out of bound
           { indexCount: 0, firstIndex: 1 }, // indexCount is 0 but firstIndex out of bound
           { indexCount: 3, firstIndex: 0 }, // only indexCount out of bound

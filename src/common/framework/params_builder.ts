@@ -146,8 +146,7 @@ export class CaseParamsBuilder<CaseP extends {}>
    * this.combine(newParams) = [ {a:1,x:1}, {a:1,y:2}, {b:2,x:1}, {b:2,y:2} ]
    * ```
    */
-  // FIXME: rename to combineP?
-  combine<NewP extends {}>(newParams: Iterable<NewP>): CaseParamsBuilder<Merged<CaseP, NewP>> {
+  combineP<NewP extends {}>(newParams: Iterable<NewP>): CaseParamsBuilder<Merged<CaseP, NewP>> {
     return this.expandP(() => newParams);
   }
 
@@ -276,8 +275,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
    * this.combine(newParams) = [ {a:1,x:1}, {a:1,y:2}, {b:2,x:1}, {b:2,y:2} ]
    * ```
    */
-  // FIXME: rename to combineP?
-  combine<NewP extends {}>(
+  combineP<NewP extends {}>(
     newParams: Iterable<NewP>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, NewP>> {
     return this.expandP(() => newParams);

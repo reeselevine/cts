@@ -33,7 +33,7 @@ g.test('depth_compare_func')
         'format',
         kDepthStencilFormats.filter(format => format !== 'stencil8')
       )
-      .combine([
+      .combineP([
         { depthCompare: 'never', depthLoadValue: 1.0, _expected: backgroundColor },
         { depthCompare: 'never', depthLoadValue: 0.5, _expected: backgroundColor },
         { depthCompare: 'never', depthLoadValue: 0.0, _expected: backgroundColor },

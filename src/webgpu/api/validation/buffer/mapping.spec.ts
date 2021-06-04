@@ -106,7 +106,7 @@ g.test('mapAsync,usage')
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combine([
+      .combineP([
         { mapMode: GPUConst.MapMode.READ, validUsage: GPUConst.BufferUsage.MAP_READ },
         { mapMode: GPUConst.MapMode.WRITE, validUsage: GPUConst.BufferUsage.MAP_WRITE },
         // Using mapMode 0 is never valid, so there is no validUsage.
@@ -221,7 +221,7 @@ g.test('mapAsync,sizeUnspecifiedOOB')
   .paramsSubcasesOnly(u =>
     u //
       .combineOptions('mapMode', kMapModeOptions)
-      .combine([
+      .combineP([
         // 0 size buffer.
         { bufferSize: 0, offset: 0 },
         { bufferSize: 0, offset: 1 },
@@ -248,7 +248,7 @@ g.test('mapAsync,offsetAndSizeAlignment')
   .paramsSubcasesOnly(u =>
     u //
       .combineOptions('mapMode', kMapModeOptions)
-      .combine([
+      .combineP([
         // Valid cases, 0 and required alignments values are valid.
         { offset: 0, size: 0 },
         { offset: kOffsetAlignment, size: kSizeAlignment },
@@ -273,7 +273,7 @@ g.test('mapAsync,offsetAndSizeOOB')
   .paramsSubcasesOnly(u =>
     u //
       .combineOptions('mapMode', kMapModeOptions)
-      .combine([
+      .combineP([
         // For a 0 size buffer
         { bufferSize: 0, offset: 0, size: 0 },
         { bufferSize: 0, offset: 0, size: 4 },
@@ -422,7 +422,7 @@ g.test('getMappedRange,offsetAndSizeAlignment')
     u
       .combineOptions('mapMode', kMapModeOptions)
       .beginSubcases()
-      .combine([
+      .combineP([
         // Valid cases, 0 and required alignments values are valid.
         { offset: 0, size: 0 },
         { offset: kOffsetAlignment, size: kSizeAlignment },
@@ -498,7 +498,7 @@ g.test('getMappedRange,sizeAndOffsetOOB,forMapped')
   .paramsSubcasesOnly(u =>
     u //
       .combineOptions('mapMode', kMapModeOptions)
-      .combine([
+      .combineP([
         // Tests for an empty buffer, and implicit mapAsync size.
         { bufferSize: 0, mapOffset: 0, mapSize: undefined, offset: undefined, size: undefined },
         { bufferSize: 0, mapOffset: 0, mapSize: undefined, offset: undefined, size: 0 },
@@ -612,7 +612,7 @@ g.test('getMappedRange,disjointRanges')
   .paramsSubcasesOnly(u =>
     u //
       .combineOptions('remapBetweenCalls', [false, true])
-      .combine([
+      .combineP([
         // Disjoint ranges with one that's empty.
         { offset1: 8, size1: 0, offset2: 8, size2: 8 },
         { offset1: 16, size1: 0, offset2: 8, size2: 8 },

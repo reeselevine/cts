@@ -157,7 +157,7 @@ g.test('dynamic_offsets_match_expectations_in_pass_encoder')
   .params(u =>
     u
       .combineOptions('encoderType', kProgrammableEncoderTypes)
-      .combine([
+      .combineP([
         { dynamicOffsets: [256, 0], _success: true }, // Dynamic offsets aligned
         { dynamicOffsets: [1, 2], _success: false }, // Dynamic offsets not aligned
 

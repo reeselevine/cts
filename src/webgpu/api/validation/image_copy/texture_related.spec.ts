@@ -193,7 +193,7 @@ g.test('1d')
       .combineOptions('method', kImageCopyTypes)
       .beginSubcases()
       .combineOptions('width', [0, 1])
-      .combine([
+      .combineP([
         { height: 1, depthOrArrayLayers: 1 },
         { height: 1, depthOrArrayLayers: 0 },
         { height: 1, depthOrArrayLayers: 2 },

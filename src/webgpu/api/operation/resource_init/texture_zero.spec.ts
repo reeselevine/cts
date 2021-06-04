@@ -495,7 +495,7 @@ const kTestParams = kUnitCaseParamsBuilder
       ((usage & GPUConst.TextureUsage.STORAGE) !== 0 && !info.storage)
     );
   })
-  .combine(kCreationSizes)
+  .combineP(kCreationSizes)
   // Multisampled 3D / 2D array textures not supported.
   .unless(({ sampleCount, sliceCount }) => sampleCount > 1 && sliceCount > 1);
 

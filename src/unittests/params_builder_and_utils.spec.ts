@@ -83,10 +83,10 @@ g.test('empty').fn(t => {
 });
 
 g.test('combine,zeroes_and_ones').fn(t => {
-  t.expectParams<{}, {}>(u.combine([]).combine([]), []);
-  t.expectParams<{}, {}>(u.combine([]).combine([{}]), []);
-  t.expectParams<{}, {}>(u.combine([{}]).combine([]), []);
-  t.expectParams<{}, {}>(u.combine([{}]).combine([{}]), [
+  t.expectParams<{}, {}>(u.combineP([]).combineP([]), []);
+  t.expectParams<{}, {}>(u.combineP([]).combineP([{}]), []);
+  t.expectParams<{}, {}>(u.combineP([{}]).combineP([]), []);
+  t.expectParams<{}, {}>(u.combineP([{}]).combineP([{}]), [
     [{}, undefined], //
   ]);
 });
@@ -96,8 +96,8 @@ g.test('combine,mixed').fn(t => {
     u
       .combineOptions('x', [1, 2])
       .combineOptions('y', ['a', 'b'])
-      .combine([{ p: 4 }, { q: 5 }])
-      .combine([{}]),
+      .combineP([{ p: 4 }, { q: 5 }])
+      .combineP([{}]),
     [
       [{ x: 1, y: 'a', p: 4 }, undefined],
       [{ x: 1, y: 'a', q: 5 }, undefined],
@@ -114,7 +114,7 @@ g.test('combine,mixed').fn(t => {
 g.test('filter').fn(t => {
   t.expectParams<{ a: boolean; x: number | undefined; y: number | undefined }, {}>(
     u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -126,7 +126,7 @@ g.test('filter').fn(t => {
 
   t.expectParams<{ a: boolean; x: number | undefined; y: number | undefined }, {}>(
     u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -141,7 +141,7 @@ g.test('filter').fn(t => {
   t.expectParams<{}, { a: boolean; x: number | undefined; y: number | undefined }>(
     u
       .beginSubcases()
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -155,7 +155,7 @@ g.test('filter').fn(t => {
 g.test('unless').fn(t => {
   t.expectParams<{ a: boolean; x: number | undefined; y: number | undefined }, {}>(
     u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -167,7 +167,7 @@ g.test('unless').fn(t => {
 
   t.expectParams<{ a: boolean; x: number | undefined; y: number | undefined }, {}>(
     u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -182,7 +182,7 @@ g.test('unless').fn(t => {
   t.expectParams<{}, { a: boolean; x: number | undefined; y: number | undefined }>(
     u
       .beginSubcases()
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -236,7 +236,7 @@ g.test('expand').fn(t => {
     {}
   >(
     u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -259,7 +259,7 @@ g.test('expand').fn(t => {
     { z: number | undefined; w: number | undefined }
   >(
     u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -306,7 +306,7 @@ g.test('expand').fn(t => {
   // more complex
   t.expectParams<{ a: boolean; x: number | undefined; y: number | undefined; z: number }, {}>(
     u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -324,7 +324,7 @@ g.test('expand').fn(t => {
   );
   t.expectParams<{ a: boolean; x: number | undefined; y: number | undefined }, { z: number }>(
     u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
@@ -347,7 +347,7 @@ g.test('invalid,shadowing').fn(t => {
   // Existing CaseP is shadowed by a new CaseP.
   {
     const p = u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, x: 2 },
       ])
@@ -367,7 +367,7 @@ g.test('invalid,shadowing').fn(t => {
   {
     const p = u
       .beginSubcases()
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, x: 2 },
       ])
@@ -390,7 +390,7 @@ g.test('invalid,shadowing').fn(t => {
   // Existing CaseP is shadowed by a new SubcaseP.
   {
     const p = u
-      .combine([
+      .combineP([
         { a: true, x: 1 },
         { a: false, x: 2 },
       ])
@@ -433,19 +433,22 @@ g.test('private').fn(t => {
 });
 
 g.test('value,array').fn(t => {
-  t.expectParams<{ a: number[] }, {}>(u.combine([{ a: [1, 2] }]), [
+  t.expectParams<{ a: number[] }, {}>(u.combineP([{ a: [1, 2] }]), [
     [{ a: [1, 2] }, undefined], //
   ]);
-  t.expectParams<{}, { a: number[] }>(u.beginSubcases().combine([{ a: [1, 2] }]), [
+  t.expectParams<{}, { a: number[] }>(u.beginSubcases().combineP([{ a: [1, 2] }]), [
     [{}, [{ a: [1, 2] }]], //
   ]);
 });
 
 g.test('value,object').fn(t => {
-  t.expectParams<{ a: { [k: string]: number } }, {}>(u.combine([{ a: { x: 1 } }]), [
+  t.expectParams<{ a: { [k: string]: number } }, {}>(u.combineP([{ a: { x: 1 } }]), [
     [{ a: { x: 1 } }, undefined], //
   ]);
-  t.expectParams<{}, { a: { [k: string]: number } }>(u.beginSubcases().combine([{ a: { x: 1 } }]), [
-    [{}, [{ a: { x: 1 } }]], //
-  ]);
+  t.expectParams<{}, { a: { [k: string]: number } }>(
+    u.beginSubcases().combineP([{ a: { x: 1 } }]),
+    [
+      [{}, [{ a: { x: 1 } }]], //
+    ]
+  );
 });

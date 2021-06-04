@@ -29,7 +29,7 @@ g.test('maxAnisotropy')
   .params(u =>
     u //
       .beginSubcases()
-      .combine([
+      .combineP([
         ...u.combineOptions('maxAnisotropy', [-1, undefined, 0, 1, 2, 4, 7, 16, 32, 33, 1024]),
         { minFilter: 'nearest' as const },
         { magFilter: 'nearest' as const },

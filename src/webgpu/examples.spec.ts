@@ -138,8 +138,8 @@ In this example, the following cases are generated, each with just one subcase:
   )
   .params(u =>
     u //
-      .combine([{ x: 1 }, { x: 2 }])
-      .combine([{ y: 1 }, { y: 2 }])
+      .combineP([{ x: 1 }, { x: 2 }])
+      .combineP([{ y: 1 }, { y: 2 }])
   )
   .fn(() => {});
 
@@ -161,9 +161,9 @@ In this example, the following cases are generated:
   )
   .params(u =>
     u //
-      .combine([{ x: 1 }, { x: 2 }])
+      .combineP([{ x: 1 }, { x: 2 }])
       .beginSubcases()
-      .combine([{ y: 1 }, { y: 2 }])
+      .combineP([{ y: 1 }, { y: 2 }])
   )
   .fn(() => {});
 
@@ -181,8 +181,8 @@ In this example, the following single case is generated:
   .params(u =>
     u //
       .beginSubcases()
-      .combine([{ x: 1 }, { x: 2 }])
-      .combine([{ y: 1 }, { y: 2 }])
+      .combineP([{ x: 1 }, { x: 2 }])
+      .combineP([{ y: 1 }, { y: 2 }])
   )
   .fn(() => {});
 
@@ -201,8 +201,8 @@ In this example, the following single case is generated:
   )
   .paramsSubcasesOnly(u =>
     u //
-      .combine([{ x: 1 }, { x: 2 }])
-      .combine([{ y: 1 }, { y: 2 }])
+      .combineP([{ x: 1 }, { x: 2 }])
+      .combineP([{ y: 1 }, { y: 2 }])
   )
   .fn(() => {});
 

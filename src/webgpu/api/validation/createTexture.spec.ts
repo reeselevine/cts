@@ -159,7 +159,7 @@ g.test('mipLevelCount,bound_check')
   .paramsSubcasesOnly(u =>
     u //
       .combineOptions('format', ['rgba8unorm', 'bc1-rgba-unorm'] as const)
-      .combine([
+      .combineP([
         { size: [32, 32] }, // Mip level sizes: 32x32, 16x16, 8x8, 4x4, 2x2, 1x1
         { size: [31, 32] }, // Mip level sizes: 31x32, 15x16, 7x8, 3x4, 1x2, 1x1
         { size: [28, 32] }, // Mip level sizes: 28x32, 14x16, 7x8, 3x4, 1x2, 1x1

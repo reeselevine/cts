@@ -13,7 +13,7 @@ g.test('twice')
   .paramsSubcasesOnly(u =>
     u //
       .combineOptions('mappedAtCreation', [false, true])
-      .combine([
+      .combineP([
         { size: 4, usage: GPUConst.BufferUsage.COPY_SRC },
         { size: 4, usage: GPUConst.BufferUsage.MAP_WRITE | GPUConst.BufferUsage.COPY_SRC },
         { size: 4, usage: GPUConst.BufferUsage.COPY_DST | GPUConst.BufferUsage.MAP_READ },

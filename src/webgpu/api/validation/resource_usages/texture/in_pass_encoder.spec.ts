@@ -233,7 +233,7 @@ g.test('subresources_and_binding_types_combination_for_color')
   .params(u =>
     u
       .combineOptions('compute', [false, true])
-      .combine([
+      .combineP([
         { _usageOK: true, type0: 'sampled-texture', type1: 'sampled-texture' },
         { _usageOK: true, type0: 'sampled-texture', type1: 'readonly-storage-texture' },
         { _usageOK: false, type0: 'sampled-texture', type1: 'writeonly-storage-texture' },
@@ -261,7 +261,7 @@ g.test('subresources_and_binding_types_combination_for_color')
               p.type0 === 'render-target' ||
               p.type1 === 'render-target'))
       )
-      .combine([
+      .combineP([
         // Two texture usages are binding to the same texture subresource.
         {
           levelCount0: 1,
@@ -510,7 +510,7 @@ g.test('subresources_and_binding_types_combination_for_aspect')
       .beginSubcases()
       .combineOptions('binding0InBundle', [false, true])
       .combineOptions('binding1InBundle', [false, true])
-      .combine([
+      .combineP([
         {
           baseLevel: BASE_LEVEL,
           baseLayer: BASE_LAYER,
@@ -539,7 +539,7 @@ g.test('subresources_and_binding_types_combination_for_aspect')
           (p.aspect0 === 'depth-only' && !kDepthStencilFormatInfo[p.format].depth) ||
           (p.aspect1 === 'depth-only' && !kDepthStencilFormatInfo[p.format].depth)
       )
-      .combine([
+      .combineP([
         {
           type0: 'sampled-texture',
           type1: 'sampled-texture',

@@ -205,7 +205,7 @@ g.test('subcases').fn(async t0 => {
   g.test('a')
     .paramsSubcasesOnly(u =>
       u //
-        .combine([{ a: 1 }])
+        .combineP([{ a: 1 }])
     )
     .fn(t => {
       t.expect(t.params.a === 1, 'a must be 1');
@@ -223,7 +223,7 @@ g.test('subcases').fn(async t0 => {
   g.test('b')
     .params(u =>
       u
-        .combine([{ a: 1 }, { b: 2 }])
+        .combineP([{ a: 1 }, { b: 2 }])
         .beginSubcases()
         .expandP(gen)
     )

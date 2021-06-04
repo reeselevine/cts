@@ -74,7 +74,7 @@ g.test('mapAsync,write')
       .combineOptions('mapAsyncRegionLeft', mapRegionBoundModes)
       .combineOptions('mapAsyncRegionRight', mapRegionBoundModes)
       .beginSubcases()
-      .combine(kSubcases)
+      .combineP(kSubcases)
   )
   .fn(async t => {
     const { size, range } = t.params;
@@ -101,7 +101,7 @@ map-read and check the read-back result.`
       .combineOptions('mapAsyncRegionLeft', mapRegionBoundModes)
       .combineOptions('mapAsyncRegionRight', mapRegionBoundModes)
       .beginSubcases()
-      .combine(kSubcases)
+      .combineP(kSubcases)
   )
   .fn(async t => {
     const { size, range } = t.params;
@@ -138,7 +138,7 @@ then expectContents (which does copyBufferToBuffer + map-read) to ensure the con
     u //
       .combineOptions('mappable', [false, true])
       .beginSubcases()
-      .combine(kSubcases)
+      .combineP(kSubcases)
   )
   .fn(async t => {
     const { size, range, mappable } = t.params;

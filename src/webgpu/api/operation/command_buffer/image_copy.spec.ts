@@ -648,17 +648,17 @@ bytes in copy works for every format.
   )
   .params(u =>
     u
-      .combine(kMethodsToTest)
+      .combineP(kMethodsToTest)
       .combineOptions('format', kWorkingTextureFormats)
       .filter(formatCanBeTested)
       .beginSubcases()
-      .combine([
+      .combineP([
         { bytesPerRowPadding: 0, rowsPerImagePadding: 0 }, // no padding
         { bytesPerRowPadding: 0, rowsPerImagePadding: 6 }, // rowsPerImage padding
         { bytesPerRowPadding: 6, rowsPerImagePadding: 0 }, // bytesPerRow padding
         { bytesPerRowPadding: 15, rowsPerImagePadding: 17 }, // both paddings
       ])
-      .combine([
+      .combineP([
         // In the two cases below, for (WriteTexture, PartialCopyB2T) and (CopyB2T, FullCopyT2B)
         // sets of methods we will have bytesPerRow = 256 and copyDepth % 2 == { 0, 1 }
         // respectively. This covers a special code path for D3D12.
@@ -745,11 +745,11 @@ works for every format with 2d and 2d-array textures.
   .params(
     u =>
       u
-        .combine(kMethodsToTest)
+        .combineP(kMethodsToTest)
         .combineOptions('format', kWorkingTextureFormats)
         .filter(formatCanBeTested)
         .beginSubcases()
-        .combine([
+        .combineP([
           { offsetInBlocks: 0, dataPaddingInBytes: 0 }, // no offset and no padding
           { offsetInBlocks: 1, dataPaddingInBytes: 0 }, // offset = 1
           { offsetInBlocks: 2, dataPaddingInBytes: 0 }, // offset = 2
@@ -813,7 +813,7 @@ for all formats. We pass origin and copyExtent as [number, number, number].`
   )
   .params(u =>
     u
-      .combine(kMethodsToTest)
+      .combineP(kMethodsToTest)
       .combineOptions('format', kWorkingTextureFormats)
       .filter(formatCanBeTested)
       .beginSubcases()
@@ -952,11 +952,11 @@ g.test('mip_levels')
   )
   .params(u =>
     u
-      .combine(kMethodsToTest)
+      .combineP(kMethodsToTest)
       .combineOptions('format', kWorkingTextureFormats)
       .filter(formatCanBeTested)
       .beginSubcases()
-      .combine([
+      .combineP([
         // origin + copySize = texturePhysicalSizeAtMipLevel for all coordinates, 2d texture */
         {
           copySizeInBlocks: { width: 5, height: 4, depthOrArrayLayers: 1 },
@@ -1058,9 +1058,9 @@ g.test('undefined_params')
   )
   .params(u =>
     u
-      .combine(kMethodsToTest)
+      .combineP(kMethodsToTest)
       .beginSubcases()
-      .combine([
+      .combineP([
         // copying one row: bytesPerRow and rowsPerImage can be undefined
         { copySize: [3, 1, 1], origin: [UND, UND, UND], bytesPerRow: UND, rowsPerImage: UND },
         // copying one slice: rowsPerImage can be undefined

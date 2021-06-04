@@ -157,13 +157,13 @@ g.test('setViewport,xy_rect_contained_in_attachment')
   )
   .paramsSubcasesOnly(u =>
     u
-      .combine([
+      .combineP([
         { attachmentWidth: 3, attachmentHeight: 5 },
         { attachmentWidth: 5, attachmentHeight: 3 },
         { attachmentWidth: 1024, attachmentHeight: 1 },
         { attachmentWidth: 1, attachmentHeight: 1024 },
       ])
-      .combine([
+      .combineP([
         // Control case: a full viewport is valid.
         { dx: 0, dy: 0, dw: 0, dh: 0 },
 
@@ -247,13 +247,13 @@ g.test('setScissorRect,xy_rect_contained_in_attachment')
   )
   .paramsSubcasesOnly(u =>
     u
-      .combine([
+      .combineP([
         { attachmentWidth: 3, attachmentHeight: 5 },
         { attachmentWidth: 5, attachmentHeight: 3 },
         { attachmentWidth: 1024, attachmentHeight: 1 },
         { attachmentWidth: 1, attachmentHeight: 1024 },
       ])
-      .combine([
+      .combineP([
         // Control case: a full scissor is valid.
         { dx: 0, dy: 0, dw: 0, dh: 0 },
 
