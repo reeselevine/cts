@@ -255,7 +255,7 @@ g.test('vertexAccess')
     u
       .combineOptions('indexed', [false, true])
       .combineOptions('indirect', [false, true])
-      .expandOptions('drawCallTestParameter', p =>
+      .expand('drawCallTestParameter', p =>
         p.indexed
           ? (['indexCount', 'instanceCount', 'firstIndex', 'baseVertex', 'firstInstance'] as const)
           : (['vertexCount', 'instanceCount', 'firstVertex', 'firstInstance'] as const)

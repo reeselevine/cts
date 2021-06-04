@@ -279,14 +279,14 @@ g.test('expand').fn(t => {
   );
 });
 
-g.test('expandOptions').fn(t => {
+g.test('expand').fn(t => {
   // simple
   t.expectParams<{}, {}>(
-    u.expandOptions('x', function* () {}),
+    u.expand('x', function* () {}),
     []
   );
   t.expectParams<{ z: number }, {}>(
-    u.expandOptions('z', function* () {
+    u.expand('z', function* () {
       yield 3;
       yield 4;
     }),
@@ -296,7 +296,7 @@ g.test('expandOptions').fn(t => {
     ]
   );
   t.expectParams<{}, { z: number }>(
-    u.beginSubcases().expandOptions('z', function* () {
+    u.beginSubcases().expand('z', function* () {
       yield 3;
       yield 4;
     }),
@@ -310,7 +310,7 @@ g.test('expandOptions').fn(t => {
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
-      .expandOptions('z', function* (p) {
+      .expand('z', function* (p) {
         if (p.a) {
           yield 3;
         } else {
@@ -329,7 +329,7 @@ g.test('expandOptions').fn(t => {
         { a: false, y: 2 },
       ])
       .beginSubcases()
-      .expandOptions('z', function* (p) {
+      .expand('z', function* (p) {
         if (p.a) {
           yield 3;
         } else {

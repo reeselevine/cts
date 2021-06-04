@@ -467,7 +467,7 @@ g.test('vertex_shader_type_matches_attribute_format')
       .combineOptions('format', kVertexFormats)
       .beginSubcases()
       .combineOptions('shaderBaseType', ['u32', 'i32', 'f32'])
-      .expandOptions('shaderType', p => [
+      .expand('shaderType', p => [
         p.shaderBaseType,
         `vec2<${p.shaderBaseType}>`,
         `vec3<${p.shaderBaseType}>`,
@@ -517,7 +517,7 @@ g.test('vertex_attribute_offset_alignment')
     u
       .combineOptions('format', kVertexFormats)
       .combineOptions('arrayStride', [256, kMaxVertexBufferArrayStride])
-      .expandOptions('offset', p => {
+      .expand('offset', p => {
         const { bytesPerComponent, componentCount } = kVertexFormatInfo[p.format];
         const formatSize = bytesPerComponent * componentCount;
         const halfAlignment = Math.floor(bytesPerComponent / 2);
@@ -579,7 +579,7 @@ g.test('vertex_attribute_contained_in_stride')
         kMaxVertexBufferArrayStride - 4,
         kMaxVertexBufferArrayStride,
       ])
-      .expandOptions('offset', function* (p) {
+      .expand('offset', function* (p) {
         // Compute a bunch of test offsets to test.
         const { bytesPerComponent, componentCount } = kVertexFormatInfo[p.format];
         const formatSize = bytesPerComponent * componentCount;

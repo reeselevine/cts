@@ -224,8 +224,8 @@ g.test('multisampled_copy_restrictions')
         { x: 0, y: 1, z: 0 },
         { x: 1, y: 1, z: 0 },
       ])
-      .expandOptions('copyWidth', p => [32 - Math.max(p.srcCopyOrigin.x, p.dstCopyOrigin.x), 16])
-      .expandOptions('copyHeight', p => [16 - Math.max(p.srcCopyOrigin.y, p.dstCopyOrigin.y), 8])
+      .expand('copyWidth', p => [32 - Math.max(p.srcCopyOrigin.x, p.dstCopyOrigin.x), 16])
+      .expand('copyHeight', p => [16 - Math.max(p.srcCopyOrigin.y, p.dstCopyOrigin.y), 8])
   )
   .fn(async t => {
     const { srcCopyOrigin, dstCopyOrigin, copyWidth, copyHeight } = t.params;

@@ -154,7 +154,7 @@ g.test('origin_alignment')
       .filter(formatCopyableWithMethod)
       .beginSubcases()
       .combineOptions('coordinateToTest', ['x', 'y', 'z'] as const)
-      .expandOptions('valueToCoordinate', texelBlockAlignmentTestExpanderForValueToCoordinate)
+      .expand('valueToCoordinate', texelBlockAlignmentTestExpanderForValueToCoordinate)
   )
   .fn(async t => {
     const { valueToCoordinate, coordinateToTest, format, method } = t.params;
@@ -232,7 +232,7 @@ g.test('size_alignment')
       .filter(formatCopyableWithMethod)
       .beginSubcases()
       .combineOptions('coordinateToTest', ['width', 'height', 'depthOrArrayLayers'] as const)
-      .expandOptions('valueToCoordinate', texelBlockAlignmentTestExpanderForValueToCoordinate)
+      .expand('valueToCoordinate', texelBlockAlignmentTestExpanderForValueToCoordinate)
   )
   .fn(async t => {
     const { valueToCoordinate, coordinateToTest, format, method } = t.params;

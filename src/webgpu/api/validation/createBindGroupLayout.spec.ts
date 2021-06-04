@@ -175,7 +175,7 @@ const kMaxResourcesCases = kUnitCaseParamsBuilder
   .beginSubcases()
   .combineOptions('maxedVisibility', kShaderStages)
   .filter(p => (bindingTypeInfo(p.maxedEntry).validStages & p.maxedVisibility) !== 0)
-  .expandOptions('extraEntry', p => [
+  .expand('extraEntry', p => [
     ...pickExtraBindingTypesForPerStage(p.maxedEntry, true),
     ...pickExtraBindingTypesForPerStage(p.maxedEntry, false),
   ])

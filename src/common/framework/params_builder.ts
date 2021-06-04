@@ -107,7 +107,7 @@ export class CaseParamsBuilder<CaseP extends {}>
   /**
    * Expands each case in `this` into zero or more cases:
    *
-   * **Note:** In most situations, `expandOptions` is a simpler and more readable alternative.
+   * **Note:** In most situations, `expand` is a simpler and more readable alternative.
    *
    * ```text
    *               this = [     a       ,      b     ,       c       ]
@@ -126,8 +126,7 @@ export class CaseParamsBuilder<CaseP extends {}>
   /**
    * Expands each case in `this` into zero or more cases.
    */
-  // FIXME: rename to expand?
-  expandOptions<NewPKey extends string, NewPValue>(
+  expand<NewPKey extends string, NewPValue>(
     key: NewPKey,
     expander: (_: Merged<{}, CaseP>) => Iterable<NewPValue>
   ): CaseParamsBuilder<Merged<CaseP, { [name in NewPKey]: NewPValue }>> {
@@ -161,7 +160,7 @@ export class CaseParamsBuilder<CaseP extends {}>
     key: NewPKey,
     values: Iterable<NewPValue>
   ): CaseParamsBuilder<Merged<CaseP, { [name in NewPKey]: NewPValue }>> {
-    return this.expandOptions(key, () => values);
+    return this.expand(key, () => values);
   }
 
   /**
@@ -239,7 +238,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
   /**
    * Expands each subcase in `this` into zero or more subcases.
    *
-   * **Note:** In most situations, `expandOptions` is a simpler and more readable alternative.
+   * **Note:** In most situations, `expand` is a simpler and more readable alternative.
    *
    * ```text
    *               this = [     a       ,      b     ,       c       ]
@@ -257,8 +256,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
   /**
    * Expands each case in `this` into zero or more cases.
    */
-  // FIXME: rename to expand?
-  expandOptions<NewPKey extends string, NewPValue>(
+  expand<NewPKey extends string, NewPValue>(
     key: NewPKey,
     expander: (_: Merged<CaseP, SubcaseP>) => Iterable<NewPValue>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, { [name in NewPKey]: NewPValue }>> {
@@ -294,7 +292,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
     key: NewPKey,
     values: Iterable<NewPValue>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, { [name in NewPKey]: NewPValue }>> {
-    return this.expandOptions(key, () => values);
+    return this.expand(key, () => values);
   }
 
   /**

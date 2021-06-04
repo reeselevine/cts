@@ -95,7 +95,7 @@ Tests that write timestamp to all types of query set on all possible encoders:
       .combineOptions('encoderType', ['non-pass', 'compute pass', 'render pass'] as const)
       .combineOptions('type', kQueryTypes)
       .beginSubcases()
-      .expandOptions('queryIndex', p => (p.type === 'timestamp' ? [0, 2] : [0]))
+      .expand('queryIndex', p => (p.type === 'timestamp' ? [0, 2] : [0]))
   )
   .fn(async t => {
     const { encoderType, type, queryIndex } = t.params;

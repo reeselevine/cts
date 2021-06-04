@@ -475,7 +475,7 @@ g.test('unaligned_vertex_count')
     u //
       .combineOptions('topology', ['line-list', 'triangle-list'] as const)
       .combineOptions('indirect', [false, true])
-      .expandOptions('drawCount', function* (p) {
+      .expand('drawCount', function* (p) {
         switch (p.topology) {
           case 'line-list':
             yield kDefaultDrawCount - 1;

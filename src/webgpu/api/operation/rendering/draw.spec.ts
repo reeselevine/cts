@@ -54,8 +54,8 @@ Params:
       .combineOptions('indexed', [false, true])
       .combineOptions('indirect', [false, true])
       .combineOptions('vertex_buffer_offset', [0, 32] as const)
-      .expandOptions('index_buffer_offset', p => (p.indexed ? ([0, 16] as const) : [undefined]))
-      .expandOptions('base_vertex', p => (p.indexed ? ([0, 9] as const) : [undefined]))
+      .expand('index_buffer_offset', p => (p.indexed ? ([0, 16] as const) : [undefined]))
+      .expand('base_vertex', p => (p.indexed ? ([0, 9] as const) : [undefined]))
   )
   .fn(t => {
     const renderTargetSize = [72, 36];

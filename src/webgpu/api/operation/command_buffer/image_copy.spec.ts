@@ -1000,7 +1000,7 @@ g.test('mip_levels')
           mipLevel: 6,
         },
       ])
-      .expandOptions('textureSize', generateTestTextureSizes)
+      .expand('textureSize', generateTestTextureSizes)
   )
   .fn(async t => {
     const {

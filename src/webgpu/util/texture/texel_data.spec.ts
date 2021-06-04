@@ -146,7 +146,7 @@ g.test('unorm_texel_data_in_shader')
         );
       })
       .beginSubcases()
-      .expandOptions('componentData', ({ format }) => {
+      .expand('componentData', ({ format }) => {
         const max = (bitLength: number) => Math.pow(2, bitLength) - 1;
         return [
           // Test extrema
@@ -178,7 +178,7 @@ g.test('snorm_texel_data_in_shader')
         );
       })
       .beginSubcases()
-      .expandOptions('componentData', ({ format }) => {
+      .expand('componentData', ({ format }) => {
         const max = (bitLength: number) => Math.pow(2, bitLength - 1) - 1;
         return [
           // Test extrema
@@ -213,7 +213,7 @@ g.test('uint_texel_data_in_shader')
         );
       })
       .beginSubcases()
-      .expandOptions('componentData', ({ format }) => {
+      .expand('componentData', ({ format }) => {
         const max = (bitLength: number) => Math.pow(2, bitLength) - 1;
         return [
           // Test extrema
@@ -245,7 +245,7 @@ g.test('sint_texel_data_in_shader')
         );
       })
       .beginSubcases()
-      .expandOptions('componentData', ({ format }) => {
+      .expand('componentData', ({ format }) => {
         const max = (bitLength: number) => Math.pow(2, bitLength - 1) - 1;
         return [
           // Test extrema
@@ -279,7 +279,7 @@ g.test('float_texel_data_in_shader')
         );
       })
       .beginSubcases()
-      .expandOptions('componentData', ({ format }) => {
+      .expand('componentData', ({ format }) => {
         return [
           // Test extrema
           makeParam(format, () => 0),
@@ -315,7 +315,7 @@ g.test('ufloat_texel_data_in_shader')
         );
       })
       .beginSubcases()
-      .expandOptions('componentData', ({ format }) => {
+      .expand('componentData', ({ format }) => {
         return [
           // Test extrema
           makeParam(format, () => 0),

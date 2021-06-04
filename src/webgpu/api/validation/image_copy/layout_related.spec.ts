@@ -181,7 +181,7 @@ g.test('rows_per_image_alignment')
       .combineOptions('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
-      .expandOptions('rowsPerImage', texelBlockAlignmentTestExpanderForRowsPerImage)
+      .expand('rowsPerImage', texelBlockAlignmentTestExpanderForRowsPerImage)
   )
   .fn(async t => {
     const { rowsPerImage, format, method } = t.params;
@@ -206,7 +206,7 @@ g.test('texel_block_alignment_on_offset')
       .combineOptions('format', kSizedTextureFormats)
       .filter(formatCopyableWithMethod)
       .beginSubcases()
-      .expandOptions('offset', texelBlockAlignmentTestExpanderForOffset)
+      .expand('offset', texelBlockAlignmentTestExpanderForOffset)
   )
   .fn(async t => {
     const { format, offset, method } = t.params;

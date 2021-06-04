@@ -348,7 +348,7 @@ g.test('OOB,source')
         { x: kDefaultWidth + 1, y: 0 }, // x is too large
         { x: 0, y: kDefaultHeight + 1 }, // y is too large
       ])
-      .expandOptions('copySize', generateCopySizeForSrcOOB)
+      .expand('copySize', generateCopySizeForSrcOOB)
   )
   .fn(async t => {
     const { srcOrigin, copySize } = t.params;
@@ -381,8 +381,8 @@ g.test('OOB,destination')
   .paramsSubcasesOnly(u =>
     u
       .combineOptions('mipLevel', [0, 1, kDefaultMipLevelCount - 2])
-      .expandOptions('dstOrigin', generateDstOriginValue)
-      .expandOptions('copySize', generateCopySizeForDstOOB)
+      .expand('dstOrigin', generateDstOriginValue)
+      .expand('copySize', generateCopySizeForDstOOB)
   )
   .fn(async t => {
     const { mipLevel, dstOrigin, copySize } = t.params;

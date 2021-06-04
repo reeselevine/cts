@@ -21,8 +21,8 @@ g.test('single')
       .combineOptions('srcOffset', [0, 4, 8, 16])
       .combineOptions('dstOffset', [0, 4, 8, 16])
       .combineOptions('copySize', [0, 4, 8, 16])
-      .expandOptions('srcBufferSize', p => [p.srcOffset + p.copySize, p.srcOffset + p.copySize + 8])
-      .expandOptions('dstBufferSize', p => [p.dstOffset + p.copySize, p.dstOffset + p.copySize + 8])
+      .expand('srcBufferSize', p => [p.srcOffset + p.copySize, p.srcOffset + p.copySize + 8])
+      .expand('dstBufferSize', p => [p.dstOffset + p.copySize, p.dstOffset + p.copySize + 8])
   )
   .fn(async t => {
     const { srcOffset, dstOffset, copySize, srcBufferSize, dstBufferSize } = t.params;

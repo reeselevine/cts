@@ -13,7 +13,7 @@ const MAX_ALIGNED_SAFE_INTEGER = Number.MAX_SAFE_INTEGER - 7;
 
 const oomAndSizeParams = kUnitCaseParamsBuilder
   .combineOptions('oom', [false, true])
-  .expandOptions('size', ({ oom }) => {
+  .expand('size', ({ oom }) => {
     return oom
       ? [
           MAX_ALIGNED_SAFE_INTEGER,

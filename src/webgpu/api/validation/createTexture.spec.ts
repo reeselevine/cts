@@ -465,7 +465,7 @@ g.test('texture_size,2d_texture,compressed_format')
     u
       .combineOptions('dimension', [undefined, '2d'] as const)
       .combineOptions('format', kCompressedTextureFormats)
-      .expandOptions('size', p => {
+      .expand('size', p => {
         const { blockWidth, blockHeight } = kAllTextureFormatInfo[p.format];
         return [
           // Test the bound of width
@@ -577,7 +577,7 @@ g.test('texture_size,3d_texture,compressed_format')
   .paramsSubcasesOnly(u =>
     u //
       .combineOptions('format', kCompressedTextureFormats)
-      .expandOptions('size', p => {
+      .expand('size', p => {
         const { blockWidth, blockHeight } = kAllTextureFormatInfo[p.format];
         return [
           // Test the bound of width

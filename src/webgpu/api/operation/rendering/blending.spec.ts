@@ -138,7 +138,7 @@ g.test('GPUBlendComponent')
         { r: 0.51, g: 0.22, b: 0.71, a: 0.33 },
         { r: 0.09, g: 0.73, b: 0.93, a: 0.81 },
       ])
-      .expandOptions('blendConstant', p => {
+      .expand('blendConstant', p => {
         const needsBlendConstant =
           p.srcFactor === 'one-minus-constant' ||
           p.srcFactor === 'constant' ||
