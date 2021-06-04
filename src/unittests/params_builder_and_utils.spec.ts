@@ -72,6 +72,13 @@ g.test('combine,zeroes_and_ones').fn(t => {
   t.expectParams<{}, {}>(u.combineP([{}]).combineP([{}]), [
     [{}, undefined], //
   ]);
+
+  t.expectParams<{}, {}>(u.combine('x', []).combine('y', []), []);
+  t.expectParams<{}, {}>(u.combine('x', []).combine('y', [1]), []);
+  t.expectParams<{}, {}>(u.combine('x', [1]).combine('y', []), []);
+  t.expectParams<{}, {}>(u.combine('x', [1]).combine('y', [1]), [
+    [{ x: 1, y: 1 }, undefined], //
+  ]);
 });
 
 g.test('combine,mixed').fn(t => {
@@ -117,7 +124,7 @@ g.test('filter').fn(t => {
       .filter(p => p.a),
     [
       [{ a: true, x: 1 }, [{}]], //
-      [{ a: false, y: 2 }, []], //
+      // Case with no subcases is filtered out.
     ]
   );
 
@@ -157,7 +164,7 @@ g.test('unless').fn(t => {
       .beginSubcases()
       .unless(p => p.a),
     [
-      [{ a: true, x: 1 }, []], //
+      // Case with no subcases is filtered out.
       [{ a: false, y: 2 }, [{}]], //
     ]
   );
@@ -176,7 +183,7 @@ g.test('unless').fn(t => {
   );
 });
 
-g.test('expand').fn(t => {
+g.test('expandP').fn(t => {
   // simple
   t.expectParams<{}, {}>(
     u.expandP(function* () {}),
@@ -361,14 +368,10 @@ g.test('invalid,shadowing').fn(t => {
           yield { w: 5 };
         }
       });
-    // Iterating cases is fine...
-    for (const [, subcases] of p.iterateCasesWithSubcases()) {
-      assert(subcases !== undefined);
-      // Iterating causes e.g. mergeParams({x:1}, {x:3}), which fails.
-      t.shouldThrow('Error', () => {
-        Array.from(subcases);
-      });
-    }
+    // Iterating causes e.g. mergeParams({x:1}, {x:3}), which fails.
+    t.shouldThrow('Error', () => {
+      Array.from(p.iterateCasesWithSubcases());
+    });
   }
   // Existing CaseP is shadowed by a new SubcaseP.
   {
