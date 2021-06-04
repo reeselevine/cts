@@ -445,19 +445,8 @@ const kTestParams = kUnitCaseParamsBuilder
     ReadMethod.StencilTest,
   ])
   .combine('format', kUncompressedTextureFormats)
-  .combine('uninitializeMethod', kUninitializeMethods)
   .beginSubcases()
   .combine('aspect', kTextureAspects)
-  .combine('nonPowerOfTwo', [false, true])
-  .combine('canaryOnCreation', [false, true])
-  .filter(({ canaryOnCreation, format }) => {
-    // We can only initialize the texture if it's encodable or renderable.
-    const canInitialize =
-      format in kEncodableTextureFormatInfo || kAllTextureFormatInfo[format].renderable;
-
-    // Filter out cases where we want canary values but can't initialize.
-    return !canaryOnCreation || canInitialize;
-  })
   .unless(({ readMethod, format, aspect }) => {
     const info = kUncompressedTextureFormatInfo[format];
     // console.log(readMethod, format, aspect, info.depth, info.stencil);
@@ -486,6 +475,10 @@ const kTestParams = kUnitCaseParamsBuilder
   )
   // Multisampled textures may only have one mip
   .unless(({ sampleCount, mipLevelCount }) => sampleCount > 1 && mipLevelCount > 1)
+  .combine('uninitializeMethod', kUninitializeMethods)
+  .combineP(kCreationSizes)
+  // Multisampled 3D / 2D array textures not supported.
+  .unless(({ sampleCount, sliceCount }) => sampleCount > 1 && sliceCount > 1)
   .unless(({ format, sampleCount, uninitializeMethod, readMethod }) => {
     const usage = getRequiredTextureUsage(format, sampleCount, uninitializeMethod, readMethod);
     const info = kUncompressedTextureFormatInfo[format];
@@ -495,9 +488,16 @@ const kTestParams = kUnitCaseParamsBuilder
       ((usage & GPUConst.TextureUsage.STORAGE) !== 0 && !info.storage)
     );
   })
-  .combineP(kCreationSizes)
-  // Multisampled 3D / 2D array textures not supported.
-  .unless(({ sampleCount, sliceCount }) => sampleCount > 1 && sliceCount > 1);
+  .combine('nonPowerOfTwo', [false, true])
+  .combine('canaryOnCreation', [false, true])
+  .filter(({ canaryOnCreation, format }) => {
+    // We can only initialize the texture if it's encodable or renderable.
+    const canInitialize =
+      format in kEncodableTextureFormatInfo || kAllTextureFormatInfo[format].renderable;
+
+    // Filter out cases where we want canary values but can't initialize.
+    return !canaryOnCreation || canInitialize;
+  });
 
 type TextureZeroParams = ParamTypeOf<typeof kTestParams>;
 

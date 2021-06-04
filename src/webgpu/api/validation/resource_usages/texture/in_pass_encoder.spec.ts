@@ -506,10 +506,10 @@ g.test('subresources_and_binding_types_combination_for_aspect')
   .params(u =>
     u
       .combine('compute', [false, true])
-      .combine('format', kDepthStencilFormats)
-      .beginSubcases()
       .combine('binding0InBundle', [false, true])
       .combine('binding1InBundle', [false, true])
+      .combine('format', kDepthStencilFormats)
+      .beginSubcases()
       .combineP([
         {
           baseLevel: BASE_LEVEL,
