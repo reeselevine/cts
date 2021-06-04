@@ -12,7 +12,11 @@ TODO: Test zero-sized copies from all sources (just make sure params cover it) (
 
 import { makeTestGroup } from '../../../common/framework/test_group.js';
 import { unreachable } from '../../../common/framework/util/util.js';
-import { RegularTextureFormat, kRegularTextureFormatInfo } from '../../capability_info.js';
+import {
+  RegularTextureFormat,
+  kRegularTextureFormatInfo,
+  kValidTextureFormatsForCopyIB2T,
+} from '../../capability_info.js';
 import { GPUTest } from '../../gpu_test.js';
 import { kTexelRepresentationInfo } from '../../util/texture/texel_data.js';
 
@@ -252,17 +256,7 @@ g.test('from_ImageData')
     u
       .combine('alpha', ['none', 'premultiply'] as const)
       .combine('orientation', ['none', 'flipY'] as const)
-      .combine('dstColorFormat', [
-        'rgba8unorm',
-        'bgra8unorm',
-        'rgba8unorm-srgb',
-        'bgra8unorm-srgb',
-        'rgb10a2unorm',
-        'rgba16float',
-        'rgba32float',
-        'rg8unorm',
-        'rg16float',
-      ] as const)
+      .combine('dstColorFormat', kValidTextureFormatsForCopyIB2T)
       .beginSubcases()
       .combine('width', [1, 2, 4, 15, 255, 256])
       .combine('height', [1, 2, 4, 15, 255, 256])
@@ -327,17 +321,7 @@ g.test('from_canvas')
   .params(u =>
     u
       .combine('orientation', ['none', 'flipY'] as const)
-      .combine('dstColorFormat', [
-        'rgba8unorm',
-        'bgra8unorm',
-        'rgba8unorm-srgb',
-        'bgra8unorm-srgb',
-        'rgb10a2unorm',
-        'rgba16float',
-        'rgba32float',
-        'rg8unorm',
-        'rg16float',
-      ] as const)
+      .combine('dstColorFormat', kValidTextureFormatsForCopyIB2T)
       .beginSubcases()
       .combine('width', [1, 2, 4, 15, 255, 256])
       .combine('height', [1, 2, 4, 15, 255, 256])
