@@ -355,7 +355,7 @@ g.test('texture_size,default_value_and_smallest_size,compressed_format')
       .combineOptions('dimension', [undefined, '2d'] as const)
       .beginSubcases()
       .combineOptions('format', kCompressedTextureFormats)
-      .expand(p => {
+      .expandP(p => {
         const { blockWidth, blockHeight } = kAllTextureFormatInfo[p.format];
         return [
           { size: [1], _success: false },

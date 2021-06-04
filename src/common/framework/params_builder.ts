@@ -116,8 +116,7 @@ export class CaseParamsBuilder<CaseP extends {}>
    *   flattened result = [ a1, a2, a3  ,      b1                    ]
    * ```
    */
-  // FIXME: rename to expandP?
-  expand<NewP extends {}>(
+  expandP<NewP extends {}>(
     expander: (_: Merged<{}, CaseP>) => Iterable<NewP>
   ): CaseParamsBuilder<Merged<CaseP, NewP>> {
     const newGenerator = expanderGenerator(this.cases, expander);
@@ -132,7 +131,7 @@ export class CaseParamsBuilder<CaseP extends {}>
     key: NewPKey,
     expander: (_: Merged<{}, CaseP>) => Iterable<NewPValue>
   ): CaseParamsBuilder<Merged<CaseP, { [name in NewPKey]: NewPValue }>> {
-    return this.expand(function* (p) {
+    return this.expandP(function* (p) {
       for (const value of expander(p)) {
         yield { [key]: value } as { [name in NewPKey]: NewPValue };
       }
@@ -150,7 +149,7 @@ export class CaseParamsBuilder<CaseP extends {}>
    */
   // FIXME: rename to combineP?
   combine<NewP extends {}>(newParams: Iterable<NewP>): CaseParamsBuilder<Merged<CaseP, NewP>> {
-    return this.expand(() => newParams);
+    return this.expandP(() => newParams);
   }
 
   /**
@@ -249,8 +248,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
    *   flattened result = [ a1, a2, a3  ,      b1                    ]
    * ```
    */
-  // FIXME: rename to expandP?
-  expand<NewP extends {}>(
+  expandP<NewP extends {}>(
     expander: (_: Merged<CaseP, SubcaseP>) => Iterable<NewP>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, NewP>> {
     return new SubcaseParamsBuilder(this.cases, expanderGenerator(this.subcases, expander));
@@ -264,7 +262,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
     key: NewPKey,
     expander: (_: Merged<CaseP, SubcaseP>) => Iterable<NewPValue>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, { [name in NewPKey]: NewPValue }>> {
-    return this.expand(function* (p) {
+    return this.expandP(function* (p) {
       for (const value of expander(p)) {
         yield { [key]: value } as { [name in NewPKey]: NewPValue };
       }
@@ -284,7 +282,7 @@ export class SubcaseParamsBuilder<CaseP extends {}, SubcaseP extends {}> extends
   combine<NewP extends {}>(
     newParams: Iterable<NewP>
   ): SubcaseParamsBuilder<CaseP, Merged<SubcaseP, NewP>> {
-    return this.expand(() => newParams);
+    return this.expandP(() => newParams);
   }
 
   /**

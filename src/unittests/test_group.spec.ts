@@ -225,7 +225,7 @@ g.test('subcases').fn(async t0 => {
       u
         .combine([{ a: 1 }, { b: 2 }])
         .beginSubcases()
-        .expand(gen)
+        .expandP(gen)
     )
     .fn(t => {
       const { a, b, ret } = t.params;

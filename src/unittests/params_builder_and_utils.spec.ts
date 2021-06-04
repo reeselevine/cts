@@ -196,17 +196,17 @@ g.test('unless').fn(t => {
 g.test('expand').fn(t => {
   // simple
   t.expectParams<{}, {}>(
-    u.expand(function* () {}),
+    u.expandP(function* () {}),
     []
   );
   t.expectParams<{}, {}>(
-    u.expand(function* () {
+    u.expandP(function* () {
       yield {};
     }),
     [[{}, undefined]]
   );
   t.expectParams<{ z: number | undefined; w: number | undefined }, {}>(
-    u.expand(function* () {
+    u.expandP(function* () {
       yield* kUnitCaseParamsBuilder.combineOptions('z', [3, 4]);
       yield { w: 5 };
     }),
@@ -217,7 +217,7 @@ g.test('expand').fn(t => {
     ]
   );
   t.expectParams<{}, { z: number | undefined; w: number | undefined }>(
-    u.beginSubcases().expand(function* () {
+    u.beginSubcases().expandP(function* () {
       yield* kUnitCaseParamsBuilder.combineOptions('z', [3, 4]);
       yield { w: 5 };
     }),
@@ -240,7 +240,7 @@ g.test('expand').fn(t => {
         { a: true, x: 1 },
         { a: false, y: 2 },
       ])
-      .expand(function* (p) {
+      .expandP(function* (p) {
         if (p.a) {
           yield { z: 3 };
           yield { z: 4 };
@@ -264,7 +264,7 @@ g.test('expand').fn(t => {
         { a: false, y: 2 },
       ])
       .beginSubcases()
-      .expand(function* (p) {
+      .expandP(function* (p) {
         if (p.a) {
           yield { z: 3 };
           yield { z: 4 };
@@ -351,7 +351,7 @@ g.test('invalid,shadowing').fn(t => {
         { a: true, x: 1 },
         { a: false, x: 2 },
       ])
-      .expand(function* (p) {
+      .expandP(function* (p) {
         if (p.a) {
           yield { x: 3 };
         } else {
@@ -371,7 +371,7 @@ g.test('invalid,shadowing').fn(t => {
         { a: true, x: 1 },
         { a: false, x: 2 },
       ])
-      .expand(function* (p) {
+      .expandP(function* (p) {
         if (p.a) {
           yield { x: 3 };
         } else {
@@ -395,7 +395,7 @@ g.test('invalid,shadowing').fn(t => {
         { a: false, x: 2 },
       ])
       .beginSubcases()
-      .expand(function* (p) {
+      .expandP(function* (p) {
         if (p.a) {
           yield { x: 3 };
         } else {
